@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
+		// This is where you read from the FMS
+
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
 		 */
