@@ -5,13 +5,9 @@ package com.frcteam1939.powerup2018.robot;
  */
 public class RobotMap {
 
-	//PWM
-	
-	//CAN
-	
-	//Digital
-	
-	//Analog
-	
-	//Solenoids
+	// public static final int frontLeft = 0;
+	// public static final int frontRight = 1;
+	// public static final int backLeft = 2;
+	// public static final int backRight = 3;
+
 }
