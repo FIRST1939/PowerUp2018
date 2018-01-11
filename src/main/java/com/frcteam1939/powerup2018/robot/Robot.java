@@ -2,7 +2,9 @@
 package com.frcteam1939.powerup2018.robot;
 
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
+import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -13,10 +15,19 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class Robot extends TimedRobot {
 
-	public static Drivetrain drivetrain = new Drivetrain();
-	public static OI oi;
+	public static Drivetrain drivetrain;
+	public static Elevator elevator;
+	{
+		try {
+			drivetrain = new Drivetrain();
+			elevator = new Elevator();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	};
 
-	Command autonomousCommand;
+	public static OI oi;
+	private Command autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -47,13 +58,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		// This is where you read from the FMS
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); switch(autoSelected) { case "My Auto": autonomousCommand = new MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
 		if (this.autonomousCommand != null) {
 			this.autonomousCommand.start();
 		}
