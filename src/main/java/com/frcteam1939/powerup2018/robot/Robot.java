@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		Robot.drivetrain.disableBrakeMode();
 	}
 
 	@Override
@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		Robot.drivetrain.enableBrakeMode();
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
@@ -90,6 +91,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		Robot.drivetrain.enableBrakeMode();
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove

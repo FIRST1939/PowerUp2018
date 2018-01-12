@@ -12,9 +12,13 @@ public class RobotMap {
 	public static final int rightFrontTalon = 0;
 	public static final int rightMidTalon = 0;
 	public static final int rightBackTalon = 0;
+	public static final int elevatorTalon = 0;
+	public static final int cubeManipulatorTalon = 0;
 
 	// Solenoids
 	public static final int PCM = 0;
+	public static final int leftShiftingGearbox = 0;
+	public static final int rightShiftingGearbox = 0;
 
 	// Analog
 	public static final int pressureSensor = 0;
