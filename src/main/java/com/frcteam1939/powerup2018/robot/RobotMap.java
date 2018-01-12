@@ -5,7 +5,7 @@ package com.frcteam1939.powerup2018.robot;
  */
 public class RobotMap {
 
-	// Talons
+	// Talons/Victors
 	public static final int leftFrontTalon = 0;
 	public static final int leftMidTalon = 0;
 	public static final int leftBackTalon = 0;

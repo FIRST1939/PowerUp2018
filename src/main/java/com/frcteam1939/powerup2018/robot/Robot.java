@@ -39,7 +39,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		System.out.println("\n==========================================");
+		System.out.println("         PowerUp 2018 Intializing");
+
 		oi = new OI();
+
+		SmartDashboard.putData(Scheduler.getInstance());
+
+		System.out.println("           Finished Intializing");
+		System.out.println("==========================================/n");
 	}
 
 	/**
@@ -107,7 +115,7 @@ public class Robot extends TimedRobot {
 		LiveWindow.run();
 	}
 
-	public Command getAutonomousCommand(String gameData) {
+	private Command getAutonomousCommand(String gameData) {
 		Command chosenCommand = new DoNothing();
 
 		String startingPosition = "";
@@ -306,6 +314,104 @@ public class Robot extends TimedRobot {
 
 							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
 								// // Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (startingPosition.equalsIgnoreCase("Right")) {
+			if (firstChoice.equalsIgnoreCase("Cross Auto Line")) {
+				// Drive Forward
+			}
+
+			else if (firstChoice.equalsIgnoreCase("Do Nothing")) {
+				chosenCommand = new DoNothing();
+			}
+
+			else if (firstChoice.equalsIgnoreCase("Switch")) {
+				if (gameData.charAt(0) == 'R') {
+					// Drive forward, score on right side of switch
+				}
+
+				else {
+					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+						chosenCommand = new DoNothing();
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
+						// Drive forward
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Still Do Switch")) {
+						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Scale")) {
+						if (gameData.charAt(1) == 'R') {
+							// Drive forward to Scale, score on right side of Scale
+						}
+
+						else {
+							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+								chosenCommand = new DoNothing();
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
+								// Drive forward
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
+								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
+								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+							}
+						}
+					}
+				}
+			}
+
+			else if (firstChoice.equalsIgnoreCase("Scale")) {
+				if (gameData.charAt(1) == 'R') {
+					// Drive forward to Scale, score on right side of Scale
+				}
+
+				else {
+					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+						chosenCommand = new DoNothing();
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
+						// Drive forward
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Still Do Scale")) {
+						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+					}
+
+					else if (secondChoice.equalsIgnoreCase("Switch")) {
+						if (gameData.charAt(0) == 'R') {
+							// Drive forward to Switch, score on right side of Switch
+						}
+
+						else {
+							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+								chosenCommand = new DoNothing();
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
+								// Drive forward
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
+								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+							}
+
+							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
+								// // Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
 							}
 						}
 					}
