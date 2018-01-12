@@ -5,9 +5,20 @@ package com.frcteam1939.powerup2018.robot;
  */
 public class RobotMap {
 
-	// public static final int frontLeft = 0;
-	// public static final int frontRight = 1;
-	// public static final int backLeft = 2;
-	// public static final int backRight = 3;
+	// Talons/Victors
+	public static final int leftFrontTalon = 0;
+	public static final int leftMidTalon = 0;
+	public static final int leftBackTalon = 0;
+	public static final int rightFrontTalon = 0;
+	public static final int rightMidTalon = 0;
+	public static final int rightBackTalon = 0;
+
+	// Solenoids
+	public static final int PCM = 0;
+
+	// Analog
+	public static final int pressureSensor = 0;
+
+	// DIO
 
 }
