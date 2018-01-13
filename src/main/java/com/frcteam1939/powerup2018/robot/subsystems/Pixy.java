@@ -8,6 +8,7 @@
 package com.frcteam1939.powerup2018.robot.subsystems;
 
 
+import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -32,5 +33,10 @@ public class Pixy extends Subsystem {
     }
     public int getYPosition(){
     	return pixyYIn.getAverageValue();
+    }
+    public void centerCube(){
+    	double centerInt = Robot.pixy.getXPosition()-160;
+    	centerInt = centerInt*0.02;
+//    	Robot.drivetrain.drive(0,centerInt);
     }
 }
