@@ -7,7 +7,7 @@ public class SetCubeManipulatorSpeed extends Command {
 	private double speed;
 	
 	public SetCubeManipulatorSpeed(double speed){
-		requires(Robot.cubeManipulator);
+		this.requires(Robot.cubeManipulator);
 		this.speed = speed;
 		
 	}
@@ -16,7 +16,7 @@ public class SetCubeManipulatorSpeed extends Command {
 	public void initialize(){
 		//add initialize commands here
 		
-	}
+	}  
 	
 	protected void execute(){
 		
