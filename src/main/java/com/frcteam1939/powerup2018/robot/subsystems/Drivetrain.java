@@ -7,6 +7,8 @@
 
 package com.frcteam1939.powerup2018.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.RobotMap;
@@ -15,10 +17,9 @@ import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * An example subsystem. You can replace me with your own Subsystem.
- */
 public class Drivetrain extends Subsystem {
+
+	private final int TIMEOUT_MS = 10;
 
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
 	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
@@ -35,11 +36,29 @@ public class Drivetrain extends Subsystem {
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
+		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, this.TIMEOUT_MS);
+		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 1, this.TIMEOUT_MS);
+		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, this.TIMEOUT_MS);
+		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 1, this.TIMEOUT_MS);
 	}
 
 	@Override
 	public void initDefaultCommand() {
 		this.setDefaultCommand(new DriveByJoystick());
+	}
+
+	public void stop() {
+		this.setPercentOutput(0, 0);
+	}
+
+	public void setPercentOutput(double rightPercent, double leftPercent) {
+		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
+		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
+	}
+
+	public void zeroEncoders() {
+		this.frontLeft.getSensorCollection().setQuadraturePosition(0, this.TIMEOUT_MS);
+		this.frontRight.getSensorCollection().setQuadraturePosition(0, this.TIMEOUT_MS);
 	}
 
 	public void shiftingGearboxDown() {
@@ -52,9 +71,7 @@ public class Drivetrain extends Subsystem {
 		this.rightShiftingGearbox.set(false);
 	}
 
-	public void drive() {
-
-	}
+	public void drive() {}
 
 	public void enableBrakeMode() {
 		this.frontLeft.setNeutralMode(NeutralMode.Brake);
