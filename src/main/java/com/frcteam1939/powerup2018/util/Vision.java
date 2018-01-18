@@ -1,3 +1,4 @@
+
 package com.frcteam1939.powerup2018.util;
 
 import java.util.ArrayList;
@@ -11,7 +12,9 @@ import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+/**
+ * code from 3840
+ */
 public class Vision extends Subsystem {
 
 
@@ -34,7 +37,17 @@ public class Vision extends Subsystem {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 	}
-
+	
+	public int getX() {
+		int pack = -1;
+		try {
+			pack = pixy1.readPackets();
+		}
+		catch (PixyException e){
+			e.printStackTrace();			
+		}
+		return packets.get(0).get(0).X;
+	}
 	public void testPixy1(){
 		int ret = -1;
 		// Get the packets from the pixy.
