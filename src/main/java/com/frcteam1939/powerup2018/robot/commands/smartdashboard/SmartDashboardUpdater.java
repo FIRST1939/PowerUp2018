@@ -38,6 +38,8 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putBoolean("3: Do Nothing", false);
 		SmartDashboard.putBoolean("3: Still Do Switch", false);
 		SmartDashboard.putBoolean("3: Still Do Scale", false);
+		
+		SmartDashboard.putBoolean("Climber Override", false);
 	}
 
 	@Override

@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ClimberGamepadControl extends Command{
-	public ClimberGamepadControl() {
+public class RollOutClimber extends Command{
+	public RollOutClimber() {
 		requires(Robot.climber);
 	}
 
@@ -19,7 +19,7 @@ public class ClimberGamepadControl extends Command{
 	@Override
 	protected void execute() {
 		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			
+			Robot.climber.rollOut();
 		}
 	}
 
