@@ -19,6 +19,8 @@ public class RobotMap {
 
 	// One double solenoid on 0 and 1, second double solenoid on 6 and 7, one single solenoid on 2
 	public static final int PCM = 0;
+	public static final int cubeManipulatorRetractSolenoid = 0;
+	public static final int cubeManipulatorGrabSolenoid = 0;
 	public static final int leftShiftingGearbox = 0;
 	public static final int rightShiftingGearbox = 0;
 
