@@ -24,8 +24,6 @@ public class RobotMap {
 
 	// Analog
 	public static final int pressureSensor = 0;
-	public static final int PIXY_X = 1;
-	public static final int PIXY_Y = 2;
 
 	// DIO
 

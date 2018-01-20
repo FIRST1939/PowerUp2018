@@ -1,11 +1,12 @@
 
-package com.frcteam1939.powerup2018.util;
+package com.frcteam1939.powerup2018.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.frcteam1939.powerup2018.robot.subsystems.PixyException;
-import com.frcteam1939.powerup2018.robot.subsystems.PixySPI;
+import com.frcteam1939.powerup2018.util.PixyException;
+import com.frcteam1939.powerup2018.util.PixyPacket;
+import com.frcteam1939.powerup2018.util.PixySPI;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;

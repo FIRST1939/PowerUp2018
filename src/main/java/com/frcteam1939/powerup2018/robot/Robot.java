@@ -3,8 +3,8 @@ package com.frcteam1939.powerup2018.robot;
 
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
-import com.frcteam1939.powerup2018.robot.subsystems.Pixy;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
+import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 import com.frcteam1939.powerup2018.util.DoNothing;
 
@@ -24,13 +24,13 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
 	public static SmartDashboardSubsystem smartDashboard;
-	public static Pixy pixy;
+	public static Vision vision;
 	{
 		try {
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
 			smartDashboard = new SmartDashboardSubsystem();
-			pixy = new Pixy();
+			vision = new Vision();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
