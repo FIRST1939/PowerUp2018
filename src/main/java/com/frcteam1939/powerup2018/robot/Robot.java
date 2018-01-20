@@ -1,6 +1,7 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
@@ -23,10 +24,12 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
 	{
 		try {
+			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
 			smartDashboard = new SmartDashboardSubsystem();
