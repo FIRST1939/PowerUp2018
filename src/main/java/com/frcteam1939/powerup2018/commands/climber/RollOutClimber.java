@@ -19,7 +19,7 @@ public class RollOutClimber extends Command{
 	@Override
 	protected void execute() {
 		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			Robot.climber.rollOut();
+			Robot.climber.disableBrake();
 		}
 	}
 

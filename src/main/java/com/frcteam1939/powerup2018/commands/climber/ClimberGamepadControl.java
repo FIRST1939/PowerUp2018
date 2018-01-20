@@ -18,8 +18,9 @@ public class ClimberGamepadControl extends Command{
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			
+		if(Robot.oi.gp.rightTrigger.get()&&DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false) &&Robot.oi.gp.rightTrigger.get()) {
+			Robot.oi.gp.rightTrigger.get();
+			Robot.oi.gp.rightButton.whenPressed(new RollOutClimber());
 		}
 	}
 

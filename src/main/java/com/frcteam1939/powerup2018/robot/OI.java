@@ -15,8 +15,6 @@ public class OI {
 	public final Joystick right = new Joystick(1);
 	public final Gamepad gp = new Gamepad(2);
 	public OI() {
-		gp.rightTrigger.whenPressed(new RollInClimber());
-		gp.rightButton.whenPressed(new RollOutClimber());
 	}
 	
 

@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		climber.disableBrake();
 	}
 
 	@Override
