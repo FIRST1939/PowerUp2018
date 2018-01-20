@@ -13,9 +13,14 @@ public class RobotMap {
 	public static final int rightMidTalon = 0;
 	public static final int rightBackTalon = 0;
 	public static final int elevatorTalon = 0;
+	public static final int cubeManipulatorTalon = 0;
 
 	// Solenoids
+
+	// One double solenoid on 0 and 1, second double solenoid on 6 and 7, one single solenoid on 2
 	public static final int PCM = 0;
+	public static final int leftShiftingGearbox = 0;
+	public static final int rightShiftingGearbox = 0;
 
 	// Analog
 	public static final int pressureSensor = 0;
