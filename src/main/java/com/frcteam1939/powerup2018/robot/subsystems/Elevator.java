@@ -14,7 +14,6 @@ public class Elevator extends Subsystem {
 	private static final double P = 0;
 	private static final double I = 0;
 	private static final double D = 0;
-	private static final double F = 0;
 
 	private TalonSRX talon = new TalonSRX(RobotMap.elevatorTalon);
 
@@ -23,7 +22,6 @@ public class Elevator extends Subsystem {
 		this.talon.config_kP(0, P, TIMEOUT_MS);
 		this.talon.config_kI(0, I, TIMEOUT_MS);
 		this.talon.config_kD(0, D, TIMEOUT_MS);
-		this.talon.config_kF(0, F, TIMEOUT_MS);
 	}
 
 	@Override
