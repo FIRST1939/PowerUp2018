@@ -16,6 +16,7 @@ public class RobotMap {
 
 	// Solenoids
 	public static final int PCM = 0;
+	public static final int climberSolenoid = 1;
 
 	// Analog
 	public static final int pressureSensor = 0;
