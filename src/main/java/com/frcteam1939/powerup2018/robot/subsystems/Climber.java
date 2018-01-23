@@ -10,13 +10,10 @@ import com.frcteam1939.powerup2018.robot.RobotMap;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
- * @author pcase
- *
- */
 public class Climber extends Subsystem {
 	Solenoid sole = new Solenoid(RobotMap.climberSolenoid);
-	TalonSRX talon = new TalonSRX(RobotMap.climberTalon);
+	TalonSRX talonWinch = new TalonSRX(RobotMap.climberWinchTalon);
+	TalonSRX talonArm = new TalonSRX(RobotMap.climberArmTalon);
 
 	@Override
 	public void initDefaultCommand() {
@@ -26,17 +23,22 @@ public class Climber extends Subsystem {
 	public void extendBar() {
 		this.sole.set(false);
 	}
-	public void rollIn() {
-		this.talon.set(ControlMode.PercentOutput, 0.5);
+	public void rollInWinch() {
+		this.talonWinch.set(ControlMode.PercentOutput, 0.5);
 	}
-	public void rollOut() {
-		this.talon.set(ControlMode.PercentOutput, -0.5);
+	public void winchUp() {
 	}
 	
-	public void brake() {
-		this.talon.setNeutralMode(NeutralMode.Brake);		
+	public void brakeWinch() {
+		this.talonWinch.setNeutralMode(NeutralMode.Brake);		
 	}
-	public void disableBrake() {
-		this.talon.setNeutralMode(NeutralMode.Coast);
+	public void disableWinchBrake() {
+		this.talonWinch.setNeutralMode(NeutralMode.Coast);
+	}
+	public void brakeArm() {
+		this.talonArm.setNeutralMode(NeutralMode.Brake);		
+	}
+	public void disableArmBrake() {
+		this.talonArm.setNeutralMode(NeutralMode.Coast);
 	}
 }
