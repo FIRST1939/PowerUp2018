@@ -54,7 +54,7 @@ public class Drivetrain extends Subsystem {
 		this.setPercentOutput(0, 0);
 	}
 
-	public void setPercentOutput(double rightPercent, double leftPercent) {
+	public void setPercentOutput(double leftPercent, double rightPercent) {
 		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
 	}
