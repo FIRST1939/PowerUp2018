@@ -8,14 +8,11 @@
 package com.frcteam1939.powerup2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,25 +21,25 @@ public class Drivetrain extends Subsystem {
 	private static final int TIMEOUT_MS = 10;
 	private static final double lowGearLimit = 0.6;
 
-	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
+	public TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
 	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
 	private TalonSRX backLeft = new TalonSRX(RobotMap.leftBackTalon);
 	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
 	private TalonSRX midRight = new TalonSRX(RobotMap.rightMidTalon);
 	private TalonSRX backRight = new TalonSRX(RobotMap.rightBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
+	// private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
 
-	private Solenoid leftShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.leftShiftingGearbox);
-	private Solenoid rightShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.rightShiftingGearbox);
+	// private Solenoid leftShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.leftShiftingGearbox);
+	// private Solenoid rightShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.rightShiftingGearbox);
 
 	public Drivetrain() {
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
-		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
-		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		// this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		// this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 	}
 
 	@Override
@@ -54,36 +51,36 @@ public class Drivetrain extends Subsystem {
 		this.setPercentOutput(0, 0);
 	}
 
-	public void setPercentOutput(double rightPercent, double leftPercent) {
+	public void setPercentOutput(double leftPercent, double rightPercent) {
 		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
 	}
 
 	public void zeroEncoders() {
-		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
-		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+		// this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+		// this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 	}
 
-	public void shiftingGearboxLow() {
-		this.leftShiftingGearbox.set(true);
-		this.rightShiftingGearbox.set(true);
-	}
+	// public void shiftingGearboxLow() {
+	//	this.leftShiftingGearbox.set(true);
+	//	this.rightShiftingGearbox.set(true);
+	// }
 
-	public void shiftingGearboxHigh() {
-		this.leftShiftingGearbox.set(false);
-		this.rightShiftingGearbox.set(false);
-	}
+	// public void shiftingGearboxHigh() {
+	// 	this.leftShiftingGearbox.set(false);
+	// 	this.rightShiftingGearbox.set(false);
+	// }
 
 	public void drive(double moveValue, double rotateValue) {
 
 		boolean highGear = false;
 		if (moveValue > lowGearLimit && !highGear) {
-			this.shiftingGearboxHigh();
+			// this.shiftingGearboxHigh();
 			highGear = true;
 		}
 
 		if (moveValue < lowGearLimit && highGear) {
-			this.shiftingGearboxLow();
+			// this.shiftingGearboxLow();
 			highGear = false;
 		}
 
@@ -107,7 +104,9 @@ public class Drivetrain extends Subsystem {
 			}
 		}
 
-		this.setPercentOutput(leftMotorSpeed, rightMotorSpeed);
+		this.frontLeft.set(ControlMode.PercentOutput, moveValue);
+
+		this.setPercentOutput(leftMotorSpeed, -rightMotorSpeed);
 
 		SmartDashboard.putNumber("Move Output", moveValue);
 		SmartDashboard.putNumber("Turn Output", rotateValue);
