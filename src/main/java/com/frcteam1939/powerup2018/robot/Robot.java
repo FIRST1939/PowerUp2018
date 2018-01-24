@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
+
 	{
 		try {
 			cubeManipulator = new CubeManipulator();
