@@ -5,6 +5,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
+import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 import com.frcteam1939.powerup2018.util.DoNothing;
 
@@ -25,12 +26,15 @@ public class Robot extends TimedRobot {
 	public static Elevator elevator;
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
+	public static Vision vision;
+
 	{
 		try {
 			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
 			smartDashboard = new SmartDashboardSubsystem();
+			vision = new Vision();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
