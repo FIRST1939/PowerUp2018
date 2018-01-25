@@ -8,26 +8,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CubeManipulator extends Subsystem {
 	
-	public static final double OUT_SPEED = 1.0;
-	public static final double IN_SPEED = -1.0;
-	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
-	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
+	public static final double OUT_SPEED = .6;
+	public static final double IN_SPEED = -.6;
+	
+	private TalonSRX masterTalon = new TalonSRX(RobotMap.leftCubeManipulatorTalon);
+	private TalonSRX slaveTalon = new TalonSRX(RobotMap.rightCubeManipulatorTalon);
+	
 	private Solenoid cubeSolenoidRaise = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorRetractSolenoid);
 	private Solenoid cubeSolenoidGrab = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorGrabSolenoid);
-	
-	public void CubeIntake(){
-		
-	}
-	
+
 	public CubeManipulator() {
-	//	slaveTalon.setInverted(true);
+		slaveTalon.setInverted(true);
 		slaveTalon.follow(this.masterTalon);
 	} 
 
 	@Override
-	public void initDefaultCommand() {
-		
-	}
+	public void initDefaultCommand() {}
 	
 	public void CubeManipulatorGrab(){
 		this.cubeSolenoidGrab.set(true);
