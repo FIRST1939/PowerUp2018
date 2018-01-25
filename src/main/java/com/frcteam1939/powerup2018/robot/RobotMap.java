@@ -12,12 +12,26 @@ public class RobotMap {
 	public static final int rightFrontTalon = 0;
 	public static final int rightMidTalon = 0;
 	public static final int rightBackTalon = 0;
+<<<<<<< HEAD
 	public static final int climberArmTalon = 0;
 	public static final int climberWinchTalon = 0;
+=======
+	public static final int elevatorTalon = 0;
+	public static final int cubeManipulatorTalon = 0;
+>>>>>>> master
 
 	// Solenoids
+
+	// One double solenoid on 0 and 1, second double solenoid on 6 and 7, one single solenoid on 2
 	public static final int PCM = 0;
+<<<<<<< HEAD
 	public static final int climberSolenoid = 1;
+=======
+	public static final int cubeManipulatorRetractSolenoid = 0;
+	public static final int cubeManipulatorGrabSolenoid = 0;
+	public static final int leftShiftingGearbox = 0;
+	public static final int rightShiftingGearbox = 0;
+>>>>>>> master
 
 	// Analog
 	public static final int pressureSensor = 0;
