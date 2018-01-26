@@ -1,11 +1,9 @@
 
 package com.frcteam1939.powerup2018.robot;
 
-<<<<<<< HEAD
+
 import com.frcteam1939.powerup2018.robot.subsystems.Climber;
-=======
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
->>>>>>> master
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
@@ -28,11 +26,9 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
-<<<<<<< HEAD
 	public static Climber climber;
-=======
 	public static CubeManipulator cubeManipulator;
->>>>>>> master
+
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
 
@@ -102,11 +98,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-<<<<<<< HEAD
-		climber.disableBrake();
-=======
+
 		Robot.drivetrain.disableBrakeMode();
->>>>>>> master
 	}
 
 	@Override
