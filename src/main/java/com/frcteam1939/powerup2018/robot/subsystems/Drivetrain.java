@@ -15,14 +15,20 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 10;
+
 	private static final double lowGearLimit = 0.6;
+
+	private static final int posIndex = 0;
+	private static final double posP = 0;
+	private static final double posI = 0;
+	private static final double posD = 0;
 
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
 	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
@@ -33,16 +39,15 @@ public class Drivetrain extends Subsystem {
 
 	private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
 
-	private Solenoid leftShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.leftShiftingGearbox);
-	private Solenoid rightShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.rightShiftingGearbox);
+	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
+	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
 
 	public Drivetrain() {
+		this.setupMasterTalons();
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
-		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
-		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 	}
 
 	@Override
@@ -50,28 +55,28 @@ public class Drivetrain extends Subsystem {
 		this.setDefaultCommand(new DriveByJoystick());
 	}
 
-	public void stop() {
-		this.setPercentOutput(0, 0);
-	}
-
 	public void setPercentOutput(double leftPercent, double rightPercent) {
 		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
 	}
 
-	public void zeroEncoders() {
-		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
-		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+	public void stop() {
+		this.setPercentOutput(0, 0);
 	}
 
 	public void shiftingGearboxLow() {
-		this.leftShiftingGearbox.set(true);
-		this.rightShiftingGearbox.set(true);
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public void shiftingGearboxHigh() {
-		this.leftShiftingGearbox.set(false);
-		this.rightShiftingGearbox.set(false);
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+	}
+
+	public void zeroEncoders() {
+		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 	}
 
 	public void drive(double moveValue, double rotateValue) {
@@ -113,6 +118,11 @@ public class Drivetrain extends Subsystem {
 		SmartDashboard.putNumber("Turn Output", rotateValue);
 	}
 
+	public void driveDistance(double distance) {
+		this.frontLeft.set(ControlMode.MotionMagic, distance);
+		this.frontRight.set(ControlMode.MotionMagic, distance);
+	}
+
 	public void enableBrakeMode() {
 		this.frontLeft.setNeutralMode(NeutralMode.Brake);
 		this.midLeft.setNeutralMode(NeutralMode.Brake);
@@ -129,5 +139,32 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.setNeutralMode(NeutralMode.Coast);
 		this.midRight.setNeutralMode(NeutralMode.Coast);
 		this.backRight.setNeutralMode(NeutralMode.Coast);
+	}
+
+	public void setPositionPID(double P, double I, double D) {
+		this.frontLeft.selectProfileSlot(posIndex, 0);
+		this.frontRight.selectProfileSlot(posIndex, 0);
+		this.frontLeft.config_kP(posIndex, P, TIMEOUT_MS);
+		this.frontLeft.config_kI(posIndex, I, TIMEOUT_MS);
+		this.frontLeft.config_kD(posIndex, D, TIMEOUT_MS);
+		this.frontRight.config_kP(posIndex, P, TIMEOUT_MS);
+		this.frontRight.config_kI(posIndex, I, TIMEOUT_MS);
+		this.frontRight.config_kD(posIndex, D, TIMEOUT_MS);
+	}
+
+	private void setupMasterTalons() {
+		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		this.setPositionPID(posP, posI, posD);
+		this.frontLeft.configNominalOutputForward(+0f, TIMEOUT_MS);
+		this.frontRight.configNominalOutputForward(+0f, TIMEOUT_MS);
+		this.frontLeft.configNominalOutputReverse(-0f, TIMEOUT_MS);
+		this.frontRight.configNominalOutputReverse(-0f, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputForward(+12f, TIMEOUT_MS);
+		this.frontRight.configPeakOutputForward(+12f, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputReverse(-12f, TIMEOUT_MS);
+		this.frontRight.configPeakOutputReverse(-12f, TIMEOUT_MS);
+		this.frontLeft.enableVoltageCompensation(true);
+		this.frontRight.enableVoltageCompensation(true);
 	}
 }
