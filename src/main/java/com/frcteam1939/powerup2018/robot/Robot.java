@@ -3,6 +3,7 @@ package com.frcteam1939.powerup2018.robot;
 
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
+import com.frcteam1939.powerup2018.util.Vision;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
+	public static Vision vision = new Vision();
 	public static CubeManipulator cubeManipulator;
 	{
 		try {
