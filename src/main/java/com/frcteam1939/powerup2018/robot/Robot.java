@@ -1,7 +1,7 @@
 
 package com.frcteam1939.powerup2018.robot;
 
-
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
 import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
@@ -88,6 +88,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putData(new FindMaxSpeed());
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");
