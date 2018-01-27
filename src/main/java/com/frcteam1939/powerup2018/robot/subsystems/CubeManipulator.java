@@ -1,8 +1,8 @@
 package com.frcteam1939.powerup2018.robot.subsystems;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
