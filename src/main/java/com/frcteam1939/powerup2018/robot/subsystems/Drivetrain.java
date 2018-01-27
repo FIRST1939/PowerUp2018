@@ -48,6 +48,14 @@ public class Drivetrain extends Subsystem {
 		this.setDefaultCommand(new DriveByJoystick());
 	}
 
+	public double getLeftSpeed() {
+		return this.frontLeft.getSelectedSensorVelocity(0);
+	}
+
+	public double getRightSpeed() {
+		return this.frontRight.getSelectedSensorVelocity(0);
+	}
+
 	public void stop() {
 		this.setPercentOutput(0, 0);
 	}
