@@ -10,46 +10,43 @@ import com.frcteam1939.powerup2018.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends Subsystem { 
+	private final double RPM_TO_UNITS = 600;
 	DigitalInput Max = new DigitalInput(RobotMap.climbMax);
 	DigitalInput Min = new DigitalInput(RobotMap.climbMin);
 	TalonSRX talonWinch = new TalonSRX(RobotMap.climberWinchTalon);
 	TalonSRX talonArm = new TalonSRX(RobotMap.climberArmTalon);
-	Solenoid sole = new Solenoid(RobotMap.climberSolenoid);
-	
+
 	public Climber() {
+		int talonWinchLimit = (int) (RPM_TO_UNITS*SmartDashboard.getNumber("Climber RPM", 62));
+		int talonArmLimit = (int) (RPM_TO_UNITS*SmartDashboard.getNumber("Climber Arm RPM", 62));
+		this.talonWinch.configForwardSoftLimitThreshold(talonWinchLimit, 0);
+		this.talonArm.configForwardSoftLimitThreshold(talonArmLimit, 0);
+		this.talonArm.configForwardSoftLimitEnable(true, 0);
+		this.talonWinch.configForwardSoftLimitEnable(true, 0);
 	}
 	@Override
 	public void initDefaultCommand() {
 		this.setDefaultCommand(new ClimberGamepadControl());
+		
+		
 	}
 	
-	public void extendBar() {
-		this.sole.set(false);
-	}
-	public void rollInWinch(double set) {
-		this.talonWinch.set(ControlMode.PercentOutput, set);
+
+	public void rollInWinch(double RPM) {
+		this.talonWinch.set(ControlMode.Velocity, RPM*600);
 	}
 	public boolean atMAX() {
-		if(Max.get()) {
-			return true;
-		}
-		else {
-			return false;
-		}		
+		return Max.get();
 	}
 	public boolean atMIN() {
-		if(Min.get()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return Min.get();
 	}
-	public void moveArm(double output) {
+	public void moveArm(double RPM) {
 		if (!this.atMAX() && !this.atMIN()) {
-				talonArm.set(ControlMode.PercentOutput, output);
+				talonArm.set(ControlMode.Velocity, RPM*600);
 		}
 	}
 	

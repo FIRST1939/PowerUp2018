@@ -3,6 +3,7 @@ package com.frcteam1939.powerup2018.robot.commands.smartdashboard;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardUpdater extends Command {
 
@@ -17,7 +18,6 @@ public class SmartDashboardUpdater extends Command {
 
 	@Override
 	protected void execute() {
-<<<<<<< HEAD
 		SmartDashboard.putBoolean("Left", false);
 		SmartDashboard.putBoolean("Center", false);
 		SmartDashboard.putBoolean("Right", false);
@@ -40,9 +40,9 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putBoolean("3: Still Do Scale", false);
 		
 		SmartDashboard.putBoolean("Climber Override", false);
-=======
+		SmartDashboard.putNumber("Cimber Winch RPM", 62);
+		SmartDashboard.putNumber("Climber Arm RPM", 62);// Need to change once Ethan tells me the RPM
 
->>>>>>> master
 	}
 
 	@Override

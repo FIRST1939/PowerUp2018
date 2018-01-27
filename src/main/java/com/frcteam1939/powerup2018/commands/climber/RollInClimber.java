@@ -19,7 +19,7 @@ public class RollInClimber extends Command{
 	@Override
 	protected void execute() {
 		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			Robot.climber.rollInWinch(0.5);
+			Robot.climber.rollInWinch(SmartDashboard.getNumber("Climber RPM", 62));
 		}
 	}
 
