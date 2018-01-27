@@ -1,8 +1,10 @@
 package com.frcteam1939.powerup2018.robot;
 
-import com.frcteam1939.powerup2018.util.Gamepad;
-import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.*;
+import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorDrop;
+import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorGrab;
+import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.SetCubeManipulatorSpeed;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
+import com.frcteam1939.powerup2018.util.Gamepad;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -13,6 +15,8 @@ public class OI {
 
 	public final Joystick left = new Joystick(0);
 	public final Joystick right = new Joystick(1);
+	
+
 	public final Gamepad gamepad = new Gamepad(2);
 	
 	public OI(){
