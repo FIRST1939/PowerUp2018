@@ -13,7 +13,7 @@ public class RobotMap {
 	public static final int rightMidTalon = 0;
 	public static final int rightBackTalon = 25;
 	public static final int elevatorTalon = 0;
-	public static final int cubeManipulatorTalon = 29;
+	public static final int cubeManipulatorTalon = 0;
 
 	// Solenoids
 

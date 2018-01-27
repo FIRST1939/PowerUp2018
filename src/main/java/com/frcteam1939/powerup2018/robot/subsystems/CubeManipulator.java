@@ -10,13 +10,17 @@ public class CubeManipulator extends Subsystem {
 
 	public static final double OUT_SPEED = 1.0;
 	public static final double IN_SPEED = -1.0;
-	private TalonSRX talon = new TalonSRX(RobotMap.cubeManipulatorTalon);
+	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
+	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
 
 	public void CubeIntake() {
 
 	}
 
-	public CubeManipulator() {}
+	public CubeManipulator() {
+		//	slaveTalon.setInverted(true);
+		this.slaveTalon.follow(this.masterTalon);
+	}
 
 	@Override
 	public void initDefaultCommand() {
@@ -24,6 +28,6 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	public void set(double value) {
-		this.talon.set(ControlMode.PercentOutput, value);
+		this.masterTalon.set(ControlMode.PercentOutput, value);
 	}
 }
