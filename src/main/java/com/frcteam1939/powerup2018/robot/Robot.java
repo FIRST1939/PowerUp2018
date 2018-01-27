@@ -4,6 +4,7 @@ package com.frcteam1939.powerup2018.robot;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
 		System.out.println("         PowerUp 2018 Intializing");
 
 		oi = new OI();
+		CameraServer.getInstance().startAutomaticCapture();
 
 		SmartDashboard.putData(Scheduler.getInstance());
 
