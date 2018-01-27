@@ -38,8 +38,9 @@ public class Drivetrain extends Subsystem {
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
-		// this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
-		// this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		this.frontLeft.configMotionAcceleration(10, 10);
+		this.frontRight.configMotionAcceleration(10, 10);
+		this.frontLeft.configMotionAcceleration(10, 10);
 	}
 
 	@Override
@@ -70,6 +71,11 @@ public class Drivetrain extends Subsystem {
 	// 	this.leftShiftingGearbox.set(false);
 	// 	this.rightShiftingGearbox.set(false);
 	// }
+
+	public void driveDistance(double value) {
+		this.frontLeft.set(ControlMode.MotionMagic, value);
+		this.frontRight.set(ControlMode.MotionMagic, -value);
+	}
 
 	public void drive(double moveValue, double rotateValue) {
 
@@ -105,8 +111,15 @@ public class Drivetrain extends Subsystem {
 		}
 
 		this.frontLeft.set(ControlMode.PercentOutput, moveValue);
+		boolean driveBySpeed = false;
+		SmartDashboard.putBoolean("Drive By Speed", driveBySpeed);
 
-		this.setPercentOutput(leftMotorSpeed, -rightMotorSpeed);
+		if (driveBySpeed) {
+			this.frontLeft.set(ControlMode.Velocity, leftMotorSpeed);
+			this.frontRight.set(ControlMode.Velocity, -rightMotorSpeed);
+		} else {
+			this.setPercentOutput(leftMotorSpeed, -rightMotorSpeed);
+		}
 
 		SmartDashboard.putNumber("Move Output", moveValue);
 		SmartDashboard.putNumber("Turn Output", rotateValue);

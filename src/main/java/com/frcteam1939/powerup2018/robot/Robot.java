@@ -1,6 +1,7 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.Drive;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 //import com.frcteam1939.powerup2018.util.Vision;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
 
 		oi = new OI();
 
+		SmartDashboard.putData(new Drive(30));
 		SmartDashboard.putData(Scheduler.getInstance());
 
 		System.out.println("           Finished Intializing");

@@ -3,12 +3,14 @@ package com.frcteam1939.powerup2018.robot.commands.drivetrain;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Command {
 
-	public Drive() {
+	private double value;
+
+	public Drive(double value) {
 		this.requires(Robot.drivetrain);
+		this.value = value;
 	}
 
 	@Override
@@ -16,8 +18,7 @@ public class Drive extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.drive(Robot.oi.left.getY(), Robot.oi.right.getY());
-		SmartDashboard.putNumber("Left", Robot.oi.left.getY());
+		Robot.drivetrain.driveDistance(this.value);
 	}
 
 	@Override
