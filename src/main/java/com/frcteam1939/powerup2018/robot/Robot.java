@@ -1,9 +1,13 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+
+import com.frcteam1939.powerup2018.robot.subsystems.Climber;
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
+import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 import com.frcteam1939.powerup2018.util.DoNothing;
 
@@ -22,12 +26,20 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static Climber climber;
+	public static CubeManipulator cubeManipulator;
+
 	public static SmartDashboardSubsystem smartDashboard;
+	public static Vision vision;
+
 	{
 		try {
+			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
+			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
+			vision = new Vision();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,6 +99,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 
+		Robot.drivetrain.disableBrakeMode();
 	}
 
 	@Override
@@ -101,6 +114,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		Robot.drivetrain.enableBrakeMode();
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
@@ -121,6 +135,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		Robot.drivetrain.enableBrakeMode();
+
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
