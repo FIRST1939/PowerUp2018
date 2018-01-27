@@ -1,6 +1,9 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+
+import com.frcteam1939.powerup2018.robot.subsystems.Climber;
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
@@ -23,12 +26,18 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static Climber climber;
+	public static CubeManipulator cubeManipulator;
+
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
+
 	{
 		try {
+			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
+			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
 			vision = new Vision();
 		} catch (Exception e) {
@@ -89,6 +98,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+
 		Robot.drivetrain.disableBrakeMode();
 	}
 
