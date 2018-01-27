@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
 
-	private static final int TIMEOUT_MS = 10;
+	private static final int TIMEOUT_MS = 20;
 
 	private static final double lowGearLimit = 0.6;
 
@@ -44,6 +44,7 @@ public class Drivetrain extends Subsystem {
 
 	public Drivetrain() {
 		this.setupMasterTalons();
+
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
@@ -55,9 +56,63 @@ public class Drivetrain extends Subsystem {
 		this.setDefaultCommand(new DriveByJoystick());
 	}
 
+	// Get Methods
+
+	public double getLeftSpeed() {
+		return this.frontLeft.getSelectedSensorVelocity(0);
+	}
+
+	public double getRightSpeed() {
+		return this.frontRight.getSelectedSensorVelocity(0);
+	}
+
+	public double getLeftPosition() {
+		return this.frontLeft.getSelectedSensorPosition(0);
+	}
+
+	public double getRightPosition() {
+		return this.frontRight.getSelectedSensorPosition(0);
+	}
+
+	public double getLeftVoltage() {
+		return this.frontLeft.getMotorOutputVoltage();
+	}
+
+	public double getRightVoltage() {
+		return this.frontRight.getMotorOutputVoltage();
+	}
+
+	public double getLeftPercentOutput() {
+		return this.frontLeft.getMotorOutputPercent();
+	}
+
+	public double getRightPercentOutput() {
+		return this.frontRight.getMotorOutputPercent();
+	}
+
+	public double getLeftError() {
+		return this.frontLeft.getClosedLoopError(0);
+	}
+
+	public double getRightError() {
+		return this.frontRight.getClosedLoopError(0);
+	}
+
+	// Set Methods
+
 	public void setPercentOutput(double leftPercent, double rightPercent) {
 		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
+	}
+
+	public void setSpeed(double leftSpeed, double rightSpeed) {
+		this.frontLeft.set(ControlMode.Velocity, leftSpeed);
+		this.frontRight.set(ControlMode.Velocity, rightSpeed);
+	}
+
+	public void setPosition(double leftPosition, double rightPosition) {
+		this.frontLeft.set(ControlMode.Position, leftPosition);
+		this.frontRight.set(ControlMode.Position, rightPosition);
 	}
 
 	public void stop() {
@@ -152,6 +207,8 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.config_kD(posIndex, D, TIMEOUT_MS);
 	}
 
+	// Private Methods
+
 	private void setupMasterTalons() {
 		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
@@ -160,11 +217,13 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.configNominalOutputForward(+0f, TIMEOUT_MS);
 		this.frontLeft.configNominalOutputReverse(-0f, TIMEOUT_MS);
 		this.frontRight.configNominalOutputReverse(-0f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputForward(+12f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputForward(+12f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputReverse(-12f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputReverse(-12f, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputForward(+1f, TIMEOUT_MS);
+		this.frontRight.configPeakOutputForward(+1f, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputReverse(-1f, TIMEOUT_MS);
+		this.frontRight.configPeakOutputReverse(-1f, TIMEOUT_MS);
 		this.frontLeft.enableVoltageCompensation(true);
 		this.frontRight.enableVoltageCompensation(true);
+		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);
+		this.frontRight.configOpenloopRamp(2, TIMEOUT_MS);
 	}
 }
