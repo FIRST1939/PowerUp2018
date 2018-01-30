@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 
@@ -37,13 +38,14 @@ public class Drivetrain extends Subsystem {
 	private TalonSRX midRight = new TalonSRX(RobotMap.rightMidTalon);
 	private TalonSRX backRight = new TalonSRX(RobotMap.rightBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
+	private PigeonIMU pigeon = new PigeonIMU(this.midLeft);
 
 	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
 	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
 
 	public Drivetrain() {
 		this.setupMasterTalons();
+		this.setupPigeon();
 
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
@@ -98,6 +100,12 @@ public class Drivetrain extends Subsystem {
 		return this.frontRight.getClosedLoopError(0);
 	}
 
+	public double getHeading() {
+		double[] ypr = new double[3];
+		this.pigeon.getYawPitchRoll(ypr);
+		return ypr[0];
+	}
+
 	// Set Methods
 
 	public void setPercentOutput(double leftPercent, double rightPercent) {
@@ -132,6 +140,10 @@ public class Drivetrain extends Subsystem {
 	public void zeroEncoders() {
 		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+	}
+
+	public void resetGyro() {
+		this.pigeon.setYaw(0, TIMEOUT_MS);
 	}
 
 	public void drive(double moveValue, double rotateValue) {
@@ -225,5 +237,10 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.enableVoltageCompensation(true);
 		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);
 		this.frontRight.configOpenloopRamp(2, TIMEOUT_MS);
+	}
+
+	private void setupPigeon() {
+		GeneralStatus generalStatus = new GeneralStatus();
+		this.pigeon.getGeneralStatus(generalStatus);
 	}
 }
