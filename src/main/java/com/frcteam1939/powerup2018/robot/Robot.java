@@ -1,6 +1,8 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.commands.auton.CrossAutoLine;
+import com.frcteam1939.powerup2018.robot.commands.auton.DoNothing;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
 import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
@@ -9,7 +11,6 @@ import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
-import com.frcteam1939.powerup2018.util.DoNothing;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -198,7 +199,7 @@ public class Robot extends TimedRobot {
 
 		if (this.chooserPosition.getSelected() == AutonomousOptions.LEFT) {
 			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				// Drive Forward
+				chosenCommand = new CrossAutoLine();
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {

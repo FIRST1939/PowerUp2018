@@ -6,25 +6,23 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class CubeManipulatorLower extends Command {
 
-	
-	
-	public CubeManipulatorLower(){
-		
+	public CubeManipulatorLower() {
+		this.requires(Robot.cubeManipulator);
 	}
-	
+
 	@Override
 	protected void initialize() {}
 
 	@Override
 	protected void execute() {
-		Robot.cubeManipulator.lowerCubeManipulator();
+		Robot.cubeManipulator.cubeManipulatorLower();
 	}
-	
+
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
-	
+
 	@Override
 	protected void end() {}
 
