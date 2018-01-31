@@ -18,9 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
 
-	private static final int TIMEOUT_MS = 10;
-	private static final double lowGearLimit = 0.6;
-
 	public TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
 	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
 	private TalonSRX backLeft = new TalonSRX(RobotMap.leftBackTalon);
@@ -38,9 +35,6 @@ public class Drivetrain extends Subsystem {
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
-		this.frontLeft.configMotionAcceleration(10, 10);
-		this.frontRight.configMotionAcceleration(10, 10);
-		this.frontLeft.configMotionAcceleration(10, 10);
 	}
 
 	@Override
@@ -65,38 +59,12 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
 	}
 
-	public void zeroEncoders() {
-		// this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
-		// this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
-	}
-
-	// public void shiftingGearboxLow() {
-	//	this.leftShiftingGearbox.set(true);
-	//	this.rightShiftingGearbox.set(true);
-	// }
-
-	// public void shiftingGearboxHigh() {
-	// 	this.leftShiftingGearbox.set(false);
-	// 	this.rightShiftingGearbox.set(false);
-	// }
-
 	public void driveDistance(double value) {
 		this.frontLeft.set(ControlMode.MotionMagic, value);
 		this.frontRight.set(ControlMode.MotionMagic, -value);
 	}
 
 	public void drive(double moveValue, double rotateValue) {
-
-		boolean highGear = false;
-		if (moveValue > lowGearLimit && !highGear) {
-			// this.shiftingGearboxHigh();
-			highGear = true;
-		}
-
-		if (moveValue < lowGearLimit && highGear) {
-			// this.shiftingGearboxLow();
-			highGear = false;
-		}
 
 		double leftMotorSpeed;
 		double rightMotorSpeed;
@@ -118,16 +86,7 @@ public class Drivetrain extends Subsystem {
 			}
 		}
 
-		this.frontLeft.set(ControlMode.PercentOutput, moveValue);
-		boolean driveBySpeed = false;
-		SmartDashboard.putBoolean("Drive By Speed", driveBySpeed);
-
-		if (driveBySpeed) {
-			this.frontLeft.set(ControlMode.Velocity, leftMotorSpeed);
-			this.frontRight.set(ControlMode.Velocity, -rightMotorSpeed);
-		} else {
-			this.setPercentOutput(leftMotorSpeed, -rightMotorSpeed);
-		}
+		this.setPercentOutput(leftMotorSpeed, -rightMotorSpeed);
 
 		SmartDashboard.putNumber("Move Output", moveValue);
 		SmartDashboard.putNumber("Turn Output", rotateValue);
