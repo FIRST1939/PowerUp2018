@@ -1,7 +1,8 @@
 
 package com.frcteam1939.powerup2018.robot;
 
-<<<<<<< HEAD
+<<<<<<<HEAD
+
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.Drive;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
@@ -30,7 +31,6 @@ import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
->>>>>>> master
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -43,11 +43,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-	public static Drivetrain drivetrain;
-<<<<<<< HEAD
-//	public static Vision vision = new Vision();
-	public static CubeManipulator cubeManipulator;
-=======
+	public static Drivetrain drivetrain;<<<<<<<HEAD
+	//	public static Vision vision = new Vision();
+	public static CubeManipulator cubeManipulator;=======
 	public static Elevator elevator;
 	public static Climber climber;
 	public static CubeManipulator cubeManipulator;
@@ -55,7 +53,7 @@ public class Robot extends TimedRobot {
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
 
->>>>>>> master
+	>>>>>>>master
 	{
 		try {
 			cubeManipulator = new CubeManipulator();
@@ -156,10 +154,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
-	}
-<<<<<<< HEAD
-}
-=======
+	}<<<<<<<HEAD
+
+}=======
 
 	private Command getAutonomousCommand(String gameData) {
 		Command chosenCommand = new DoNothing();
@@ -391,5 +388,4 @@ public class Robot extends TimedRobot {
 		}
 		return chosenCommand;
 	}
-}
->>>>>>> master
+}>>>>>>>master
