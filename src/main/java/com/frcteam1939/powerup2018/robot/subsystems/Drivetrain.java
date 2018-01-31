@@ -8,13 +8,15 @@
 package com.frcteam1939.powerup2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 
+<<<<<<< HEAD
+=======
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+>>>>>>> master
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,25 +26,31 @@ public class Drivetrain extends Subsystem {
 
 	private static final double lowGearLimit = 0.6;
 
+<<<<<<< HEAD
+	public TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
+=======
 	private static final int posIndex = 0;
 	private static final double posP = 0;
 	private static final double posI = 0;
 	private static final double posD = 0;
 
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
+>>>>>>> master
 	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
 	private TalonSRX backLeft = new TalonSRX(RobotMap.leftBackTalon);
 	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
 	private TalonSRX midRight = new TalonSRX(RobotMap.rightMidTalon);
 	private TalonSRX backRight = new TalonSRX(RobotMap.rightBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
+	// private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
 
+<<<<<<< HEAD
 	// private Solenoid leftShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.leftShiftingGearbox);
 	// private Solenoid rightShiftingGearbox = new Solenoid(RobotMap.PCM, RobotMap.rightShiftingGearbox);
-
-	// private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
-	// private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
+=======
+	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
+	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
+>>>>>>> master
 
 	public Drivetrain() {
 		this.setupMasterTalons();
@@ -51,10 +59,12 @@ public class Drivetrain extends Subsystem {
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
-
+<<<<<<< HEAD
 		this.frontLeft.configMotionAcceleration(10, 10);
 		this.frontRight.configMotionAcceleration(10, 10);
 		this.frontLeft.configMotionAcceleration(10, 10);
+=======
+>>>>>>> master
 	}
 
 	@Override
@@ -62,7 +72,11 @@ public class Drivetrain extends Subsystem {
 		this.setDefaultCommand(new DriveByJoystick());
 	}
 
+<<<<<<< HEAD
+=======
 	// Get Methods
+
+>>>>>>> master
 	public double getLeftSpeed() {
 		return this.frontLeft.getSelectedSensorVelocity(0);
 	}
@@ -71,10 +85,12 @@ public class Drivetrain extends Subsystem {
 		return this.frontRight.getSelectedSensorVelocity(0);
 	}
 
+<<<<<<< HEAD
 	public void stop() {
 		this.setPercentOutput(0, 0);
 	}
 
+=======
 	public double getLeftPosition() {
 		return this.frontLeft.getSelectedSensorPosition(0);
 	}
@@ -109,11 +125,13 @@ public class Drivetrain extends Subsystem {
 
 	// Set Methods
 
+>>>>>>> master
 	public void setPercentOutput(double leftPercent, double rightPercent) {
 		this.frontLeft.set(ControlMode.PercentOutput, leftPercent);
 		this.frontRight.set(ControlMode.PercentOutput, rightPercent);
 	}
 
+<<<<<<< HEAD
 	public void zeroEncoders() {
 		// this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 		// this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
@@ -129,6 +147,10 @@ public class Drivetrain extends Subsystem {
 	// 	this.rightShiftingGearbox.set(false);
 	// }
 
+	public void driveDistance(double value) {
+		this.frontLeft.set(ControlMode.MotionMagic, value);
+		this.frontRight.set(ControlMode.MotionMagic, -value);
+=======
 	public void setSpeed(double leftSpeed, double rightSpeed) {
 		this.frontLeft.set(ControlMode.Velocity, leftSpeed);
 		this.frontRight.set(ControlMode.Velocity, rightSpeed);
@@ -137,6 +159,26 @@ public class Drivetrain extends Subsystem {
 	public void setPosition(double leftPosition, double rightPosition) {
 		this.frontLeft.set(ControlMode.Position, leftPosition);
 		this.frontRight.set(ControlMode.Position, rightPosition);
+	}
+
+	public void stop() {
+		this.setPercentOutput(0, 0);
+	}
+
+	public void shiftingGearboxLow() {
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
+	}
+
+	public void shiftingGearboxHigh() {
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+	}
+
+	public void zeroEncoders() {
+		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+>>>>>>> master
 	}
 
 	public void drive(double moveValue, double rotateValue) {

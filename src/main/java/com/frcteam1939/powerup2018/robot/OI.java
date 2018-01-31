@@ -1,7 +1,10 @@
 package com.frcteam1939.powerup2018.robot;
 
+<<<<<<< HEAD
 import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.SetCubeManipulatorSpeed;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
+=======
+>>>>>>> master
 import com.frcteam1939.powerup2018.util.Gamepad;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,6 +19,7 @@ public class OI {
 
 	public final Gamepad gamepad = new Gamepad(2);
 
+<<<<<<< HEAD
 	public OI() {
 
 		//when right trigger is pressed the in-take will release the cube and deactivate the piston.
@@ -24,4 +28,7 @@ public class OI {
 		//When right triggered is pressed then the in-take will take in the cube and activate the grabbing piston.
 		this.gamepad.leftTrigger.whenPressed(new SetCubeManipulatorSpeed(CubeManipulator.IN_SPEED));
 	}
+=======
+	public OI() {}
+>>>>>>> master
 }

@@ -11,9 +11,13 @@ public class RobotMap {
 	public static final int leftBackTalon = 11;
 	public static final int rightFrontTalon = 28;
 	public static final int rightMidTalon = 0;
+<<<<<<< HEAD
 	public static final int rightBackTalon = 25;
+=======
+	public static final int rightBackTalon = 0;
 	public static final int climberArmTalon = 0;
 	public static final int climberWinchTalon = 0;
+>>>>>>> master
 	public static final int elevatorTalon = 0;
 	public static final int cubeManipulatorTalon = 0;
 
