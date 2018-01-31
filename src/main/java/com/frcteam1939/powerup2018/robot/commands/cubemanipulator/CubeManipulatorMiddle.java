@@ -15,7 +15,7 @@ public class CubeManipulatorMiddle extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.cubeManipulator.cubeManipulatorRaise();
+		Robot.cubeManipulator.cubeManipulatorMiddle();
 	}
 
 	@Override
