@@ -5,11 +5,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorGamepadControl;
 
-<<<<<<< HEAD
-=======
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
->>>>>>> master
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CubeManipulator extends Subsystem {
@@ -20,18 +17,11 @@ public class CubeManipulator extends Subsystem {
 	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
 	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
 
-<<<<<<< HEAD
-=======
 	private DigitalInput banner = new DigitalInput(RobotMap.cubeManipulatorBanner);
 
 	private Solenoid solenoidAngleTop = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorAngleTop);
 	private Solenoid solenoidAngleBottom = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorAngleBottom);
 	private Solenoid solenoidWheels = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorWheelsSolenoid);
-
->>>>>>> master
-	public void CubeIntake() {
-
-	}
 
 	public CubeManipulator() {
 		//	slaveTalon.setInverted(true);
@@ -40,11 +30,6 @@ public class CubeManipulator extends Subsystem {
 
 	@Override
 	public void initDefaultCommand() {
-<<<<<<< HEAD
-
-	}
-
-=======
 		this.setDefaultCommand(new CubeManipulatorGamepadControl());
 	}
 
@@ -71,7 +56,6 @@ public class CubeManipulator extends Subsystem {
 		this.solenoidAngleTop.set(true);
 	}
 
->>>>>>> master
 	public void set(double value) {
 		this.masterTalon.set(ControlMode.PercentOutput, value);
 	}
