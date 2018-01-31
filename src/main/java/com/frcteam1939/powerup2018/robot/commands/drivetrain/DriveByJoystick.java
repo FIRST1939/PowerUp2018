@@ -4,9 +4,6 @@ import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DriveByJoystick extends Command {
 
 	private static double DEAD_BAND = 0.1;
@@ -23,6 +20,7 @@ public class DriveByJoystick extends Command {
 		double move = Robot.oi.left.getY();
 		double rotate = Robot.oi.right.getX();
 
+<<<<<<< HEAD
 		boolean turbo = Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1);
 
 		if (Math.abs(move) < DEAD_BAND) {
@@ -33,15 +31,25 @@ public class DriveByJoystick extends Command {
 			} else {
 				move = map(move, 0, 0.5);
 			}
+=======
+		if (Math.abs(move) < DEAD_BAND) {
+			move = 0;
+		} else {
+			move = map(move, 0, 1);
+>>>>>>> master
 		}
 		if (Math.abs(rotate) < DEAD_BAND) {
 			rotate = 0;
 		} else {
+<<<<<<< HEAD
 			if (turbo) {
 				rotate = map(rotate, 0, 0.6);
 			} else {
 				rotate = map(rotate, 0, 0.3);
 			}
+=======
+			rotate = map(rotate, 0, .7);
+>>>>>>> master
 		}
 
 		Robot.drivetrain.drive(move, rotate);
@@ -75,5 +83,8 @@ public class DriveByJoystick extends Command {
 			return newValue;
 		}
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 }
