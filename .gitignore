@@ -38,4 +38,3 @@ Thumbs.db
 
 # directory for XML generated after running junit tests through ant
 junit/
-*.bat

@@ -18,20 +18,11 @@ public class FindMaxSpeed extends Command {
 	protected void initialize() {
 		this.maxLeftSpeed = 0;
 		this.maxRightSpeed = 0;
-<<<<<<< HEAD
-=======
-		SmartDashboard.putNumber("Maximum Output Voltage", 12);
->>>>>>> master
 	}
 
 	@Override
 	protected void execute() {
-<<<<<<< HEAD
 		Robot.drivetrain.setPercentOutput(Robot.oi.left.getY(), -Robot.oi.left.getY());
-=======
-		Robot.drivetrain.setPercentOutput(Robot.oi.left.getY(), Robot.oi.left.getY());
-
->>>>>>> master
 		double left = Robot.drivetrain.getLeftSpeed();
 		if (Math.abs(left) > this.maxLeftSpeed) {
 			this.maxLeftSpeed = Math.abs(left);

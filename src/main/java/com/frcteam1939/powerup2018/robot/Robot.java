@@ -1,36 +1,10 @@
 
 package com.frcteam1939.powerup2018.robot;
 
-<<<<<<< HEAD
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.Drive;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 //import com.frcteam1939.powerup2018.util.Vision;
-=======
-import com.frcteam1939.powerup2018.robot.commands.auton.CenterCrossAutoLine;
-import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftSwitch;
-import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightSwitch;
-import com.frcteam1939.powerup2018.robot.commands.auton.CrossAutoLine;
-import com.frcteam1939.powerup2018.robot.commands.auton.DoNothing;
-import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftSwitch;
-import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightSwitch;
-import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftSwitch;
-import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
-import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
-import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
-import com.frcteam1939.powerup2018.robot.subsystems.Climber;
-import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
-import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
-import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
-import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
-import com.frcteam1939.powerup2018.robot.subsystems.Vision;
-import com.frcteam1939.powerup2018.util.AutonomousOptions;
->>>>>>> master
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -44,29 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
-<<<<<<< HEAD
 //	public static Vision vision = new Vision();
 	public static CubeManipulator cubeManipulator;
-=======
-	public static Elevator elevator;
-	public static Climber climber;
-	public static CubeManipulator cubeManipulator;
-
-	public static SmartDashboardSubsystem smartDashboard;
-	public static Vision vision;
-
->>>>>>> master
 	{
 		try {
 			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
-<<<<<<< HEAD
-=======
-			elevator = new Elevator();
-			climber = new Climber();
-			smartDashboard = new SmartDashboardSubsystem();
-			vision = new Vision();
->>>>>>> master
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,7 +44,6 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData(new Drive(30));
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putData(new FindMaxSpeed());
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");
@@ -98,7 +54,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
 		Robot.drivetrain.disableBrakeMode();
 	}
 
@@ -157,239 +112,4 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
-<<<<<<< HEAD
 }
-=======
-
-	private Command getAutonomousCommand(String gameData) {
-		Command chosenCommand = new DoNothing();
-
-		if (this.chooserPosition.getSelected() == AutonomousOptions.CENTER) {
-			if (this.chooserPosition.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'L') {
-					chosenCommand = new CenterWallToLeftSwitch();
-				}
-
-				else if (gameData.charAt(0) == 'R') {
-					chosenCommand = new CenterWallToRightSwitch();
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'L') {
-					chosenCommand = new CenterWallToLeftScale();
-				}
-
-				else if (gameData.charAt(1) == 'R') {
-					chosenCommand = new CenterWallToRightScale();
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CenterCrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
-		}
-
-		if (this.chooserPosition.getSelected() == AutonomousOptions.LEFT) {
-			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'L') {
-					chosenCommand = new LeftWallToLeftSwitch();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						chosenCommand = new LeftWallToRightSwitch();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
-						if (gameData.charAt(1) == 'L') {
-							chosenCommand = new LeftWallToLeftScale();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new LeftWallToRightScale();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new LeftWallToRightSwitch();
-							}
-						}
-					}
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'L') {
-					chosenCommand = new LeftWallToLeftScale();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						chosenCommand = new LeftWallToRightScale();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
-						if (gameData.charAt(0) == 'L') {
-							chosenCommand = new LeftWallToLeftSwitch();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new LeftWallToRightSwitch();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new LeftWallToRightScale();
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (this.chooserPosition.getSelected() == AutonomousOptions.RIGHT) {
-			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'R') {
-					chosenCommand = new RightWallToRightSwitch();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						chosenCommand = new RightWallToLeftSwitch();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
-						if (gameData.charAt(1) == 'R') {
-							chosenCommand = new RightWallToRightScale();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new RightWallToLeftScale();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new RightWallToLeftSwitch();
-							}
-						}
-					}
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'R') {
-					chosenCommand = new RightWallToRightScale();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						chosenCommand = new RightWallToLeftScale();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
-						if (gameData.charAt(0) == 'R') {
-							chosenCommand = new RightWallToRightSwitch();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new RightWallToLeftSwitch();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new RightWallToLeftScale();
-							}
-						}
-					}
-				}
-			}
-		}
-		return chosenCommand;
-	}
-}
->>>>>>> master
