@@ -31,6 +31,12 @@ public class DriveByJoystick extends Command {
 				move = map(move, 0, 0.5);
 			}
 
+			if (Math.abs(move) < DEAD_BAND) {
+				move = 0;
+			} else {
+				move = map(move, 0, 1);
+
+			}
 			if (Math.abs(rotate) < DEAD_BAND) {
 				rotate = 0;
 			} else {

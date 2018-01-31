@@ -1,6 +1,10 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.Drive;
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
+import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
+
 import com.frcteam1939.powerup2018.robot.commands.auton.CenterCrossAutoLine;
 import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftScale;
 import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftSwitch;
@@ -17,15 +21,14 @@ import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftSwitch;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
+import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
-import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -47,10 +50,6 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 	private Command autonomousCommand;
-	private SendableChooser<AutonomousOptions> chooserPosition = new SendableChooser<>();
-	private SendableChooser<AutonomousOptions> chooserFirstChoice = new SendableChooser<>();
-	private SendableChooser<AutonomousOptions> chooserSecondChoice = new SendableChooser<>();
-	private SendableChooser<AutonomousOptions> chooserThirdChoice = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any initialization code.
@@ -61,31 +60,8 @@ public class Robot extends TimedRobot {
 		System.out.println("         PowerUp 2018 Intializing");
 
 		oi = new OI();
-		this.chooserPosition.addObject("Left", AutonomousOptions.LEFT);
-		this.chooserPosition.addObject("Center", AutonomousOptions.CENTER);
-		this.chooserPosition.addObject("Right", AutonomousOptions.RIGHT);
-		SmartDashboard.putData("Position Chooser", this.chooserPosition);
 
-		this.chooserFirstChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
-		this.chooserFirstChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
-		this.chooserFirstChoice.addObject("Switch", AutonomousOptions.SWITCH);
-		this.chooserFirstChoice.addObject("Scale", AutonomousOptions.SCALE);
-		SmartDashboard.putData("First Choice Chooser", this.chooserFirstChoice);
-
-		this.chooserSecondChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
-		this.chooserSecondChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
-		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.SWITCH);
-		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.SCALE);
-		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
-		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
-		SmartDashboard.putData("Second Choice Chooser", this.chooserSecondChoice);
-
-		this.chooserThirdChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
-		this.chooserThirdChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
-		this.chooserThirdChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
-		this.chooserThirdChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
-		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
-
+		SmartDashboard.putData(new Drive(30));
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(new FindMaxSpeed());
 
@@ -156,7 +132,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
-	}
 
 	private Command getAutonomousCommand(String gameData) {
 		Command chosenCommand = new DoNothing();
@@ -388,4 +363,4 @@ public class Robot extends TimedRobot {
 		}
 		return chosenCommand;
 	}
-}
+}>>>>>>>master
