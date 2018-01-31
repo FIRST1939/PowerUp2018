@@ -30,18 +30,23 @@ public class DriveByJoystick extends Command {
 			} else {
 				move = map(move, 0, 0.5);
 			}
-		}
-		if (Math.abs(rotate) < DEAD_BAND) {
-			rotate = 0;
-		} else {
-			if (turbo) {
-				rotate = map(rotate, 0, 0.6);
-			} else {
-				rotate = map(rotate, 0, 0.3);
-			}
-		}
 
-		Robot.drivetrain.drive(move, rotate);
+			if (Math.abs(rotate) < DEAD_BAND) {
+				rotate = 0;
+			} else {
+
+				if (turbo) {
+					rotate = map(rotate, 0, 0.6);
+				} else {
+					rotate = map(rotate, 0, 0.3);
+				}
+
+				rotate = map(rotate, 0, .7);
+
+			}
+
+			Robot.drivetrain.drive(move, rotate);
+		}
 	}
 
 	@Override
