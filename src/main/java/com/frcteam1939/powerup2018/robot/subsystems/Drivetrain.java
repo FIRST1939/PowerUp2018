@@ -65,9 +65,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void drive(double moveValue, double rotateValue) {
-
 		double leftMotorSpeed;
 		double rightMotorSpeed;
+
 		if (moveValue > 0.0) {
 			if (rotateValue > 0.0) {
 				leftMotorSpeed = moveValue - rotateValue;

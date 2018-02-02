@@ -4,9 +4,6 @@ import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class DriveByJoystick extends Command {
 
 	private static double DEAD_BAND = 0.1;
