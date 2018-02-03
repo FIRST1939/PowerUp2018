@@ -8,12 +8,14 @@ public class RobotMap {
 	// Talons/Victors
 	public static final int leftFrontTalon = 12;
 	public static final int leftMidTalon = 0;
-	public static final int leftBackTalon = 11;
+	public static final int leftBackTalon = 0;//was 11
 	public static final int rightFrontTalon = 28;
 	public static final int rightMidTalon = 0;
 	public static final int rightBackTalon = 25;
 	public static final int elevatorTalon = 0;
-	public static final int cubeManipulatorTalon = 29;
+	
+	public static final int cubeManipulatorTalonRight = 29;
+	public static final int cubeManipulatorTalonLeft = 11;
 
 	// Solenoids
 

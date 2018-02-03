@@ -10,15 +10,15 @@ public class CubeManipulator extends Subsystem {
 
 	public static final double OUT_SPEED = 1.0;
 	public static final double IN_SPEED = -1.0;
-	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
-	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
+	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalonLeft);
+	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalonRight);
 
 	public void CubeIntake() {
 
 	}
 
 	public CubeManipulator() {
-		//	slaveTalon.setInverted(true);
+		slaveTalon.setInverted(true);
 		this.slaveTalon.follow(this.masterTalon);
 	}
 

@@ -16,5 +16,6 @@ public class OI {
 
 	public OI() {
 		this.gamepad.a.whenPressed(new SetCubeManipulatorSpeed(.5));
+		this.gamepad.b.whenPressed(new SetCubeManipulatorSpeed(0));
 	}
 }
