@@ -10,6 +10,7 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
@@ -24,7 +25,9 @@ public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 20;
 
-	private static final double lowGearLimit = 0.6;
+	private static final double lowGearLimit = 1.0;
+	private static final int MAX_SPEED_LOW = 0;
+	private static final int MAX_SPEED_HIGH = 0;
 
 	private static final int posIndex = 0;
 	private static final double posP = 0;
@@ -237,6 +240,16 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.enableVoltageCompensation(true);
 		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);
 		this.frontRight.configOpenloopRamp(2, TIMEOUT_MS);
+		this.frontLeft.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
+		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
+		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
+		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
+		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
+		this.frontRight.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
+		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
+		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
+		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
+		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 	}
 
 	private void setupPigeon() {
