@@ -29,6 +29,10 @@ public class Drivetrain extends Subsystem {
 	private static final int MAX_SPEED_LOW = 0;
 	private static final int MAX_SPEED_HIGH = 0;
 
+	private static final int CPR = 1024;
+	private static final int WHEEL_DIAMETER = 0;
+	private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
 	private static final int posIndex = 0;
 	private static final double posP = 0;
 	private static final double posI = 0;
@@ -72,7 +76,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftPosition() {
-		return this.frontLeft.getSelectedSensorPosition(0);
+		return this.frontLeft.getSelectedSensorPosition(0); // Divide by CPR, multiply by circumference, any additional calc
 	}
 
 	public double getRightPosition() {
@@ -228,14 +232,14 @@ public class Drivetrain extends Subsystem {
 		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 		this.setPositionPID(posP, posI, posD);
-		this.frontLeft.configNominalOutputForward(+0f, TIMEOUT_MS);
-		this.frontRight.configNominalOutputForward(+0f, TIMEOUT_MS);
-		this.frontLeft.configNominalOutputReverse(-0f, TIMEOUT_MS);
-		this.frontRight.configNominalOutputReverse(-0f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputForward(+1f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputForward(+1f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputReverse(-1f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputReverse(-1f, TIMEOUT_MS);
+		this.frontLeft.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.frontRight.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.frontLeft.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.frontRight.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.frontRight.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputReverse(-1, TIMEOUT_MS);
+		this.frontRight.configPeakOutputReverse(-1, TIMEOUT_MS);
 		this.frontLeft.enableVoltageCompensation(true);
 		this.frontRight.enableVoltageCompensation(true);
 		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);

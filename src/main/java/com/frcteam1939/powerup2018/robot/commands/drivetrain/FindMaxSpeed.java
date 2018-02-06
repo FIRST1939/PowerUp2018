@@ -18,7 +18,6 @@ public class FindMaxSpeed extends Command {
 	protected void initialize() {
 		this.maxLeftSpeed = 0;
 		this.maxRightSpeed = 0;
-		SmartDashboard.putNumber("Maximum Output Voltage", 12);
 	}
 
 	@Override
