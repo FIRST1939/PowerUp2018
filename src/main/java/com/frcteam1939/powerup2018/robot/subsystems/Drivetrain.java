@@ -10,8 +10,10 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 
@@ -23,7 +25,13 @@ public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 20;
 
-	private static final double lowGearLimit = 0.6;
+	private static final double lowGearLimit = 1.0;
+	private static final int MAX_SPEED_LOW = 0;
+	private static final int MAX_SPEED_HIGH = 0;
+
+	private static final int CPR = 1024;
+	private static final int WHEEL_DIAMETER = 0;
+	private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
 	private static final int posIndex = 0;
 	private static final double posP = 0;
@@ -37,13 +45,14 @@ public class Drivetrain extends Subsystem {
 	private TalonSRX midRight = new TalonSRX(RobotMap.rightMidTalon);
 	private TalonSRX backRight = new TalonSRX(RobotMap.rightBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(this.frontLeft);
+	private PigeonIMU pigeon = new PigeonIMU(this.midLeft);
 
 	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
 	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
 
 	public Drivetrain() {
 		this.setupMasterTalons();
+		this.setupPigeon();
 
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
@@ -67,7 +76,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftPosition() {
-		return this.frontLeft.getSelectedSensorPosition(0);
+		return this.frontLeft.getSelectedSensorPosition(0); // Divide by CPR, multiply by circumference, any additional calc
 	}
 
 	public double getRightPosition() {
@@ -96,6 +105,12 @@ public class Drivetrain extends Subsystem {
 
 	public double getRightError() {
 		return this.frontRight.getClosedLoopError(0);
+	}
+
+	public double getHeading() {
+		double[] ypr = new double[3];
+		this.pigeon.getYawPitchRoll(ypr);
+		return ypr[0];
 	}
 
 	// Set Methods
@@ -132,6 +147,10 @@ public class Drivetrain extends Subsystem {
 	public void zeroEncoders() {
 		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+	}
+
+	public void resetGyro() {
+		this.pigeon.setYaw(0, TIMEOUT_MS);
 	}
 
 	public void drive(double moveValue, double rotateValue) {
@@ -213,17 +232,32 @@ public class Drivetrain extends Subsystem {
 		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 		this.frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
 		this.setPositionPID(posP, posI, posD);
-		this.frontLeft.configNominalOutputForward(+0f, TIMEOUT_MS);
-		this.frontRight.configNominalOutputForward(+0f, TIMEOUT_MS);
-		this.frontLeft.configNominalOutputReverse(-0f, TIMEOUT_MS);
-		this.frontRight.configNominalOutputReverse(-0f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputForward(+1f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputForward(+1f, TIMEOUT_MS);
-		this.frontLeft.configPeakOutputReverse(-1f, TIMEOUT_MS);
-		this.frontRight.configPeakOutputReverse(-1f, TIMEOUT_MS);
+		this.frontLeft.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.frontRight.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.frontLeft.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.frontRight.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.frontRight.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.frontLeft.configPeakOutputReverse(-1, TIMEOUT_MS);
+		this.frontRight.configPeakOutputReverse(-1, TIMEOUT_MS);
 		this.frontLeft.enableVoltageCompensation(true);
 		this.frontRight.enableVoltageCompensation(true);
 		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);
 		this.frontRight.configOpenloopRamp(2, TIMEOUT_MS);
+		this.frontLeft.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
+		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
+		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
+		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
+		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
+		this.frontRight.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
+		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
+		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
+		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
+		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
+	}
+
+	private void setupPigeon() {
+		GeneralStatus generalStatus = new GeneralStatus();
+		this.pigeon.getGeneralStatus(generalStatus);
 	}
 }
