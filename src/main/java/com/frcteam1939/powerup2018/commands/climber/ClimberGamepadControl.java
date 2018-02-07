@@ -2,13 +2,12 @@ package com.frcteam1939.powerup2018.commands.climber;
 
 import com.frcteam1939.powerup2018.robot.Robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ClimberGamepadControl extends Command{
+public class ClimberGamepadControl extends Command {
+
 	public ClimberGamepadControl() {
-		requires(Robot.climber);
+		this.requires(Robot.climber);
 	}
 
 	// Called just before this Command runs the first time
@@ -18,10 +17,9 @@ public class ClimberGamepadControl extends Command{
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-			
-			Robot.oi.gamepad.y.whenPressed(new RollInClimber());
-			Robot.oi.gamepad.leftButton.whenActive(new MoveArmUp());
-			Robot.oi.gamepad.rightButton.whenActive(new MoveArmDown());
+		Robot.oi.gamepad.y.whenPressed(new RollInClimber());
+		Robot.oi.gamepad.leftButton.whenActive(new MoveArmUp());
+		Robot.oi.gamepad.rightButton.whenActive(new MoveArmDown());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

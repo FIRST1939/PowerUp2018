@@ -6,27 +6,26 @@ package com.frcteam1939.powerup2018.robot;
 public class RobotMap {
 
 	// Talons/Victors
-	public static final int leftFrontTalon = 0;
-	public static final int leftMidTalon = 0;
-	public static final int leftBackTalon = 0;
-	public static final int rightFrontTalon = 0;
-	public static final int rightMidTalon = 0;
-	public static final int rightBackTalon = 0;
-	public static final int climberArmTalon = 0;
-	public static final int climberWinchTalon = 0;
-	public static final int elevatorTalon = 0;
-	public static final int leftCubeManipulatorTalon = 0;
-	public static final int rightCubeManipulatorTalon = 0;
+	public static final int leftFrontTalon = 10;
+	public static final int leftMidTalon = 33;
+	public static final int leftBackTalon = 31;
+	public static final int rightFrontTalon = 12;
+	public static final int rightMidTalon = 32;
+	public static final int rightBackTalon = 30;
+	public static final int climberTalon = 25;
+	public static final int elevatorTalon = 27;
+	public static final int masterCubeManipulatorTalon = 28;
+	public static final int slaveCubeManipulatorTalon = 13;
 
 	// Solenoids
 
 	// One double solenoid on 0 and 1, second double solenoid on 6 and 7, one single solenoid on 2
 	public static final int PCM = 0;
 	public static final int leftShiftingGearboxUp = 0;
-	public static final int leftShiftingGearboxDown = 1;
-	public static final int rightShiftingGearboxUp = 6;
-	public static final int rightShiftingGearboxDown = 7;
-	public static final int climberSolenoid = 1;
+	public static final int leftShiftingGearboxDown = 0;
+	public static final int rightShiftingGearboxUp = 0;
+	public static final int rightShiftingGearboxDown = 0;
+	public static final int climberSolenoid = 0;
 	public static final int cubeManipulatorAngleTop = 0;
 	public static final int cubeManipulatorAngleBottom = 0;
 	public static final int cubeManipulatorWheelsSolenoid = 0;

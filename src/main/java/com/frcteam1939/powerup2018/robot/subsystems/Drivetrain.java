@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import com.frcteam1939.powerup2018.robot.RobotMap;
@@ -30,7 +31,7 @@ public class Drivetrain extends Subsystem {
 	private static final int MAX_SPEED_HIGH = 0;
 
 	private static final int CPR = 1024;
-	private static final int WHEEL_DIAMETER = 0;
+	private static final int WHEEL_DIAMETER = 6;
 	private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
 	private static final int posIndex = 0;
@@ -39,13 +40,14 @@ public class Drivetrain extends Subsystem {
 	private static final double posD = 0;
 
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
-	private TalonSRX midLeft = new TalonSRX(RobotMap.leftMidTalon);
-	private TalonSRX backLeft = new TalonSRX(RobotMap.leftBackTalon);
-	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
-	private TalonSRX midRight = new TalonSRX(RobotMap.rightMidTalon);
-	private TalonSRX backRight = new TalonSRX(RobotMap.rightBackTalon);
+	private VictorSPX midLeft = new VictorSPX(RobotMap.leftMidTalon);
+	private VictorSPX backLeft = new VictorSPX(RobotMap.leftBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(this.midLeft);
+	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
+	private VictorSPX midRight = new VictorSPX(RobotMap.rightMidTalon);
+	private VictorSPX backRight = new VictorSPX(RobotMap.rightBackTalon);
+
+	private PigeonIMU pigeon = new PigeonIMU(RobotMap.masterCubeManipulatorTalon);
 
 	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
 	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
@@ -76,11 +78,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftPosition() {
-		return this.frontLeft.getSelectedSensorPosition(0); // Divide by CPR, multiply by circumference, any additional calc
+		return this.frontLeft.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE; // Divide by CPR, multiply by circumference, any additional calc
 	}
 
 	public double getRightPosition() {
-		return this.frontRight.getSelectedSensorPosition(0);
+		return this.frontRight.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE;
 	}
 
 	public double getLeftVoltage() {

@@ -2,6 +2,7 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorGamepadControl;
 
@@ -10,12 +11,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CubeManipulator extends Subsystem {
-  
+
 	public static final double OUT_SPEED = 1.0;
 	public static final double IN_SPEED = -1.0;
 
-	private TalonSRX masterTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
-	private TalonSRX slaveTalon = new TalonSRX(RobotMap.cubeManipulatorTalon);
+	private TalonSRX masterTalon = new TalonSRX(RobotMap.masterCubeManipulatorTalon);
+	private TalonSRX slaveTalon = new TalonSRX(RobotMap.slaveCubeManipulatorTalon);
 
 	private DigitalInput banner = new DigitalInput(RobotMap.cubeManipulatorBanner);
 
@@ -42,8 +43,10 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	public void cubeManipulatorRaise() {
-		this.solenoidAngleBottom.set(false);
-		this.solenoidAngleTop.set(false);
+		if (Robot.elevator.getHeight() > 9) {
+			this.solenoidAngleBottom.set(false);
+			this.solenoidAngleTop.set(false);
+		}
 	}
 
 	public void cubeManipulatorLower() {
@@ -52,8 +55,10 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	public void cubeManipulatorMiddle() {
-		this.solenoidAngleBottom.set(false);
-		this.solenoidAngleTop.set(true);
+		if (Robot.elevator.getHeight() > 9) {
+			this.solenoidAngleBottom.set(false);
+			this.solenoidAngleTop.set(true);
+		}
 	}
 
 	public void set(double value) {

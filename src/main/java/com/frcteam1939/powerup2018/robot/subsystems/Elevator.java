@@ -44,6 +44,6 @@ public class Elevator extends Subsystem {
 	}
 
 	public double getHeight() {
-		return this.talon.getSelectedSensorPosition(1); // Divide by CPR, multiply by distance traveled per rev, any additional calc
+		return this.talon.getSelectedSensorPosition(1); // Divide by CPR, multiply by distance traveled per rev, any additional calc, then add lowest height
 	}
 }
