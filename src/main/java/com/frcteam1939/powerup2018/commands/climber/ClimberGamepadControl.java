@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ClimberGamepadControl extends Command {
 
+	private static final double DEAD_BAND = 0.1;
+
 	public ClimberGamepadControl() {
 		this.requires(Robot.climber);
 	}
@@ -17,9 +19,11 @@ public class ClimberGamepadControl extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Robot.oi.gamepad.y.whenPressed(new RollInClimber());
-		Robot.oi.gamepad.leftButton.whenActive(new MoveArmUp());
-		Robot.oi.gamepad.rightButton.whenActive(new MoveArmDown());
+		double move = Robot.oi.gamepad.getRightY();
+		if (Math.abs(move) < DEAD_BAND) {
+			move = 0;
+		}
+		Robot.climber.set(move);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

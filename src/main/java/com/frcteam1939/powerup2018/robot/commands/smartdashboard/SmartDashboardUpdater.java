@@ -29,11 +29,6 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putNumber("Right Percent Output", Robot.drivetrain.getRightPercentOutput());
 
 		SmartDashboard.putNumber("Heading", Robot.drivetrain.getHeading());
-
-		SmartDashboard.putBoolean("Climber Override", false);
-		SmartDashboard.putNumber("Cimber Winch RPM", 62);
-		SmartDashboard.putNumber("Climber Arm RPM", 62);// Need to change once Ethan tells me the RPM
-
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
 
-	private static final int TIMEOUT_MS = 20;
+	private static final int TIMEOUT_MS = 10;
 
 	private static final double lowGearLimit = 1.0;
 	private static final int MAX_SPEED_LOW = 0;

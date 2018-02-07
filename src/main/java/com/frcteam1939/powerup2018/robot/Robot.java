@@ -113,6 +113,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		Robot.drivetrain.disableBrakeMode();
+		Robot.climber.disableBrakeMode();
+		Robot.elevator.disableBrakeMode();
 	}
 
 	@Override
@@ -129,6 +131,8 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		Robot.drivetrain.enableBrakeMode();
 		Robot.drivetrain.shiftingGearboxLow();
+		Robot.climber.enableBrakeMode();
+		Robot.elevator.enableBrakeMode();
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
@@ -151,6 +155,8 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		Robot.drivetrain.enableBrakeMode();
 		Robot.drivetrain.shiftingGearboxLow();
+		Robot.climber.enableBrakeMode();
+		Robot.elevator.enableBrakeMode();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
