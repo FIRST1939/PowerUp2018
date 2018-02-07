@@ -112,7 +112,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		Robot.climber.disableArmBrake();
+		Robot.climber.disableWinchBrake();
 		Robot.drivetrain.disableBrakeMode();
 	}
 

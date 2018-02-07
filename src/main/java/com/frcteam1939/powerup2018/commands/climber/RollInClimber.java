@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RollInClimber extends Command{
-	public RollInClimber() {
+	public double speedInput;
+	public RollInClimber(double speed) {
 		requires(Robot.climber);
+		speedInput = speed;
 	}
 
 	// Called just before this Command runs the first time
@@ -18,9 +20,10 @@ public class RollInClimber extends Command{
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			Robot.climber.rollInWinch(SmartDashboard.getNumber("Climber RPM", 62));
+		if(!Robot.climber.checkWinchBrake()) {
+			Robot.climber.brakeWinch();
 		}
+		Robot.climber.rollInWinch(speedInput);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

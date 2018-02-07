@@ -6,10 +6,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class MoveArmDown extends Command{
-
-	public MoveArmDown() {
+public class MoveArm extends Command {
+	public double speedInput;
+	public MoveArm(double speed) {
 		requires(Robot.climber);
+		speedInput = speed;
 	}
 	@Override
 	protected void initialize() {
@@ -18,15 +19,13 @@ public class MoveArmDown extends Command{
 	
 	@Override
 	protected void execute() {
-		if(DriverStation.getInstance().getMatchTime()<= 30 || SmartDashboard.getBoolean("Climber Override", false)) {
-			Robot.climber.moveArm(0.5);		
-		}
+			Robot.climber.moveArm(speedInput);
+						
 	}
 	
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return Robot.climber.atMIN();
+		return Robot.climber.atMAX();
 	}
 	
 	@Override
@@ -35,5 +34,4 @@ public class MoveArmDown extends Command{
 	
 	@Override
 	protected void interrupted() {}
-
 }
