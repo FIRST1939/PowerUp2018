@@ -19,9 +19,10 @@ public class ClimberGamepadControl extends Command{
 	@Override
 	protected void execute() {
 			
-			Robot.oi.gamepad.y.whenPressed(new RollInClimber());
-			Robot.oi.gamepad.leftButton.whenActive(new MoveArmUp());
-			Robot.oi.gamepad.rightButton.whenActive(new MoveArmDown());
+			Robot.oi.gamepad.y.whenPressed(new RollInClimber(1));
+			Robot.oi.gamepad.b.whenPressed(new RollInClimber(0));
+			double move = Robot.oi.right.getY();
+			Robot.climber.moveArm(move);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
