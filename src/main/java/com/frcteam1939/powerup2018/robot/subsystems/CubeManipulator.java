@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CubeManipulator extends Subsystem {
-
+  
 	public static final double OUT_SPEED = 1.0;
 	public static final double IN_SPEED = -1.0;
 
@@ -22,10 +22,6 @@ public class CubeManipulator extends Subsystem {
 	private Solenoid solenoidAngleTop = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorAngleTop);
 	private Solenoid solenoidAngleBottom = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorAngleBottom);
 	private Solenoid solenoidWheels = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorWheelsSolenoid);
-
-	public void CubeIntake() {
-
-	}
 
 	public CubeManipulator() {
 		//	slaveTalon.setInverted(true);

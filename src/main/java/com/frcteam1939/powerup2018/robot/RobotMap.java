@@ -15,7 +15,8 @@ public class RobotMap {
 	public static final int climberArmTalon = 0;
 	public static final int climberWinchTalon = 0;
 	public static final int elevatorTalon = 0;
-	public static final int cubeManipulatorTalon = 0;
+	public static final int leftCubeManipulatorTalon = 0;
+	public static final int rightCubeManipulatorTalon = 0;
 
 	// Solenoids
 
