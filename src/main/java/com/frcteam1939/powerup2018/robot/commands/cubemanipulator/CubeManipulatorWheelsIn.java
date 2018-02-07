@@ -4,9 +4,9 @@ import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CubeManipulatorLower extends Command {
+public class CubeManipulatorWheelsIn extends Command {
 
-	public CubeManipulatorLower() {
+	public CubeManipulatorWheelsIn() {
 		this.requires(Robot.cubeManipulator);
 	}
 
@@ -15,7 +15,7 @@ public class CubeManipulatorLower extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.cubeManipulator.cubeManipulatorLower();
+		Robot.cubeManipulator.cubeManipulatorWheelsIn();
 	}
 
 	@Override

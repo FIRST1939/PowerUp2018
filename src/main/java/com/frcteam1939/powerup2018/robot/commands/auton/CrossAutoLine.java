@@ -1,13 +1,14 @@
-package com.frcteam1939.powerup2018.robot.commands.cubemanipulator;
+package com.frcteam1939.powerup2018.robot.commands.auton;
 
+import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CubeManipulatorLower extends Command {
+public class CrossAutoLine extends Command {
 
-	public CubeManipulatorLower() {
-		this.requires(Robot.cubeManipulator);
+	public CrossAutoLine() {
+		this.requires(Robot.drivetrain);
 	}
 
 	@Override
@@ -15,7 +16,7 @@ public class CubeManipulatorLower extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.cubeManipulator.cubeManipulatorLower();
+		Robot.drivetrain.driveDistance(DistanceConstants.AUTO_LINE);
 	}
 
 	@Override
@@ -28,5 +29,4 @@ public class CubeManipulatorLower extends Command {
 
 	@Override
 	protected void interrupted() {}
-
 }

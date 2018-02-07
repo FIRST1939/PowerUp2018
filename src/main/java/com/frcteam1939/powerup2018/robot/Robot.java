@@ -1,13 +1,29 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterCrossAutoLine;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.CrossAutoLine;
+import com.frcteam1939.powerup2018.robot.commands.auton.DoNothing;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
+import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
-import com.frcteam1939.powerup2018.util.DoNothing;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -24,6 +40,7 @@ public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static Climber climber;
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
@@ -33,6 +50,7 @@ public class Robot extends TimedRobot {
 			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
+			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
 			vision = new Vision();
 		} catch (Exception e) {
@@ -83,6 +101,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putData(new FindMaxSpeed());
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");
@@ -93,6 +112,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+
 		Robot.drivetrain.disableBrakeMode();
 	}
 
@@ -109,6 +129,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		Robot.drivetrain.enableBrakeMode();
+		Robot.drivetrain.shiftingGearboxLow();
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
@@ -130,6 +151,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		Robot.drivetrain.enableBrakeMode();
+		Robot.drivetrain.shiftingGearboxLow();
 
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -162,26 +184,26 @@ public class Robot extends TimedRobot {
 		if (this.chooserPosition.getSelected() == AutonomousOptions.CENTER) {
 			if (this.chooserPosition.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'L') {
-					// Go to the left of the switch and then cross the base line/double score cubes
+					chosenCommand = new CenterWallToLeftSwitch();
 				}
 
 				else if (gameData.charAt(0) == 'R') {
-					// Go to the right of the switch and then cross the base line/double score cubes
+					chosenCommand = new CenterWallToRightSwitch();
 				}
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'L') {
-					// Go to the left of the scale and then double score cubes
+					chosenCommand = new CenterWallToLeftScale();
 				}
 
 				else if (gameData.charAt(1) == 'R') {
-					// Go to the right of the scale and then double score cubes
+					chosenCommand = new CenterWallToRightScale();
 				}
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				// Drive to the left and cross the auto line
+				chosenCommand = new CenterCrossAutoLine();
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
@@ -191,7 +213,7 @@ public class Robot extends TimedRobot {
 
 		if (this.chooserPosition.getSelected() == AutonomousOptions.LEFT) {
 			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				// Drive Forward
+				chosenCommand = new CrossAutoLine();
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
@@ -200,7 +222,7 @@ public class Robot extends TimedRobot {
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'L') {
-					// Drive forward, score on left side of switch
+					chosenCommand = new LeftWallToLeftSwitch();
 				}
 
 				else {
@@ -209,16 +231,16 @@ public class Robot extends TimedRobot {
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						// Drive forward
+						chosenCommand = new CrossAutoLine();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+						chosenCommand = new LeftWallToRightSwitch();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
 						if (gameData.charAt(1) == 'L') {
-							// Drive forward to Scale, score on left side of Scale
+							chosenCommand = new LeftWallToLeftScale();
 						}
 
 						else {
@@ -227,15 +249,15 @@ public class Robot extends TimedRobot {
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								// Drive forward
+								chosenCommand = new CrossAutoLine();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+								chosenCommand = new LeftWallToRightScale();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+								chosenCommand = new LeftWallToRightSwitch();
 							}
 						}
 					}
@@ -244,7 +266,7 @@ public class Robot extends TimedRobot {
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'L') {
-					// Drive forward to Scale, score on left side of Scale
+					chosenCommand = new LeftWallToLeftScale();
 				}
 
 				else {
@@ -253,16 +275,16 @@ public class Robot extends TimedRobot {
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						// Drive forward
+						chosenCommand = new CrossAutoLine();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+						chosenCommand = new LeftWallToRightScale();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
 						if (gameData.charAt(0) == 'L') {
-							// Drive forward to Switch, score on left side of Switch
+							chosenCommand = new LeftWallToLeftSwitch();
 						}
 
 						else {
@@ -271,15 +293,15 @@ public class Robot extends TimedRobot {
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								// Drive forward
+								chosenCommand = new CrossAutoLine();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+								chosenCommand = new LeftWallToRightSwitch();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								// // Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+								chosenCommand = new LeftWallToRightScale();
 							}
 						}
 					}
@@ -289,7 +311,7 @@ public class Robot extends TimedRobot {
 
 		if (this.chooserPosition.getSelected() == AutonomousOptions.RIGHT) {
 			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				// Drive Forward
+				chosenCommand = new CrossAutoLine();
 			}
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
@@ -298,7 +320,7 @@ public class Robot extends TimedRobot {
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'R') {
-					// Drive forward, score on right side of switch
+					chosenCommand = new RightWallToRightSwitch();
 				}
 
 				else {
@@ -307,16 +329,16 @@ public class Robot extends TimedRobot {
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						// Drive forward
+						chosenCommand = new CrossAutoLine();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+						chosenCommand = new RightWallToLeftSwitch();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
 						if (gameData.charAt(1) == 'R') {
-							// Drive forward to Scale, score on right side of Scale
+							chosenCommand = new RightWallToRightScale();
 						}
 
 						else {
@@ -325,15 +347,15 @@ public class Robot extends TimedRobot {
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								// Drive forward
+								chosenCommand = new CrossAutoLine();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+								chosenCommand = new RightWallToLeftScale();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+								chosenCommand = new RightWallToLeftSwitch();
 							}
 						}
 					}
@@ -342,7 +364,7 @@ public class Robot extends TimedRobot {
 
 			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'R') {
-					// Drive forward to Scale, score on right side of Scale
+					chosenCommand = new RightWallToRightScale();
 				}
 
 				else {
@@ -351,16 +373,16 @@ public class Robot extends TimedRobot {
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						// Drive forward
+						chosenCommand = new CrossAutoLine();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+						chosenCommand = new RightWallToLeftScale();
 					}
 
 					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
 						if (gameData.charAt(0) == 'R') {
-							// Drive forward to Switch, score on right side of Switch
+							chosenCommand = new RightWallToRightSwitch();
 						}
 
 						else {
@@ -369,15 +391,15 @@ public class Robot extends TimedRobot {
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								// Drive forward
+								chosenCommand = new CrossAutoLine();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+								chosenCommand = new RightWallToLeftSwitch();
 							}
 
 							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								// // Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+								chosenCommand = new RightWallToLeftScale();
 							}
 						}
 					}
