@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
 		Robot.drivetrain.disableBrakeMode();
 		Robot.climber.disableBrakeMode();
 		Robot.elevator.disableBrakeMode();
+		Robot.cubeManipulator.cubeManipulatorWheelsIn();
 	}
 
 	@Override

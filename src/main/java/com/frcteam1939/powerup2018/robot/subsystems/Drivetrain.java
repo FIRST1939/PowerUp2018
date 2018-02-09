@@ -13,12 +13,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
+import com.frcteam1939.powerup2018.util.PigeonWrapper;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,21 +35,27 @@ public class Drivetrain extends Subsystem {
 	private static final int CPR = 1024;
 	private static final int WHEEL_DIAMETER = 6;
 	private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+	private static final double MAX_TURN_OUTPUT = 0.25;
 
 	private static final int posIndex = 0;
 	private static final double posP = 0;
 	private static final double posI = 0;
 	private static final double posD = 0;
 
+	public PIDController turnPID;
+	private static final double turnF = 0;
+	private static final double turnP = 0;
+	private static final double turnI = 0;
+	private static final double turnD = 0;
+
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
 	private VictorSPX midLeft = new VictorSPX(RobotMap.leftMidTalon);
 	private VictorSPX backLeft = new VictorSPX(RobotMap.leftBackTalon);
-
 	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
 	private VictorSPX midRight = new VictorSPX(RobotMap.rightMidTalon);
 	private VictorSPX backRight = new VictorSPX(RobotMap.rightBackTalon);
 
-	private PigeonIMU pigeon = new PigeonIMU(RobotMap.masterCubeManipulatorTalon);
+	private PigeonWrapper pigeon = new PigeonWrapper(RobotMap.masterCubeManipulatorTalon);
 
 	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
 	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
@@ -60,6 +68,14 @@ public class Drivetrain extends Subsystem {
 		this.backLeft.follow(this.frontLeft);
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
+
+		this.pigeon.setPIDSourceType(PIDSourceType.kDisplacement);
+		this.turnPID = new PIDController(turnP, turnI, turnD, this.pigeon, output -> {});
+		this.turnPID.setInputRange(-180, 180);
+		this.turnPID.setContinuous(true);
+		this.turnPID.setOutputRange(-MAX_TURN_OUTPUT, MAX_TURN_OUTPUT);
+		this.turnPID.setSetpoint(0);
+		this.turnPID.enable();
 	}
 
 	@Override
@@ -110,9 +126,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getHeading() {
-		double[] ypr = new double[3];
-		this.pigeon.getYawPitchRoll(ypr);
-		return ypr[0];
+		return this.pigeon.getFusedHeading();
 	}
 
 	// Set Methods
@@ -152,7 +166,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void resetGyro() {
-		this.pigeon.setYaw(0, TIMEOUT_MS);
+		this.pigeon.setFusedHeading(0, TIMEOUT_MS);
 	}
 
 	public void drive(double moveValue, double rotateValue) {
@@ -195,8 +209,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void driveDistance(double distance) {
-		this.frontLeft.set(ControlMode.MotionMagic, distance);
-		this.frontRight.set(ControlMode.MotionMagic, distance);
+		double newDistance = distance * CPR / WHEEL_CIRCUMFERENCE;
+		this.frontLeft.set(ControlMode.MotionMagic, newDistance);
+		this.frontRight.set(ControlMode.MotionMagic, newDistance);
 	}
 
 	public void enableBrakeMode() {

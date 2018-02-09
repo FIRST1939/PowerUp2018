@@ -25,8 +25,12 @@ public class CrossAutoLine extends Command {
 	}
 
 	@Override
-	protected void end() {}
+	protected void end() {
+		Robot.drivetrain.stop();
+	}
 
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		Robot.drivetrain.stop();
+	}
 }

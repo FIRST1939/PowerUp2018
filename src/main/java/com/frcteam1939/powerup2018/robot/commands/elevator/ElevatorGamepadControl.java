@@ -36,7 +36,7 @@ public class ElevatorGamepadControl extends Command {
 			move = 0;
 		}
 
-		Robot.elevator.setHeight(move);
+		Robot.elevator.set(move);
 
 		Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
 		Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));

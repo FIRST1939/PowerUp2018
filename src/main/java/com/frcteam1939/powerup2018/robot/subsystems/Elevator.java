@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.elevator.ElevatorGamepadControl;
 
@@ -37,8 +38,12 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setHeight(double height) {
-		double newHeight = height / CPR * DISTANCE_PER_REV;
-		this.talon.set(ControlMode.Position, newHeight);
+		double newHeight = height * CPR / DISTANCE_PER_REV;
+		this.talon.set(ControlMode.MotionMagic, newHeight);
+	}
+
+	public void set(double value) {
+		this.talon.set(ControlMode.PercentOutput, value);
 	}
 
 	public void zeroEncoder() {
@@ -46,7 +51,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public double getHeight() {
-		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV + 7; // Divide by CPR, multiply by distance traveled per rev, any additional calc, then add lowest height
+		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV + DistanceConstants.LOW_LIMIT;
 	}
 
 	public void enableBrakeMode() {
@@ -55,5 +60,9 @@ public class Elevator extends Subsystem {
 
 	public void disableBrakeMode() {
 		this.talon.setNeutralMode(NeutralMode.Coast);
+	}
+
+	public void stop() {
+		this.set(0);
 	}
 }
