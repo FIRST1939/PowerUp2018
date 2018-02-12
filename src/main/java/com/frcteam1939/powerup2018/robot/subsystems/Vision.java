@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Vision extends Subsystem {
 
-
 	// These values are the default if you instantiate a PixySPI without arguments.
 	// To create multiple PixySPI objects and thus use multiple Pixy cameras via SPI
 	// Copy the items below, change variable names as needed and especially change
@@ -28,50 +27,46 @@ public class Vision extends Subsystem {
 	String print;
 	public HashMap<Integer, ArrayList<PixyPacket>> packets = new HashMap<Integer, ArrayList<PixyPacket>>();
 
-	public Vision(){
+	public Vision() {
 		// Open a pipeline to a Pixy camera.
-		pixy1 = new PixySPI(new SPI(port), packets, new PixyException(print));
+		this.pixy1 = new PixySPI(new SPI(this.port), this.packets, new PixyException(this.print));
 	}
 
+	@Override
+	public void initDefaultCommand() {}
 
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-	}
-	
 	public int getX() {
 		int pack = -1;
 		try {
-			pack = pixy1.readPackets();
+			pack = this.pixy1.readPackets();
+		} catch (PixyException e) {
+			e.printStackTrace();
 		}
-		catch (PixyException e){
-			e.printStackTrace();			
-		}
-		return packets.get(0).get(0).X;
+		return this.packets.get(0).get(0).X;
 	}
-	public void testPixy1(){
+
+	public void testPixy1() {
 		int ret = -1;
 		// Get the packets from the pixy.
 		try {
-			ret = pixy1.readPackets();
+			ret = this.pixy1.readPackets();
 		} catch (PixyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		SmartDashboard.putNumber("Pixy Vision: packets size: ", packets.size());
 
-		for(int i = 1; i <= PixySPI.PIXY_SIG_COUNT ; i++) {
+		SmartDashboard.putNumber("Pixy Vision: packets size: ", this.packets.size());
+
+		for (int i = 1; i <= PixySPI.PIXY_SIG_COUNT; i++) {
 			SmartDashboard.putString("Pixy Vision: Signature: ", Integer.toString(i));
 
-			SmartDashboard.putNumber("Pixy Vision: packet: " + Integer.toString(i) + ": size: ", packets.get(i).size());
-			
+			SmartDashboard.putNumber("Pixy Vision: packet: " + Integer.toString(i) + ": size: ", this.packets.get(i).size());
+
 			// Loop through the packets for this signature.
-			for(int j=0; j < packets.get(i).size(); j++) {
-				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": X: ", packets.get(i).get(j).X);
-				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Y: ", packets.get(i).get(j).Y);
-				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Width: ", packets.get(i).get(j).Width);
-				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Height: ", packets.get(i).get(j).Height);
+			for (int j = 0; j < this.packets.get(i).size(); j++) {
+				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": X: ", this.packets.get(i).get(j).X);
+				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Y: ", this.packets.get(i).get(j).Y);
+				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Width: ", this.packets.get(i).get(j).Width);
+				SmartDashboard.putNumber("Pixy Vision: " + Integer.toString(i) + ": Height: ", this.packets.get(i).get(j).Height);
 			}
 		}
 	}

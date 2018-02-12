@@ -18,13 +18,12 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-
 		if (Robot.elevator.getHeight() <= DistanceConstants.LOW_LIMIT) {
-			Robot.cubeManipulator.set(0);
+			Robot.elevator.set(0);
 		}
 
 		if (Robot.elevator.getHeight() >= DistanceConstants.HIGH_LIMIT) {
-			Robot.cubeManipulator.set(0);
+			Robot.elevator.set(0);
 		}
 
 		if (Robot.elevator.getHeight() <= 9) {
@@ -50,8 +49,12 @@ public class ElevatorGamepadControl extends Command {
 	}
 
 	@Override
-	protected void end() {}
+	protected void end() {
+		Robot.elevator.stop();
+	}
 
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		Robot.elevator.stop();
+	}
 }

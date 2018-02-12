@@ -29,6 +29,12 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putNumber("Right Percent Output", Robot.drivetrain.getRightPercentOutput());
 
 		SmartDashboard.putNumber("Heading", Robot.drivetrain.getHeading());
+
+		SmartDashboard.putNumber("Pressure", Robot.getPressure());
+
+		SmartDashboard.putBoolean("Have Cube", Robot.cubeManipulator.haveCube());
+
+		SmartDashboard.putData("Turn PID", Robot.drivetrain.turnPID);
 	}
 
 	@Override

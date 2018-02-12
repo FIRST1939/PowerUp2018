@@ -22,6 +22,9 @@ public class Elevator extends Subsystem {
 	private static final double I = 0;
 	private static final double D = 0;
 
+	public boolean isRaising = false;
+	public boolean isLowering = false;
+
 	private TalonSRX talon = new TalonSRX(RobotMap.elevatorTalon);
 
 	public Elevator() {
@@ -38,12 +41,31 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setHeight(double height) {
-		double newHeight = height * CPR / DISTANCE_PER_REV;
+		double newHeight = height * CPR / DISTANCE_PER_REV - this.getHeight();
+		if (newHeight > 0) {
+			this.isRaising = true;
+			this.isLowering = false;
+		}
+
+		else {
+			this.isRaising = false;
+			this.isLowering = true;
+		}
 		this.talon.set(ControlMode.MotionMagic, newHeight);
 	}
 
 	public void set(double value) {
 		this.talon.set(ControlMode.PercentOutput, value);
+
+		if (value > 0) {
+			this.isRaising = true;
+			this.isLowering = false;
+		}
+
+		else {
+			this.isRaising = false;
+			this.isLowering = true;
+		}
 	}
 
 	public void zeroEncoder() {

@@ -49,11 +49,11 @@ public class Drivetrain extends Subsystem {
 	private static final double turnD = 0;
 
 	private TalonSRX frontLeft = new TalonSRX(RobotMap.leftFrontTalon);
-	private VictorSPX midLeft = new VictorSPX(RobotMap.leftMidTalon);
-	private VictorSPX backLeft = new VictorSPX(RobotMap.leftBackTalon);
+	private VictorSPX midLeft = new VictorSPX(RobotMap.leftMidVictor);
+	private VictorSPX backLeft = new VictorSPX(RobotMap.leftBackVictor);
 	private TalonSRX frontRight = new TalonSRX(RobotMap.rightFrontTalon);
-	private VictorSPX midRight = new VictorSPX(RobotMap.rightMidTalon);
-	private VictorSPX backRight = new VictorSPX(RobotMap.rightBackTalon);
+	private VictorSPX midRight = new VictorSPX(RobotMap.rightMidVictor);
+	private VictorSPX backRight = new VictorSPX(RobotMap.rightBackVictor);
 
 	private PigeonWrapper pigeon = new PigeonWrapper(RobotMap.masterCubeManipulatorTalon);
 
@@ -70,7 +70,7 @@ public class Drivetrain extends Subsystem {
 		this.backRight.follow(this.frontRight);
 
 		this.pigeon.setPIDSourceType(PIDSourceType.kDisplacement);
-		this.turnPID = new PIDController(turnP, turnI, turnD, this.pigeon, output -> {});
+		this.turnPID = new PIDController(turnP, turnI, turnD, turnF, this.pigeon, output -> {});
 		this.turnPID.setInputRange(-180, 180);
 		this.turnPID.setContinuous(true);
 		this.turnPID.setOutputRange(-MAX_TURN_OUTPUT, MAX_TURN_OUTPUT);
@@ -243,7 +243,11 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.config_kD(posIndex, D, TIMEOUT_MS);
 	}
 
-	// Private Methods
+	public void setTurnPID(double P, double I, double D, double F) {
+		this.turnPID.setPID(P, I, D, F);
+	}
+
+	// Private Convenience Methods
 
 	private void setupMasterTalons() {
 		this.frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);

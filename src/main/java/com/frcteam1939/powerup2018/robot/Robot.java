@@ -25,6 +25,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -33,9 +34,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
- */
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
@@ -59,7 +57,10 @@ public class Robot extends TimedRobot {
 	};
 
 	public static OI oi;
+	private static AnalogInput pressureSensor = new AnalogInput(RobotMap.pressureSensor);
+
 	private Command autonomousCommand;
+
 	private SendableChooser<AutonomousOptions> chooserPosition = new SendableChooser<>();
 	private SendableChooser<AutonomousOptions> chooserFirstChoice = new SendableChooser<>();
 	private SendableChooser<AutonomousOptions> chooserSecondChoice = new SendableChooser<>();
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
 		Robot.drivetrain.disableBrakeMode();
 		Robot.climber.disableBrakeMode();
 		Robot.elevator.disableBrakeMode();
-		Robot.cubeManipulator.cubeManipulatorWheelsIn();
+		Robot.cubeManipulator.cubeManipulatorWheelsOut();
 	}
 
 	@Override
@@ -159,10 +160,6 @@ public class Robot extends TimedRobot {
 		Robot.climber.enableBrakeMode();
 		Robot.elevator.enableBrakeMode();
 
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
 		if (this.autonomousCommand != null) {
 			this.autonomousCommand.cancel();
 		}
@@ -182,6 +179,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+	}
+
+	public static double getPressure() {
+		return 250.0 * (pressureSensor.getVoltage() / 5.0) - 25.0;
 	}
 
 	private Command getAutonomousCommand(String gameData) {
