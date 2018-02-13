@@ -1,38 +1,60 @@
 package com.frcteam1939.powerup2018.robot.commands.elevator;
 
+import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
 public class ElevatorGamepadControl extends Command {
+
+	private static final double DEAD_BAND = 0.1;
 
 	public ElevatorGamepadControl() {
 		this.requires(Robot.elevator);
 	}
 
-	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {}
 
-	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	protected void execute() {
+		if (Robot.elevator.getHeight() <= DistanceConstants.LOW_LIMIT) {
+			Robot.elevator.set(0);
+		}
 
-	// Make this return true when this Command no longer needs to run execute()
+		if (Robot.elevator.getHeight() >= DistanceConstants.HIGH_LIMIT) {
+			Robot.elevator.set(0);
+		}
+
+		if (Robot.elevator.getHeight() <= 9) {
+			Robot.cubeManipulator.cubeManipulatorLower();
+		}
+
+		double move = Robot.oi.gamepad.getLeftY();
+		if (move < DEAD_BAND) {
+			move = 0;
+		}
+
+		Robot.elevator.set(move);
+
+		Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
+		Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));
+		Robot.oi.gamepad.leftButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
+		Robot.oi.gamepad.rightButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SCALE));
+	}
+
 	@Override
 	protected boolean isFinished() {
 		return false;
 	}
 
-	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	protected void end() {
+		Robot.elevator.stop();
+	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		Robot.elevator.stop();
+	}
 }

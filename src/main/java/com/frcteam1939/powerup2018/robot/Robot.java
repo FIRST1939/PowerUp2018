@@ -1,45 +1,71 @@
 
 package com.frcteam1939.powerup2018.robot;
 
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterCrossAutoLine;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.CenterWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.CrossAutoLine;
+import com.frcteam1939.powerup2018.robot.commands.auton.DoNothing;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.LeftWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftSwitch;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
+import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
+import com.frcteam1939.powerup2018.robot.subsystems.Climber;
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
-import com.frcteam1939.powerup2018.robot.subsystems.Pixy;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
-import com.frcteam1939.powerup2018.util.DoNothing;
+import com.frcteam1939.powerup2018.robot.subsystems.Vision;
+import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as described in the IterativeRobot documentation. If you change the name of this class or the package after creating this project, you must also update the manifest file in the resource directory.
- */
 public class Robot extends TimedRobot {
 
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
+	public static Climber climber;
+	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
-	public static Pixy pixy;
+	public static Vision vision;
+
 	{
 		try {
+			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
 			elevator = new Elevator();
+			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
-			pixy = new Pixy();
+			vision = new Vision();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	};
 
 	public static OI oi;
+	private static AnalogInput pressureSensor = new AnalogInput(RobotMap.pressureSensor);
+
 	private Command autonomousCommand;
 
-	/**
-	 * This function is run when the robot is first started up and should be used for any initialization code.
-	 */
+	private SendableChooser<AutonomousOptions> chooserPosition = new SendableChooser<>();
+	private SendableChooser<AutonomousOptions> chooserFirstChoice = new SendableChooser<>();
+	private SendableChooser<AutonomousOptions> chooserSecondChoice = new SendableChooser<>();
+	private SendableChooser<AutonomousOptions> chooserThirdChoice = new SendableChooser<>();
+
 	@Override
 	public void robotInit() {
 		System.out.println("\n==========================================");
@@ -47,18 +73,44 @@ public class Robot extends TimedRobot {
 
 		oi = new OI();
 
+		this.chooserPosition.addObject("Left", AutonomousOptions.LEFT);
+		this.chooserPosition.addObject("Center", AutonomousOptions.CENTER);
+		this.chooserPosition.addObject("Right", AutonomousOptions.RIGHT);
+		SmartDashboard.putData("Position Chooser", this.chooserPosition);
+
+		this.chooserFirstChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
+		this.chooserFirstChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
+		this.chooserFirstChoice.addObject("Switch", AutonomousOptions.SWITCH);
+		this.chooserFirstChoice.addObject("Scale", AutonomousOptions.SCALE);
+		SmartDashboard.putData("First Choice Chooser", this.chooserFirstChoice);
+
+		this.chooserSecondChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
+		this.chooserSecondChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
+		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.SWITCH);
+		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.SCALE);
+		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
+		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
+		SmartDashboard.putData("Second Choice Chooser", this.chooserSecondChoice);
+
+		this.chooserThirdChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
+		this.chooserThirdChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
+		this.chooserThirdChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
+		this.chooserThirdChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
+		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
+
 		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putData(new FindMaxSpeed());
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem information you want to clear when the robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
-
+		Robot.drivetrain.disableBrakeMode();
+		Robot.climber.disableBrakeMode();
+		Robot.elevator.disableBrakeMode();
+		Robot.cubeManipulator.cubeManipulatorWheelsOut();
 	}
 
 	@Override
@@ -66,14 +118,8 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example) or additional comparisons to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
-
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
@@ -81,11 +127,19 @@ public class Robot extends TimedRobot {
 		if (this.autonomousCommand != null) {
 			this.autonomousCommand.start();
 		}
+
+		Robot.drivetrain.enableBrakeMode();
+		Robot.drivetrain.shiftingGearboxLow();
+		Robot.climber.enableBrakeMode();
+		Robot.elevator.enableBrakeMode();
+
+		Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
+		if (Robot.cubeManipulator.haveCube()) {
+			Robot.cubeManipulator.set(0);
+		}
+		Robot.cubeManipulator.cubeManipulatorMiddle();
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -93,230 +147,154 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+		Robot.drivetrain.enableBrakeMode();
+		Robot.drivetrain.shiftingGearboxLow();
+		Robot.climber.enableBrakeMode();
+		Robot.elevator.enableBrakeMode();
+
 		if (this.autonomousCommand != null) {
 			this.autonomousCommand.cancel();
 		}
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 */
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
 
+	public static double getPressure() {
+		return 250.0 * (pressureSensor.getVoltage() / 5.0) - 25.0;
+	}
+
 	private Command getAutonomousCommand(String gameData) {
 		Command chosenCommand = new DoNothing();
 
-		String startingPosition = "";
-		String firstChoice = "";
-		String secondChoice = "";
-		String thirdChoice = "";
-
-		if (SmartDashboard.getBoolean("Left", false)) {
-			startingPosition = "Left";
-		}
-
-		else if (SmartDashboard.getBoolean("Center", false)) {
-			startingPosition = "Center";
-		}
-
-		else if (SmartDashboard.getBoolean("Right", false)) {
-			startingPosition = "Right";
-		}
-
-		if (SmartDashboard.getBoolean("1: Switch", false)) {
-			firstChoice = "Switch";
-		}
-
-		else if (SmartDashboard.getBoolean("1: Scale", false)) {
-			firstChoice = "Scale";
-		}
-
-		else if (SmartDashboard.getBoolean("1: Cross Auto Line", false)) {
-			firstChoice = "Cross Auto Line";
-		}
-
-		else if (SmartDashboard.getBoolean("1: Do Nothing", false)) {
-			firstChoice = "Do Nothing";
-		}
-
-		if (SmartDashboard.getBoolean("2: Switch", false)) {
-			secondChoice = "Switch";
-		}
-
-		else if (SmartDashboard.getBoolean("2: Scale", false)) {
-			secondChoice = "Scale";
-		}
-
-		else if (SmartDashboard.getBoolean("2: Cross Auto Line", false)) {
-			secondChoice = "Cross Auto Line";
-		}
-
-		else if (SmartDashboard.getBoolean("2: Do Nothing", false)) {
-			secondChoice = "Do Nothing";
-		}
-
-		else if (SmartDashboard.getBoolean("2: Still Do Switch", false)) {
-			secondChoice = "Still Do Switch";
-		}
-
-		else if (SmartDashboard.getBoolean("2: Still Do Scale", false)) {
-			secondChoice = "Still Do Scale";
-		}
-
-		if (SmartDashboard.getBoolean("3: Cross Auto Line", false)) {
-			thirdChoice = "Cross Auto Line";
-		}
-
-		else if (SmartDashboard.getBoolean("3: Do Nothing", false)) {
-			thirdChoice = "Do Nothing";
-		}
-
-		else if (SmartDashboard.getBoolean("3: Still Do Switch", false)) {
-			thirdChoice = "Still Do Switch";
-		}
-
-		else if (SmartDashboard.getBoolean("3: Still Do Scale", false)) {
-			thirdChoice = "Still Do Scale";
-		}
-
-		// ---------------------------------------------------------------
-
-		if (startingPosition.equalsIgnoreCase("Center")) {
-			if (firstChoice.equalsIgnoreCase("Switch")) {
+		if (this.chooserPosition.getSelected() == AutonomousOptions.CENTER) {
+			if (this.chooserPosition.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'L') {
-					// Go to the left of the switch and then cross the base line/double score cubes
+					chosenCommand = new CenterWallToLeftSwitch();
 				}
 
 				else if (gameData.charAt(0) == 'R') {
-					// Go to the right of the switch and then cross the base line/double score cubes
+					chosenCommand = new CenterWallToRightSwitch();
 				}
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Scale")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'L') {
-					// Go to the left of the scale and then double score cubes
+					chosenCommand = new CenterWallToLeftScale();
 				}
 
 				else if (gameData.charAt(1) == 'R') {
-					// Go to the right of the scale and then double score cubes
+					chosenCommand = new CenterWallToRightScale();
 				}
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Cross Auto Line")) {
-				// Drive to the left and cross the auto line
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+				chosenCommand = new CenterCrossAutoLine();
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Do Nothing")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 				chosenCommand = new DoNothing();
 			}
 		}
 
-		if (startingPosition.equalsIgnoreCase("Left")) {
-			if (firstChoice.equalsIgnoreCase("Cross Auto Line")) {
-				// Drive Forward
+		if (this.chooserPosition.getSelected() == AutonomousOptions.LEFT) {
+			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+				chosenCommand = new CrossAutoLine();
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Do Nothing")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 				chosenCommand = new DoNothing();
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Switch")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'L') {
-					// Drive forward, score on left side of switch
+					chosenCommand = new LeftWallToLeftSwitch();
 				}
 
 				else {
-					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 						chosenCommand = new DoNothing();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
-						// Drive forward
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+						chosenCommand = new CrossAutoLine();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Still Do Switch")) {
-						// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+						chosenCommand = new LeftWallToRightSwitch();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Scale")) {
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
 						if (gameData.charAt(1) == 'L') {
-							// Drive forward to Scale, score on left side of Scale
+							chosenCommand = new LeftWallToLeftScale();
 						}
 
 						else {
-							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 								chosenCommand = new DoNothing();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
-								// Drive forward
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+								chosenCommand = new CrossAutoLine();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+								chosenCommand = new LeftWallToRightScale();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+								chosenCommand = new LeftWallToRightSwitch();
 							}
 						}
 					}
 				}
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Scale")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'L') {
-					// Drive forward to Scale, score on left side of Scale
+					chosenCommand = new LeftWallToLeftScale();
 				}
 
 				else {
-					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 						chosenCommand = new DoNothing();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
-						// Drive forward
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+						chosenCommand = new CrossAutoLine();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Still Do Scale")) {
-						// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+						chosenCommand = new LeftWallToRightScale();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Switch")) {
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
 						if (gameData.charAt(0) == 'L') {
-							// Drive forward to Switch, score on left side of Switch
+							chosenCommand = new LeftWallToLeftSwitch();
 						}
 
 						else {
-							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 								chosenCommand = new DoNothing();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
-								// Drive forward
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+								chosenCommand = new CrossAutoLine();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
-								// Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, score on right side of Switch
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+								chosenCommand = new LeftWallToRightSwitch();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
-								// // Drive forward to area between Scale and Switch, turn right, drive between Scale and Switch, turn left, drive to Scale, score on right side of Scale
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+								chosenCommand = new LeftWallToRightScale();
 							}
 						}
 					}
@@ -324,97 +302,97 @@ public class Robot extends TimedRobot {
 			}
 		}
 
-		if (startingPosition.equalsIgnoreCase("Right")) {
-			if (firstChoice.equalsIgnoreCase("Cross Auto Line")) {
-				// Drive Forward
+		if (this.chooserPosition.getSelected() == AutonomousOptions.RIGHT) {
+			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+				chosenCommand = new CrossAutoLine();
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Do Nothing")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 				chosenCommand = new DoNothing();
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Switch")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
 				if (gameData.charAt(0) == 'R') {
-					// Drive forward, score on right side of switch
+					chosenCommand = new RightWallToRightSwitch();
 				}
 
 				else {
-					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 						chosenCommand = new DoNothing();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
-						// Drive forward
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+						chosenCommand = new CrossAutoLine();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Still Do Switch")) {
-						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+						chosenCommand = new RightWallToLeftSwitch();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Scale")) {
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
 						if (gameData.charAt(1) == 'R') {
-							// Drive forward to Scale, score on right side of Scale
+							chosenCommand = new RightWallToRightScale();
 						}
 
 						else {
-							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 								chosenCommand = new DoNothing();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
-								// Drive forward
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+								chosenCommand = new CrossAutoLine();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+								chosenCommand = new RightWallToLeftScale();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+								chosenCommand = new RightWallToLeftSwitch();
 							}
 						}
 					}
 				}
 			}
 
-			else if (firstChoice.equalsIgnoreCase("Scale")) {
+			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
 				if (gameData.charAt(1) == 'R') {
-					// Drive forward to Scale, score on right side of Scale
+					chosenCommand = new RightWallToRightScale();
 				}
 
 				else {
-					if (secondChoice.equalsIgnoreCase("Do Nothing")) {
+					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 						chosenCommand = new DoNothing();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Cross Auto Line")) {
-						// Drive forward
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+						chosenCommand = new CrossAutoLine();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Still Do Scale")) {
-						// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+						chosenCommand = new RightWallToLeftScale();
 					}
 
-					else if (secondChoice.equalsIgnoreCase("Switch")) {
+					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
 						if (gameData.charAt(0) == 'R') {
-							// Drive forward to Switch, score on right side of Switch
+							chosenCommand = new RightWallToRightSwitch();
 						}
 
 						else {
-							if (thirdChoice.equalsIgnoreCase("Do Nothing")) {
+							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
 								chosenCommand = new DoNothing();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Cross Auto Line")) {
-								// Drive forward
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+								chosenCommand = new CrossAutoLine();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Switch")) {
-								// Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, score on left side of Switch
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
+								chosenCommand = new RightWallToLeftSwitch();
 							}
 
-							else if (thirdChoice.equalsIgnoreCase("Still Do Scale")) {
-								// // Drive forward to area between Scale and Switch, turn left, drive between Scale and Switch, turn right, drive to Scale, score on left side of Scale
+							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
+								chosenCommand = new RightWallToLeftScale();
 							}
 						}
 					}
