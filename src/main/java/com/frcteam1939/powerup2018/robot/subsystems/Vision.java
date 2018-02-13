@@ -4,10 +4,13 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.util.PixyException;
 import com.frcteam1939.powerup2018.util.PixyPacket;
 import com.frcteam1939.powerup2018.util.PixySPI;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -23,6 +26,8 @@ public class Vision extends Subsystem {
 	// Copy the items below, change variable names as needed and especially change
 	// the SPI port used eg; Port.kOnboardCS[0-3] or Port.kMXP
 	public PixySPI pixy1;
+	private double kP = 0.002; //need to testx
+	private double center = 160;
 	Port port = Port.kOnboardCS0;
 	String print;
 	public HashMap<Integer, ArrayList<PixyPacket>> packets = new HashMap<Integer, ArrayList<PixyPacket>>();
@@ -44,6 +49,18 @@ public class Vision extends Subsystem {
 		}
 		return this.packets.get(0).get(0).X;
 	}
+	public void center() {
+		double error = this.center- this.getX();
+		while(error != 0) {
+			double move = Robot.oi.left.getY();
+			if(move <= 0.1) {
+				move = 0;
+			}
+			
+			Robot.drivetrain.drive(move, kP*error);
+		}
+	}
+	
 
 	public void testPixy1() {
 		int ret = -1;
