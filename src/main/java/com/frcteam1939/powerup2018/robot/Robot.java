@@ -66,9 +66,6 @@ public class Robot extends TimedRobot {
 	private SendableChooser<AutonomousOptions> chooserSecondChoice = new SendableChooser<>();
 	private SendableChooser<AutonomousOptions> chooserThirdChoice = new SendableChooser<>();
 
-	/**
-	 * This function is run when the robot is first started up and should be used for any initialization code.
-	 */
 	@Override
 	public void robotInit() {
 		System.out.println("\n==========================================");
@@ -108,9 +105,6 @@ public class Robot extends TimedRobot {
 		System.out.println("==========================================/n");
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode. You can use it to reset any subsystem information you want to clear when the robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
 		Robot.drivetrain.disableBrakeMode();
@@ -124,18 +118,8 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and uncomment the getString code to get the auto name from the text box below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example) or additional comparisons to the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
-		Robot.drivetrain.enableBrakeMode();
-		Robot.drivetrain.shiftingGearboxLow();
-		Robot.climber.enableBrakeMode();
-		Robot.elevator.enableBrakeMode();
-
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		this.autonomousCommand = this.getAutonomousCommand(gameData);
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
@@ -143,11 +127,19 @@ public class Robot extends TimedRobot {
 		if (this.autonomousCommand != null) {
 			this.autonomousCommand.start();
 		}
+
+		Robot.drivetrain.enableBrakeMode();
+		Robot.drivetrain.shiftingGearboxLow();
+		Robot.climber.enableBrakeMode();
+		Robot.elevator.enableBrakeMode();
+
+		Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
+		if (Robot.cubeManipulator.haveCube()) {
+			Robot.cubeManipulator.set(0);
+		}
+		Robot.cubeManipulator.cubeManipulatorMiddle();
 	}
 
-	/**
-	 * This function is called periodically during autonomous
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -165,17 +157,11 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode
-	 */
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();

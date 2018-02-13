@@ -10,6 +10,6 @@ public class IntakeCube extends CommandGroup {
 		this.addSequential(new CubeManipulatorLower());
 		this.addSequential(new SetCubeManipulatorSpeed(CubeManipulator.IN_SPEED));
 		this.addSequential(new CubeManipulatorWheelsIn());
-		this.addSequential(new CubeManipulatorRaise());
+		this.addSequential(new CubeManipulatorMiddle());
 	}
 }

@@ -30,6 +30,9 @@ public class SmartDashboardUpdater extends Command {
 
 		SmartDashboard.putNumber("Heading", Robot.drivetrain.getHeading());
 
+		SmartDashboard.putNumber("Elevator Revolutions", Robot.elevator.getRevolutions());
+		SmartDashboard.putNumber("Climber Revolutions", Robot.climber.getPosition());
+
 		SmartDashboard.putNumber("Pressure", Robot.getPressure());
 
 		SmartDashboard.putBoolean("Have Cube", Robot.cubeManipulator.haveCube());

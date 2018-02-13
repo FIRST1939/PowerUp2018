@@ -56,8 +56,8 @@ public class CubeManipulator extends Subsystem {
 
 	public void cubeManipulatorMiddle() {
 		if (Robot.elevator.getHeight() > 9) {
-			this.solenoidAngleBottom.set(false);
-			this.solenoidAngleTop.set(true);
+			this.solenoidAngleBottom.set(true);
+			this.solenoidAngleTop.set(false);
 		}
 	}
 

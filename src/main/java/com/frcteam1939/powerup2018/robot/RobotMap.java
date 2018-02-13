@@ -23,8 +23,8 @@ public class RobotMap {
 	public static final int rightShiftingGearboxUp = 0;
 	public static final int rightShiftingGearboxDown = 0;
 	public static final int cubeManipulatorAngleTop = 0;
-	public static final int cubeManipulatorAngleBottom = 0;
-	public static final int cubeManipulatorWheelsSolenoid = 0;
+	public static final int cubeManipulatorAngleBottom = 3;
+	public static final int cubeManipulatorWheelsSolenoid = 2;
 
 	// Analog
 	public static final int pressureSensor = 0;

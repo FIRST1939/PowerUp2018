@@ -25,7 +25,7 @@ public class CubeManipulatorGamepadControl extends Command {
 			if (Robot.cubeManipulator.haveCube()) {
 				Robot.cubeManipulator.set(0);
 				Robot.elevator.setHeight(10);
-				Robot.cubeManipulator.cubeManipulatorRaise();
+				Robot.cubeManipulator.cubeManipulatorMiddle();
 			}
 		}
 

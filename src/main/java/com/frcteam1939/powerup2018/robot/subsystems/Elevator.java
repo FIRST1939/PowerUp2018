@@ -41,13 +41,11 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setHeight(double height) {
-		double newHeight = height * CPR / DISTANCE_PER_REV - this.getHeight();
+		double newHeight = (height - this.getHeight()) * CPR / DISTANCE_PER_REV;
 		if (newHeight > 0) {
 			this.isRaising = true;
 			this.isLowering = false;
-		}
-
-		else {
+		} else {
 			this.isRaising = false;
 			this.isLowering = true;
 		}
@@ -60,9 +58,7 @@ public class Elevator extends Subsystem {
 		if (value > 0) {
 			this.isRaising = true;
 			this.isLowering = false;
-		}
-
-		else {
+		} else {
 			this.isRaising = false;
 			this.isLowering = true;
 		}
@@ -70,6 +66,10 @@ public class Elevator extends Subsystem {
 
 	public void zeroEncoder() {
 		this.talon.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
+	}
+
+	public double getRevolutions() {
+		return this.talon.getSelectedSensorPosition(0) / CPR;
 	}
 
 	public double getHeight() {
