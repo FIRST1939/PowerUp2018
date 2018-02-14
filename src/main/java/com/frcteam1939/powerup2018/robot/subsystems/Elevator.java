@@ -3,6 +3,7 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.RobotMap;
@@ -12,18 +13,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
 
-	private static final int TIMEOUT_MS = 10;
+	private static final int TIMEOUT_MS = 0;
 
 	private static final int CPR = 4096;
 	private static final double DISTANCE_PER_REV = 0;
+	private static final double MAX_SPEED = 0;
 
 	private static final int elevatorIndex = 1;
 	private static final double P = 0;
 	private static final double I = 0;
 	private static final double D = 0;
 
-	public boolean isRaising = false;
-	public boolean isLowering = false;
+	private boolean isRaising = false;
+	private boolean isLowering = false;
 
 	private TalonSRX talon = new TalonSRX(RobotMap.elevatorTalon);
 
@@ -33,6 +35,17 @@ public class Elevator extends Subsystem {
 		this.talon.config_kP(elevatorIndex, P, TIMEOUT_MS);
 		this.talon.config_kI(elevatorIndex, I, TIMEOUT_MS);
 		this.talon.config_kD(elevatorIndex, D, TIMEOUT_MS);
+		this.talon.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.talon.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.talon.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.talon.configPeakOutputReverse(-1, TIMEOUT_MS);
+		this.talon.enableVoltageCompensation(true);
+		this.talon.configOpenloopRamp(2, TIMEOUT_MS);
+		this.talon.configAllowableClosedloopError(elevatorIndex, 1000, TIMEOUT_MS);
+		this.talon.configMotionCruiseVelocity((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
+		this.talon.configMotionAcceleration((int) (MAX_SPEED * .25), TIMEOUT_MS);
+		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
+		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 	}
 
 	@Override
@@ -64,6 +77,13 @@ public class Elevator extends Subsystem {
 		}
 	}
 
+	public void setPID(double P, double I, double D) {
+		this.talon.selectProfileSlot(elevatorIndex, 0);
+		this.talon.config_kP(elevatorIndex, P, TIMEOUT_MS);
+		this.talon.config_kI(elevatorIndex, I, TIMEOUT_MS);
+		this.talon.config_kD(elevatorIndex, D, TIMEOUT_MS);
+	}
+
 	public void zeroEncoder() {
 		this.talon.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 	}
@@ -76,6 +96,10 @@ public class Elevator extends Subsystem {
 		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV + DistanceConstants.LOW_LIMIT;
 	}
 
+	public double getSpeed() {
+		return this.talon.getSelectedSensorVelocity(0);
+	}
+
 	public void enableBrakeMode() {
 		this.talon.setNeutralMode(NeutralMode.Brake);
 	}
@@ -86,5 +110,13 @@ public class Elevator extends Subsystem {
 
 	public void stop() {
 		this.set(0);
+	}
+
+	public boolean isRaising() {
+		return this.isRaising;
+	}
+
+	public boolean isLowering() {
+		return this.isLowering;
 	}
 }

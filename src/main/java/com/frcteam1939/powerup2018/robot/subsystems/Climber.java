@@ -14,11 +14,20 @@ public class Climber extends Subsystem {
 
 	TalonSRX talon = new TalonSRX(RobotMap.climberTalon);
 
+	private static final int TIMEOUT_MS = 0;
+
 	private static final int CPR = 4096;
 	public double MAX_REV = 0;
 
 	public Climber() {
-		this.talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		this.talon.setNeutralMode(NeutralMode.Brake);
+		this.talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		this.talon.configOpenloopRamp(2, TIMEOUT_MS);
+		this.talon.configNominalOutputForward(+0, TIMEOUT_MS);
+		this.talon.configNominalOutputReverse(-0, TIMEOUT_MS);
+		this.talon.configPeakOutputForward(+1, TIMEOUT_MS);
+		this.talon.configPeakOutputReverse(-1, TIMEOUT_MS);
+		this.talon.enableVoltageCompensation(true);
 	}
 
 	@Override

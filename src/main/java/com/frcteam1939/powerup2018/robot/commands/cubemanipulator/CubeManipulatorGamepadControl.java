@@ -35,7 +35,7 @@ public class CubeManipulatorGamepadControl extends Command {
 			Robot.cubeManipulator.set(CubeManipulator.OUT_SPEED);
 			if (!Robot.cubeManipulator.haveCube()) {
 				Robot.cubeManipulator.set(0);
-				Robot.cubeManipulator.cubeManipulatorRaise();
+				Robot.cubeManipulator.cubeManipulatorMiddle();
 			}
 		}
 
@@ -45,7 +45,7 @@ public class CubeManipulatorGamepadControl extends Command {
 			Robot.cubeManipulator.set(CubeManipulator.OUT_SPEED);
 			if (!Robot.cubeManipulator.haveCube()) {
 				Robot.cubeManipulator.set(0);
-				Robot.cubeManipulator.cubeManipulatorRaise();
+				Robot.cubeManipulator.cubeManipulatorMiddle();
 			}
 		}
 	}

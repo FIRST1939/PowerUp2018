@@ -26,9 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
 
-	private static final int TIMEOUT_MS = 10;
+	private static final int TIMEOUT_MS = 0;
 
-	private static final double lowGearLimit = 1.0;
+	private static final double lowGearLimit = .5;
 	private static final int MAX_SPEED_LOW = 0;
 	private static final int MAX_SPEED_HIGH = 0;
 
@@ -94,7 +94,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftPosition() {
-		return this.frontLeft.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE; // Divide by CPR, multiply by circumference, any additional calc
+		return this.frontLeft.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE;
 	}
 
 	public double getRightPosition() {

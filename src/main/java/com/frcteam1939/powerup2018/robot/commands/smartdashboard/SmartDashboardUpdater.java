@@ -31,6 +31,9 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putNumber("Heading", Robot.drivetrain.getHeading());
 
 		SmartDashboard.putNumber("Elevator Revolutions", Robot.elevator.getRevolutions());
+		SmartDashboard.putNumber("Elevator Height", Robot.elevator.getHeight());
+		SmartDashboard.putNumber("Elevator Speed", Robot.elevator.getSpeed());
+
 		SmartDashboard.putNumber("Climber Revolutions", Robot.climber.getPosition());
 
 		SmartDashboard.putNumber("Pressure", Robot.getPressure());

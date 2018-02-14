@@ -1,6 +1,7 @@
 package com.frcteam1939.powerup2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.robot.RobotMap;
@@ -27,6 +28,8 @@ public class CubeManipulator extends Subsystem {
 	public CubeManipulator() {
 		//	slaveTalon.setInverted(true);
 		this.slaveTalon.follow(this.masterTalon);
+		this.masterTalon.setNeutralMode(NeutralMode.Coast);
+		this.slaveTalon.setNeutralMode(NeutralMode.Coast);
 	}
 
 	@Override

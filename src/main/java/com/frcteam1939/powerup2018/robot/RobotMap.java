@@ -15,14 +15,12 @@ public class RobotMap {
 	public static final int slaveCubeManipulatorTalon = 13;
 
 	// Solenoids
-
-	// One double solenoid on 0 and 1, second double solenoid on 6 and 7, one single solenoid on 2
 	public static final int PCM = 0;
 	public static final int leftShiftingGearboxUp = 0;
-	public static final int leftShiftingGearboxDown = 0;
-	public static final int rightShiftingGearboxUp = 0;
-	public static final int rightShiftingGearboxDown = 0;
-	public static final int cubeManipulatorAngleTop = 0;
+	public static final int leftShiftingGearboxDown = 1;
+	public static final int rightShiftingGearboxUp = 6;
+	public static final int rightShiftingGearboxDown = 7;
+	public static final int cubeManipulatorAngleTop = 5;
 	public static final int cubeManipulatorAngleBottom = 3;
 	public static final int cubeManipulatorWheelsSolenoid = 2;
 

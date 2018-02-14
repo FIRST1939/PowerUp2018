@@ -26,6 +26,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -100,6 +101,8 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(new FindMaxSpeed());
+
+		CameraServer.getInstance().startAutomaticCapture();
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");

@@ -10,6 +10,6 @@ public class OutputCube extends CommandGroup {
 		this.addSequential(new CubeManipulatorLower());
 		this.addSequential(new SetCubeManipulatorSpeed(CubeManipulator.OUT_SPEED));
 		this.addSequential(new CubeManipulatorWheelsOut());
-		this.addSequential(new CubeManipulatorRaise());
+		this.addSequential(new CubeManipulatorMiddle());
 	}
 }

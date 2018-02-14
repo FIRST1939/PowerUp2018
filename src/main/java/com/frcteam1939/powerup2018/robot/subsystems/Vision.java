@@ -9,8 +9,6 @@ import com.frcteam1939.powerup2018.util.PixyException;
 import com.frcteam1939.powerup2018.util.PixyPacket;
 import com.frcteam1939.powerup2018.util.PixySPI;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -49,18 +47,18 @@ public class Vision extends Subsystem {
 		}
 		return this.packets.get(0).get(0).X;
 	}
+
 	public void center() {
-		double error = this.center- this.getX();
-		while(error != 0) {
+		double error = this.center - this.getX();
+		while (error != 0) {
 			double move = Robot.oi.left.getY();
-			if(move <= 0.1) {
+			if (move <= 0.1) {
 				move = 0;
 			}
-			
-			Robot.drivetrain.drive(move, kP*error);
+
+			Robot.drivetrain.drive(move, this.kP * error);
 		}
 	}
-	
 
 	public void testPixy1() {
 		int ret = -1;
