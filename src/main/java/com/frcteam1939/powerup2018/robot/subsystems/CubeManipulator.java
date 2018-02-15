@@ -26,8 +26,8 @@ public class CubeManipulator extends Subsystem {
 	private Solenoid solenoidWheels = new Solenoid(RobotMap.PCM, RobotMap.cubeManipulatorWheelsSolenoid);
 
 	public CubeManipulator() {
-		//	slaveTalon.setInverted(true);
 		this.slaveTalon.follow(this.masterTalon);
+		this.masterTalon.setInverted(true);
 		this.masterTalon.setNeutralMode(NeutralMode.Coast);
 		this.slaveTalon.setNeutralMode(NeutralMode.Coast);
 	}

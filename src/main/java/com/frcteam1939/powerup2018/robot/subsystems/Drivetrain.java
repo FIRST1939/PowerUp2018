@@ -29,7 +29,7 @@ public class Drivetrain extends Subsystem {
 	private static final int TIMEOUT_MS = 0;
 
 	private static final double lowGearLimit = .5;
-	private static final int MAX_SPEED_LOW = 0;
+	private static final int MAX_SPEED_LOW = 650;
 	private static final int MAX_SPEED_HIGH = 0;
 
 	private static final int CPR = 1024;
@@ -38,13 +38,13 @@ public class Drivetrain extends Subsystem {
 	private static final double MAX_TURN_OUTPUT = 0.25;
 
 	private static final int posIndex = 0;
-	private static final double posP = 0;
+	private static final double posP = 0.25;
 	private static final double posI = 0;
 	private static final double posD = 0;
 
 	public PIDController turnPID;
 	private static final double turnF = 0;
-	private static final double turnP = 0;
+	private static final double turnP = 0.25;
 	private static final double turnI = 0;
 	private static final double turnD = 0;
 
@@ -63,6 +63,10 @@ public class Drivetrain extends Subsystem {
 	public Drivetrain() {
 		this.setupMasterTalons();
 		this.setupPigeon();
+
+		this.frontRight.setInverted(true);
+		this.midRight.setInverted(true);
+		this.backRight.setInverted(true);
 
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
@@ -172,12 +176,12 @@ public class Drivetrain extends Subsystem {
 	public void drive(double moveValue, double rotateValue) {
 
 		boolean highGear = false;
-		if (moveValue > lowGearLimit && !highGear) {
+		if (Math.abs(moveValue) > lowGearLimit && !highGear) {
 			this.shiftingGearboxHigh();
 			highGear = true;
 		}
 
-		if (moveValue < lowGearLimit && highGear) {
+		if (Math.abs(moveValue) < lowGearLimit && highGear) {
 			this.shiftingGearboxLow();
 			highGear = false;
 		}
@@ -263,8 +267,8 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.configPeakOutputReverse(-1, TIMEOUT_MS);
 		this.frontLeft.enableVoltageCompensation(true);
 		this.frontRight.enableVoltageCompensation(true);
-		this.frontLeft.configOpenloopRamp(2, TIMEOUT_MS);
-		this.frontRight.configOpenloopRamp(2, TIMEOUT_MS);
+		this.frontLeft.configOpenloopRamp(.25, TIMEOUT_MS);
+		this.frontRight.configOpenloopRamp(.25, TIMEOUT_MS);
 		this.frontLeft.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
 		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
 		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);

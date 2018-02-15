@@ -16,11 +16,11 @@ public class Elevator extends Subsystem {
 	private static final int TIMEOUT_MS = 0;
 
 	private static final int CPR = 4096;
-	private static final double DISTANCE_PER_REV = 0;
+	private static final double DISTANCE_PER_REV = 10;
 	private static final double MAX_SPEED = 0;
 
 	private static final int elevatorIndex = 1;
-	private static final double P = 0;
+	private static final double P = 0.25;
 	private static final double I = 0;
 	private static final double D = 0;
 
@@ -30,7 +30,7 @@ public class Elevator extends Subsystem {
 	private TalonSRX talon = new TalonSRX(RobotMap.elevatorTalon);
 
 	public Elevator() {
-		this.talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TIMEOUT_MS);
+		this.talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
 		this.talon.selectProfileSlot(elevatorIndex, 0);
 		this.talon.config_kP(elevatorIndex, P, TIMEOUT_MS);
 		this.talon.config_kI(elevatorIndex, I, TIMEOUT_MS);

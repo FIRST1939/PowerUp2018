@@ -18,7 +18,7 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		if (Robot.elevator.getHeight() <= DistanceConstants.LOW_LIMIT) {
+		if (Robot.elevator.getHeight() < DistanceConstants.LOW_LIMIT) {
 			Robot.elevator.set(0);
 		}
 

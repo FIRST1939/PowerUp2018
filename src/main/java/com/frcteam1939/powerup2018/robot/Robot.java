@@ -24,6 +24,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
+import com.frcteam1939.powerup2018.util.TalonTester;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -89,18 +90,21 @@ public class Robot extends TimedRobot {
 		this.chooserSecondChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
 		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.SWITCH);
 		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.SCALE);
-		this.chooserSecondChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
-		this.chooserSecondChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
+		this.chooserSecondChoice.addObject("Still Switch", AutonomousOptions.STILL_DO_SWITCH);
+		this.chooserSecondChoice.addObject("Still Scale", AutonomousOptions.STILL_DO_SCALE);
 		SmartDashboard.putData("Second Choice Chooser", this.chooserSecondChoice);
 
 		this.chooserThirdChoice.addObject("Do Nothing", AutonomousOptions.DO_NOTHING);
 		this.chooserThirdChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
 		this.chooserThirdChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
 		this.chooserThirdChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
+		this.chooserSecondChoice.addObject("Still Switch", AutonomousOptions.STILL_DO_SWITCH);
+		this.chooserSecondChoice.addObject("Still Scale", AutonomousOptions.STILL_DO_SCALE);
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(new FindMaxSpeed());
+		SmartDashboard.putData(new TalonTester());
 
 		CameraServer.getInstance().startAutomaticCapture();
 
