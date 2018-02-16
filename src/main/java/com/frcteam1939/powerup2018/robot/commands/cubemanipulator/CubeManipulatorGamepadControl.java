@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class CubeManipulatorGamepadControl extends Command {
 
+	private boolean isClosed = true;
+	private boolean isDown = false;
+
 	public CubeManipulatorGamepadControl() {
 		this.requires(Robot.cubeManipulator);
 	}
@@ -20,6 +23,7 @@ public class CubeManipulatorGamepadControl extends Command {
 		// Intake cube
 		if (Robot.oi.gamepad.a.get()) {
 			Robot.cubeManipulator.cubeManipulatorLower();
+			Robot.cubeManipulator.cubeManipulatorWheelsOut();
 			Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
 			Robot.cubeManipulator.cubeManipulatorWheelsIn();
 			if (Robot.cubeManipulator.haveCube()) {
@@ -33,20 +37,25 @@ public class CubeManipulatorGamepadControl extends Command {
 		if (Robot.oi.gamepad.x.get()) {
 			Robot.cubeManipulator.cubeManipulatorMiddle();
 			Robot.cubeManipulator.set(CubeManipulator.OUT_SPEED);
-			if (!Robot.cubeManipulator.haveCube()) {
-				Robot.cubeManipulator.set(0);
-				Robot.cubeManipulator.cubeManipulatorMiddle();
-			}
+			Robot.cubeManipulator.cubeManipulatorWheelsOut();
+			//if (!Robot.cubeManipulator.haveCube()) {
+			//	Robot.cubeManipulator.set(0);
+			//	Robot.cubeManipulator.cubeManipulatorMiddle();
+			//}
 		}
 
 		// Output to exchange zone
 		if (Robot.oi.gamepad.y.get()) {
 			Robot.cubeManipulator.cubeManipulatorLower();
 			Robot.cubeManipulator.set(CubeManipulator.OUT_SPEED);
-			if (!Robot.cubeManipulator.haveCube()) {
-				Robot.cubeManipulator.set(0);
-				Robot.cubeManipulator.cubeManipulatorMiddle();
-			}
+			// if (!Robot.cubeManipulator.haveCube()) {
+			// Robot.cubeManipulator.set(0);
+			//	Robot.cubeManipulator.cubeManipulatorMiddle();
+			//}
+		}
+
+		if (Robot.oi.gamepad.b.get()) {
+			Robot.cubeManipulator.set(0);
 		}
 	}
 

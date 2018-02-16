@@ -39,8 +39,6 @@ public class Elevator extends Subsystem {
 		this.talon.configNominalOutputReverse(-0, TIMEOUT_MS);
 		this.talon.configPeakOutputForward(+1, TIMEOUT_MS);
 		this.talon.configPeakOutputReverse(-1, TIMEOUT_MS);
-		this.talon.enableVoltageCompensation(true);
-		this.talon.configOpenloopRamp(2, TIMEOUT_MS);
 		this.talon.configAllowableClosedloopError(elevatorIndex, 1000, TIMEOUT_MS);
 		this.talon.configMotionCruiseVelocity((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
 		this.talon.configMotionAcceleration((int) (MAX_SPEED * .25), TIMEOUT_MS);

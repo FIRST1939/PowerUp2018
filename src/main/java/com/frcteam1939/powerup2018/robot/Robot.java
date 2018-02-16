@@ -106,6 +106,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new FindMaxSpeed());
 		SmartDashboard.putData(new TalonTester());
 
+		Robot.elevator.zeroEncoder();
+		Robot.climber.zeroEncoder();
+
 		CameraServer.getInstance().startAutomaticCapture();
 
 		System.out.println("           Finished Intializing");
@@ -118,6 +121,10 @@ public class Robot extends TimedRobot {
 		Robot.climber.disableBrakeMode();
 		Robot.elevator.disableBrakeMode();
 		Robot.cubeManipulator.cubeManipulatorWheelsOut();
+		Robot.drivetrain.zeroEncoders();
+		Robot.drivetrain.resetGyro();
+		Robot.elevator.zeroEncoder();
+		Robot.climber.zeroEncoder();
 	}
 
 	@Override

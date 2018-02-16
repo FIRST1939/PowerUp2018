@@ -51,4 +51,8 @@ public class Climber extends Subsystem {
 	public double getPosition() {
 		return this.talon.getSelectedSensorPosition(0) / CPR;
 	}
+
+	public void zeroEncoder() {
+		this.talon.setSelectedSensorPosition(0, 0, TIMEOUT_MS);
+	}
 }

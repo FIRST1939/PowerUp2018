@@ -28,7 +28,7 @@ public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 0;
 
-	private static final double lowGearLimit = .5;
+	private static final double lowGearLimit = 0.5;
 	private static final int MAX_SPEED_LOW = 650;
 	private static final int MAX_SPEED_HIGH = 0;
 
@@ -57,8 +57,8 @@ public class Drivetrain extends Subsystem {
 
 	private PigeonWrapper pigeon = new PigeonWrapper(RobotMap.masterCubeManipulatorTalon);
 
-	private DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxUp, RobotMap.leftShiftingGearboxDown);
-	private DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxUp, RobotMap.rightShiftingGearboxDown);
+	public DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxDown, RobotMap.leftShiftingGearboxUp);
+	public DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxDown, RobotMap.rightShiftingGearboxUp);
 
 	public Drivetrain() {
 		this.setupMasterTalons();

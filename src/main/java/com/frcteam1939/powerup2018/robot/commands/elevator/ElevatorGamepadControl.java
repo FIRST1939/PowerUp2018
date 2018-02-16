@@ -18,24 +18,19 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		if (Robot.elevator.getHeight() < DistanceConstants.LOW_LIMIT) {
-			Robot.elevator.set(0);
-		}
+		// if (Robot.elevator.getHeight() < DistanceConstants.LOW_LIMIT) {
+		// 	Robot.elevator.set(0);
+		// }
 
-		if (Robot.elevator.getHeight() >= DistanceConstants.HIGH_LIMIT) {
-			Robot.elevator.set(0);
-		}
+		// if (Robot.elevator.getHeight() >= DistanceConstants.HIGH_LIMIT) {
+		// 	Robot.elevator.set(0);
+		// }
 
-		if (Robot.elevator.getHeight() <= 9) {
-			Robot.cubeManipulator.cubeManipulatorLower();
-		}
+		// if (Robot.elevator.getHeight() <= 9) {
+		// 	Robot.cubeManipulator.cubeManipulatorLower();
+		// }
 
-		double move = Robot.oi.gamepad.getLeftY();
-		if (move < DEAD_BAND) {
-			move = 0;
-		}
-
-		Robot.elevator.set(move);
+		Robot.elevator.set(-Robot.oi.gamepad.getLeftY());
 
 		Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
 		Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));
