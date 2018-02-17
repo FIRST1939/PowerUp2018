@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.robot.RobotMap;
+import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorGamepadControl;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -32,7 +33,9 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	@Override
-	public void initDefaultCommand() {}
+	public void initDefaultCommand() {
+		this.setDefaultCommand(new CubeManipulatorGamepadControl());
+	}
 
 	public void cubeManipulatorWheelsIn() {
 		this.solenoidWheels.set(true);

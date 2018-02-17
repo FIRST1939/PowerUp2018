@@ -16,7 +16,8 @@ import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftScale;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToLeftSwitch;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
-import com.frcteam1939.powerup2018.robot.commands.drivetrain.FindMaxSpeed;
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveDistance;
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.TurnToAngle;
 import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
@@ -24,7 +25,6 @@ import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.robot.subsystems.Vision;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
-import com.frcteam1939.powerup2018.util.TalonTester;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 		}
 	};
 
-	public static OI oi;
+	public static OI oi = new OI();
 	private static AnalogInput pressureSensor = new AnalogInput(RobotMap.pressureSensor);
 
 	private Command autonomousCommand;
@@ -72,8 +72,6 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		System.out.println("\n==========================================");
 		System.out.println("         PowerUp 2018 Intializing");
-
-		oi = new OI();
 
 		this.chooserPosition.addObject("Left", AutonomousOptions.LEFT);
 		this.chooserPosition.addObject("Center", AutonomousOptions.CENTER);
@@ -103,8 +101,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putData(new FindMaxSpeed());
-		SmartDashboard.putData(new TalonTester());
+		SmartDashboard.putData(new DriveDistance(10));
+		SmartDashboard.putData(new TurnToAngle(90));
 
 		Robot.elevator.zeroEncoder();
 		Robot.climber.zeroEncoder();
@@ -143,15 +141,14 @@ public class Robot extends TimedRobot {
 		}
 
 		Robot.drivetrain.enableBrakeMode();
-		Robot.drivetrain.shiftingGearboxLow();
 		Robot.climber.enableBrakeMode();
 		Robot.elevator.enableBrakeMode();
 
 		Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
+		Robot.cubeManipulator.cubeManipulatorMiddle();
 		if (Robot.cubeManipulator.haveCube()) {
 			Robot.cubeManipulator.set(0);
 		}
-		Robot.cubeManipulator.cubeManipulatorMiddle();
 	}
 
 	@Override
@@ -162,7 +159,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		Robot.drivetrain.enableBrakeMode();
-		Robot.drivetrain.shiftingGearboxLow();
 		Robot.climber.enableBrakeMode();
 		Robot.elevator.enableBrakeMode();
 

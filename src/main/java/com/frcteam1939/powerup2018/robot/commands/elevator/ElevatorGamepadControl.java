@@ -15,7 +15,7 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		double move = -Robot.oi.gamepad.getLeftY();
+		double move = -Robot.oi.gamepad.getRightY();
 
 		if (Robot.elevator.isAtTop() && move > 0) {
 			move = 0;
@@ -26,14 +26,18 @@ public class ElevatorGamepadControl extends Command {
 		}
 
 		if (Robot.elevator.isCloseToTop() && move > 0) {
-			move = move * 0.1;
+			move = move * 0.2;
 		}
 
 		if (Robot.elevator.isCloseToBottom() && move < 0) {
-			move = move * 0.1;
+			move = move * 0.2;
 		}
 
 		Robot.elevator.set(move);
+
+		if (Robot.oi.gamepad.b.get()) {
+			Robot.elevator.stop();
+		}
 
 		// Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
 		// Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));

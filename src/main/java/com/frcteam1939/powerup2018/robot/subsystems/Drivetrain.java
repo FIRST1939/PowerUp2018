@@ -18,7 +18,6 @@ import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
 import com.frcteam1939.powerup2018.util.PigeonWrapper;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,7 +27,6 @@ public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 0;
 
-	private static final double lowGearLimit = 0.5;
 	private static final int MAX_SPEED_LOW = 650;
 	private static final int MAX_SPEED_HIGH = 0;
 
@@ -57,16 +55,13 @@ public class Drivetrain extends Subsystem {
 
 	private PigeonWrapper pigeon = new PigeonWrapper(RobotMap.masterCubeManipulatorTalon);
 
-	public DoubleSolenoid leftShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.leftShiftingGearboxDown, RobotMap.leftShiftingGearboxUp);
-	public DoubleSolenoid rightShiftingGearbox = new DoubleSolenoid(RobotMap.PCM, RobotMap.rightShiftingGearboxDown, RobotMap.rightShiftingGearboxUp);
-
 	public Drivetrain() {
 		this.setupMasterTalons();
 		this.setupPigeon();
 
-		this.frontRight.setInverted(true);
-		this.midRight.setInverted(true);
-		this.backRight.setInverted(true);
+		this.frontLeft.setInverted(true);
+		this.midLeft.setInverted(true);
+		this.backLeft.setInverted(true);
 
 		this.midLeft.follow(this.frontLeft);
 		this.backLeft.follow(this.frontLeft);
@@ -154,16 +149,6 @@ public class Drivetrain extends Subsystem {
 		this.setPercentOutput(0, 0);
 	}
 
-	public void shiftingGearboxLow() {
-		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kForward);
-		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kForward);
-	}
-
-	public void shiftingGearboxHigh() {
-		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
-		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
-	}
-
 	public void zeroEncoders() {
 		this.frontLeft.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 		this.frontRight.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
@@ -174,18 +159,6 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void drive(double moveValue, double rotateValue) {
-
-		boolean highGear = false;
-		if (Math.abs(moveValue) > lowGearLimit && !highGear) {
-			this.shiftingGearboxHigh();
-			highGear = true;
-		}
-
-		if (Math.abs(moveValue) < lowGearLimit && highGear) {
-			this.shiftingGearboxLow();
-			highGear = false;
-		}
-
 		double leftMotorSpeed;
 		double rightMotorSpeed;
 		if (moveValue > 0.0) {

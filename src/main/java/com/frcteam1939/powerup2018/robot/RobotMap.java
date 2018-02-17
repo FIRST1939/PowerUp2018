@@ -16,10 +16,6 @@ public class RobotMap {
 
 	// Solenoids
 	public static final int PCM = 0;
-	public static final int leftShiftingGearboxUp = 0;
-	public static final int leftShiftingGearboxDown = 1;
-	public static final int rightShiftingGearboxUp = 6;
-	public static final int rightShiftingGearboxDown = 7;
 	public static final int cubeManipulatorAngleTop = 5;
 	public static final int cubeManipulatorAngleBottom = 3;
 	public static final int cubeManipulatorWheelsSolenoid = 2;
@@ -29,9 +25,9 @@ public class RobotMap {
 
 	// DIO
 	public static final int cubeManipulatorBanner = 0;
-	public static final int elevatorAtTop = 0;
-	public static final int elevatorAtBottom = 0;
-	public static final int elevatorCloseToTop = 0;
-	public static final int elevatorCloseToBottom = 0;
+	public static final int elevatorAtTop = 4;
+	public static final int elevatorAtBottom = 1;
+	public static final int elevatorCloseToTop = 3;
+	public static final int elevatorCloseToBottom = 2;
 
 }
