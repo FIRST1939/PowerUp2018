@@ -25,7 +25,7 @@ public class ClimberGamepadControl extends Command {
 		// if (Robot.climber.getPosition() >= Robot.climber.MAX_REV && move > 0) {
 		// 	move = 0;
 		// }
-		// Robot.climber.set(move);
+		Robot.climber.set(move);
 	}
 
 	@Override

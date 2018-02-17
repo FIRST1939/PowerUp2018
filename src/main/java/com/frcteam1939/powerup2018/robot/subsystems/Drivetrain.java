@@ -155,13 +155,13 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void shiftingGearboxLow() {
-		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
-		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kForward);
 	}
 
 	public void shiftingGearboxHigh() {
-		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kForward);
-		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kForward);
+		this.leftShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
+		this.rightShiftingGearbox.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public void zeroEncoders() {

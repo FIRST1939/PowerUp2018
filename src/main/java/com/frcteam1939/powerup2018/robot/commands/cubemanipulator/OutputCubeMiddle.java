@@ -6,10 +6,10 @@ import com.frcteam1939.powerup2018.util.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class OutputCube extends CommandGroup {
+public class OutputCubeMiddle extends CommandGroup {
 
-	public OutputCube() {
-		this.addSequential(new CubeManipulatorLower());
+	public OutputCubeMiddle() {
+		this.addSequential(new CubeManipulatorMiddle());
 		this.addSequential(new SetCubeManipulatorSpeed(CubeManipulator.OUT_SPEED));
 		this.addSequential(new Wait(0.5));
 		if (!Robot.cubeManipulator.haveCube()) {

@@ -29,5 +29,9 @@ public class RobotMap {
 
 	// DIO
 	public static final int cubeManipulatorBanner = 0;
+	public static final int elevatorAtTop = 0;
+	public static final int elevatorAtBottom = 0;
+	public static final int elevatorCloseToTop = 0;
+	public static final int elevatorCloseToBottom = 0;
 
 }

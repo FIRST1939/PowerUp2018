@@ -9,6 +9,7 @@ import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.elevator.ElevatorGamepadControl;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
@@ -28,9 +29,14 @@ public class Elevator extends Subsystem {
 	private boolean isLowering = false;
 
 	private TalonSRX talon = new TalonSRX(RobotMap.elevatorTalon);
+	private DigitalInput isAtTop = new DigitalInput(RobotMap.elevatorAtTop);
+	private DigitalInput isAtBottom = new DigitalInput(RobotMap.elevatorAtBottom);
+	private DigitalInput isCloseToTop = new DigitalInput(RobotMap.elevatorCloseToTop);
+	private DigitalInput isCloseToBottom = new DigitalInput(RobotMap.elevatorCloseToBottom);
 
 	public Elevator() {
 		this.talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
+		this.talon.setSensorPhase(true);
 		this.talon.selectProfileSlot(elevatorIndex, 0);
 		this.talon.config_kP(elevatorIndex, P, TIMEOUT_MS);
 		this.talon.config_kI(elevatorIndex, I, TIMEOUT_MS);
@@ -116,5 +122,21 @@ public class Elevator extends Subsystem {
 
 	public boolean isLowering() {
 		return this.isLowering;
+	}
+
+	public boolean isAtTop() {
+		return this.isAtTop.get();
+	}
+
+	public boolean isAtBottom() {
+		return this.isAtBottom.get();
+	}
+
+	public boolean isCloseToTop() {
+		return this.isCloseToTop.get();
+	}
+
+	public boolean isCloseToBottom() {
+		return this.isCloseToBottom.get();
 	}
 }

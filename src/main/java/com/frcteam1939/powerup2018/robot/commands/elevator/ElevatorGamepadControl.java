@@ -1,13 +1,10 @@
 package com.frcteam1939.powerup2018.robot.commands.elevator;
 
-import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorGamepadControl extends Command {
-
-	private static final double DEAD_BAND = 0.1;
 
 	public ElevatorGamepadControl() {
 		this.requires(Robot.elevator);
@@ -18,24 +15,30 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		// if (Robot.elevator.getHeight() < DistanceConstants.LOW_LIMIT) {
-		// 	Robot.elevator.set(0);
-		// }
+		double move = -Robot.oi.gamepad.getLeftY();
 
-		// if (Robot.elevator.getHeight() >= DistanceConstants.HIGH_LIMIT) {
-		// 	Robot.elevator.set(0);
-		// }
+		if (Robot.elevator.isAtTop() && move > 0) {
+			move = 0;
+		}
 
-		// if (Robot.elevator.getHeight() <= 9) {
-		// 	Robot.cubeManipulator.cubeManipulatorLower();
-		// }
+		if (Robot.elevator.isAtBottom() && move < 0) {
+			move = 0;
+		}
 
-		Robot.elevator.set(-Robot.oi.gamepad.getLeftY());
+		if (Robot.elevator.isCloseToTop() && move > 0) {
+			move = move * 0.1;
+		}
 
-		Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
-		Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));
-		Robot.oi.gamepad.leftButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
-		Robot.oi.gamepad.rightButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SCALE));
+		if (Robot.elevator.isCloseToBottom() && move < 0) {
+			move = move * 0.1;
+		}
+
+		Robot.elevator.set(move);
+
+		// Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
+		// Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));
+		// Robot.oi.gamepad.leftButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
+		// Robot.oi.gamepad.rightButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SCALE));
 	}
 
 	@Override
