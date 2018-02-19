@@ -10,8 +10,9 @@ public class IntakeCube extends CommandGroup {
 
 	public IntakeCube() {
 		this.addSequential(new CubeManipulatorLower());
+		this.addSequential(new CubeManipulatorWheelsOut());
 		this.addSequential(new SetCubeManipulatorSpeed(CubeManipulator.IN_SPEED));
-		this.addSequential(new Wait(0.5));
+		this.addSequential(new Wait(1));
 		if (Robot.cubeManipulator.haveCube()) {
 			this.addSequential(new CubeManipulatorWheelsIn());
 			this.addSequential(new SetCubeManipulatorSpeed(0));

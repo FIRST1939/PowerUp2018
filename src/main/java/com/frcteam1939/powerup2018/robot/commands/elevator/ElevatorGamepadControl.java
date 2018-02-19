@@ -19,10 +19,12 @@ public class ElevatorGamepadControl extends Command {
 
 		if (Robot.elevator.isAtTop() && move > 0) {
 			move = 0;
+			Robot.elevator.stop();
 		}
 
 		if (Robot.elevator.isAtBottom() && move < 0) {
 			move = 0;
+			Robot.elevator.stop();
 		}
 
 		if (Robot.elevator.isCloseToTop() && move > 0) {
@@ -30,6 +32,7 @@ public class ElevatorGamepadControl extends Command {
 		}
 
 		if (Robot.elevator.isCloseToBottom() && move < 0) {
+			Robot.cubeManipulator.cubeManipulatorLower();
 			move = move * 0.2;
 		}
 
@@ -39,8 +42,24 @@ public class ElevatorGamepadControl extends Command {
 			Robot.elevator.stop();
 		}
 
+		//if (Robot.elevator.isAtTop()) {
+		//	Robot.elevator.setEncoder(value);
+		//}
+
+		//if (Robot.elevator.isAtBottom()) {
+		//	Robot.elevator.setEncoder(7);
+		//}
+
+		//if (Robot.elevator.isCloseToTop()) {
+		//	Robot.elevator.setEncoder(11);
+		//}
+
+		//if (Robot.elevator.isCloseToBottom()) {
+		//	Robot.elevator.setEncoder(value);
+		//}
+
 		// Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
-		// Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(8));
+		// Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(12));
 		// Robot.oi.gamepad.leftButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
 		// Robot.oi.gamepad.rightButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SCALE));
 	}

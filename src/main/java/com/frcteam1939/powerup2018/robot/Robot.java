@@ -96,15 +96,17 @@ public class Robot extends TimedRobot {
 		this.chooserThirdChoice.addObject("Cross Auto Line", AutonomousOptions.CROSS_AUTO_LINE);
 		this.chooserThirdChoice.addObject("Switch", AutonomousOptions.STILL_DO_SWITCH);
 		this.chooserThirdChoice.addObject("Scale", AutonomousOptions.STILL_DO_SCALE);
-		this.chooserSecondChoice.addObject("Still Switch", AutonomousOptions.STILL_DO_SWITCH);
-		this.chooserSecondChoice.addObject("Still Scale", AutonomousOptions.STILL_DO_SCALE);
+		this.chooserThirdChoice.addObject("Still Switch", AutonomousOptions.STILL_DO_SWITCH);
+		this.chooserThirdChoice.addObject("Still Scale", AutonomousOptions.STILL_DO_SCALE);
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(new DriveDistance(10));
 		SmartDashboard.putData(new TurnToAngle(90));
 
-		Robot.elevator.zeroEncoder();
+		Robot.drivetrain.zeroEncoders();
+		Robot.drivetrain.resetGyro();
+		Robot.elevator.setEncoder(7);
 		Robot.climber.zeroEncoder();
 
 		CameraServer.getInstance().startAutomaticCapture();
@@ -121,7 +123,7 @@ public class Robot extends TimedRobot {
 		Robot.cubeManipulator.cubeManipulatorWheelsOut();
 		Robot.drivetrain.zeroEncoders();
 		Robot.drivetrain.resetGyro();
-		Robot.elevator.zeroEncoder();
+		Robot.elevator.setEncoder(7);
 		Robot.climber.zeroEncoder();
 	}
 
@@ -132,8 +134,16 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		int retries = 100;
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		this.autonomousCommand = this.getAutonomousCommand(gameData);
+		while (gameData.length() < 2 && retries > 0) {
+			retries--;
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+
+		if (gameData.length() > 0) {
+			this.autonomousCommand = this.getAutonomousCommand(gameData);
+		}
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
 		if (this.autonomousCommand != null) {
@@ -143,6 +153,11 @@ public class Robot extends TimedRobot {
 		Robot.drivetrain.enableBrakeMode();
 		Robot.climber.enableBrakeMode();
 		Robot.elevator.enableBrakeMode();
+
+		Robot.drivetrain.zeroEncoders();
+		Robot.drivetrain.resetGyro();
+		Robot.elevator.setEncoder(7);
+		Robot.climber.zeroEncoder();
 
 		Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
 		Robot.cubeManipulator.cubeManipulatorMiddle();

@@ -28,8 +28,11 @@ public class SmartDashboardUpdater extends Command {
 		SmartDashboard.putNumber("Right Error", Robot.drivetrain.getRightError());
 		SmartDashboard.putNumber("Right Percent Output", Robot.drivetrain.getRightPercentOutput());
 
+		SmartDashboard.putNumber("Drivetrain Revolutions", Robot.drivetrain.getRevolutions());
+		SmartDashboard.putNumber("Drivetrain Raw Units", Robot.drivetrain.getRawUnits());
 		SmartDashboard.putNumber("Heading", Robot.drivetrain.getHeading());
 
+		SmartDashboard.putNumber("Elevator Raw Units", Robot.elevator.getRawUnits());
 		SmartDashboard.putNumber("Elevator Revolutions", Robot.elevator.getRevolutions());
 		SmartDashboard.putNumber("Elevator Height", Robot.elevator.getHeight());
 		SmartDashboard.putNumber("Elevator Speed", Robot.elevator.getSpeed());

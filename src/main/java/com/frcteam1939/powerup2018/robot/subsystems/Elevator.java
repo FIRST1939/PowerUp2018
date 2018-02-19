@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.frcteam1939.powerup2018.robot.DistanceConstants;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.elevator.ElevatorGamepadControl;
 
@@ -92,12 +91,21 @@ public class Elevator extends Subsystem {
 		this.talon.getSensorCollection().setQuadraturePosition(0, TIMEOUT_MS);
 	}
 
+	public void setEncoder(double value) {
+		int newValue = (int) (value * CPR / DISTANCE_PER_REV);
+		this.talon.setSelectedSensorPosition(newValue, 0, TIMEOUT_MS);
+	}
+
 	public double getRevolutions() {
 		return this.talon.getSelectedSensorPosition(0) / CPR;
 	}
 
+	public double getRawUnits() {
+		return this.talon.getSelectedSensorPosition(0);
+	}
+
 	public double getHeight() {
-		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV + DistanceConstants.LOW_LIMIT;
+		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV;
 	}
 
 	public double getSpeed() {

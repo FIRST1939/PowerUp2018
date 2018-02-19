@@ -1,17 +1,11 @@
 package com.frcteam1939.powerup2018.robot.commands.cubemanipulator;
 
 import com.frcteam1939.powerup2018.robot.Robot;
+import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CubeManipulatorGamepadControl extends Command {
-
-	private boolean wheelsAreIn = true;
-	private boolean wheelsAreOut = false;
-
-	private boolean isLowered = false;
-	private boolean isMiddle = true;
-	private boolean isRaised = false;
 
 	public CubeManipulatorGamepadControl() {
 		this.requires(Robot.cubeManipulator);
@@ -22,27 +16,15 @@ public class CubeManipulatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		if (Robot.oi.gamepad.a.get()) {
-			Robot.cubeManipulator.cubeManipulatorLower();
-		}
 
-		if (Robot.oi.gamepad.x.get()) {
-			Robot.cubeManipulator.cubeManipulatorMiddle();
-		}
+		Robot.oi.gamepad.a.whenPressed(new IntakeCube());
+		Robot.oi.gamepad.x.whenPressed(new OutputCubeMiddle());
+		Robot.oi.gamepad.y.whenPressed(new OutputCube());
 
-		if (Robot.oi.gamepad.y.get()) {
-			Robot.cubeManipulator.cubeManipulatorRaise();
-		}
-
-		if (Robot.oi.gamepad.leftTrigger.get()) {
-			Robot.cubeManipulator.cubeManipulatorWheelsIn();
-		}
-
-		if (Robot.oi.gamepad.rightTrigger.get()) {
-			Robot.cubeManipulator.cubeManipulatorWheelsOut();
-		}
-
-		Robot.cubeManipulator.set(-Robot.oi.gamepad.getLeftY());
+		Robot.oi.gamepad.leftTrigger.whenPressed(new SetCubeManipulatorSpeed(CubeManipulator.IN_SPEED));
+		Robot.oi.gamepad.leftTrigger.whenReleased(new SetCubeManipulatorSpeed(0));
+		Robot.oi.gamepad.rightTrigger.whenPressed(new SetCubeManipulatorSpeed(CubeManipulator.OUT_SPEED));
+		Robot.oi.gamepad.rightTrigger.whenReleased(new SetCubeManipulatorSpeed(0));
 	}
 
 	@Override

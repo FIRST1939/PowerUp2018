@@ -128,6 +128,14 @@ public class Drivetrain extends Subsystem {
 		return this.pigeon.getFusedHeading();
 	}
 
+	public double getRevolutions() {
+		return this.frontLeft.getSelectedSensorPosition(0) / CPR;
+	}
+
+	public double getRawUnits() {
+		return this.frontRight.getSelectedSensorPosition(0);
+	}
+
 	// Set Methods
 
 	public void setPercentOutput(double leftPercent, double rightPercent) {
