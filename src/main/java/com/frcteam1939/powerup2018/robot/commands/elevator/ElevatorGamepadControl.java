@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorGamepadControl extends Command {
 
+	private int count = 3;
+
 	public ElevatorGamepadControl() {
 		this.requires(Robot.elevator);
 	}
@@ -15,7 +17,7 @@ public class ElevatorGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		double move = -Robot.oi.gamepad.getRightY();
+		double move = -Robot.oi.gamepad.getLeftY();
 
 		if (Robot.elevator.isAtTop() && move > 0) {
 			move = 0;
@@ -36,32 +38,49 @@ public class ElevatorGamepadControl extends Command {
 			move = move * 0.2;
 		}
 
+		if (move < 0) {
+			move = move * 0.5;
+		}
+
 		Robot.elevator.set(move);
 
-		if (Robot.oi.gamepad.b.get()) {
+		if (Robot.oi.gamepad.back.get()) {
 			Robot.elevator.stop();
 		}
 
-		//if (Robot.elevator.isAtTop()) {
-		//	Robot.elevator.setEncoder(value);
-		//}
+		if (Robot.elevator.isAtTop()) {
+			Robot.elevator.setEncoder(70);
+		}
 
-		//if (Robot.elevator.isAtBottom()) {
-		//	Robot.elevator.setEncoder(7);
-		//}
+		if (Robot.elevator.isAtBottom()) {
+			Robot.elevator.setEncoder(7);
+		}
 
-		//if (Robot.elevator.isCloseToTop()) {
-		//	Robot.elevator.setEncoder(11);
-		//}
+		if (Robot.elevator.isCloseToTop()) {
+			Robot.elevator.setEncoder(66);
+		}
 
-		//if (Robot.elevator.isCloseToBottom()) {
-		//	Robot.elevator.setEncoder(value);
-		//}
+		if (Robot.elevator.isCloseToBottom()) {
+			Robot.elevator.setEncoder(11);
+		}
 
-		// Robot.oi.gamepad.start.whenPressed(new SetElevatorHeight(DistanceConstants.PORTAL));
-		// Robot.oi.gamepad.back.whenPressed(new SetElevatorHeight(12));
-		// Robot.oi.gamepad.leftButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
-		// Robot.oi.gamepad.rightButton.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SCALE));
+		// Robot.oi.gamepad.y.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
+		// if (Robot.oi.gamepad.rightButton.get()) {
+		//	if (this.count % 3 == 0) {
+		//		Robot.elevator.setHeight(DistanceConstants.ELEVATOR_SWITCH);
+		//		this.count = 2;
+		//	}
+
+		//	else if (this.count % 3 == 2) {
+		//		Robot.elevator.setHeight(DistanceConstants.ELEVATOR_SCALE);
+		//		this.count = 1;
+		//	}
+		//
+		//	else if (this.count % 3 == 1) {
+		//	Robot.elevator.setHeight(12);
+		//		this.count = 3;
+		//	}
+		//}
 	}
 
 	@Override

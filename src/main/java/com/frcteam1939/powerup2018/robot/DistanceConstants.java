@@ -18,5 +18,5 @@ public class DistanceConstants {
 	public static final double LOW_LIMIT = 7;
 	public static final double PORTAL = 27;
 	public static final double ELEVATOR_SWITCH = 30;
-	public static final double ELEVATOR_SCALE = 75;
+	public static final double ELEVATOR_SCALE = 70;
 }

@@ -3,7 +3,6 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorGamepadControl;
 
@@ -46,10 +45,8 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	public void cubeManipulatorRaise() {
-		if (Robot.elevator.getHeight() > 9) {
-			this.solenoidAngleBottom.set(false);
-			this.solenoidAngleTop.set(false);
-		}
+		this.solenoidAngleBottom.set(false);
+		this.solenoidAngleTop.set(false);
 	}
 
 	public void cubeManipulatorLower() {
@@ -58,10 +55,8 @@ public class CubeManipulator extends Subsystem {
 	}
 
 	public void cubeManipulatorMiddle() {
-		if (Robot.elevator.getHeight() > 9) {
-			this.solenoidAngleBottom.set(false);
-			this.solenoidAngleTop.set(true);
-		}
+		this.solenoidAngleBottom.set(true);
+		this.solenoidAngleTop.set(false);
 	}
 
 	public void set(double value) {

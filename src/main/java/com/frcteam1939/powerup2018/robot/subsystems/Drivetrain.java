@@ -13,13 +13,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
 import com.frcteam1939.powerup2018.robot.RobotMap;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveByJoystick;
-import com.frcteam1939.powerup2018.util.PigeonWrapper;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,8 +27,7 @@ public class Drivetrain extends Subsystem {
 
 	private static final int TIMEOUT_MS = 0;
 
-	private static final int MAX_SPEED_LOW = 650;
-	private static final int MAX_SPEED_HIGH = 0;
+	private static final int MAX_SPEED = 200;
 
 	private static final int CPR = 1024;
 	private static final int WHEEL_DIAMETER = 6;
@@ -41,8 +40,8 @@ public class Drivetrain extends Subsystem {
 	private static final double posD = 0;
 
 	public PIDController turnPID;
-	private static final double turnF = 0;
-	private static final double turnP = 0.25;
+	private static final double turnF = 0.25;
+	private static final double turnP = 0.5;
 	private static final double turnI = 0;
 	private static final double turnD = 0;
 
@@ -53,11 +52,10 @@ public class Drivetrain extends Subsystem {
 	private VictorSPX midRight = new VictorSPX(RobotMap.rightMidVictor);
 	private VictorSPX backRight = new VictorSPX(RobotMap.rightBackVictor);
 
-	private PigeonWrapper pigeon = new PigeonWrapper(RobotMap.masterCubeManipulatorTalon);
+	private AHRS navx;
 
 	public Drivetrain() {
 		this.setupMasterTalons();
-		this.setupPigeon();
 
 		this.frontLeft.setInverted(true);
 		this.midLeft.setInverted(true);
@@ -68,8 +66,9 @@ public class Drivetrain extends Subsystem {
 		this.midRight.follow(this.frontRight);
 		this.backRight.follow(this.frontRight);
 
-		this.pigeon.setPIDSourceType(PIDSourceType.kDisplacement);
-		this.turnPID = new PIDController(turnP, turnI, turnD, turnF, this.pigeon, output -> {});
+		this.navx = new AHRS(SerialPort.Port.kUSB);
+		this.navx.setPIDSourceType(PIDSourceType.kDisplacement);
+		this.turnPID = new PIDController(turnP, turnI, turnD, turnF, this.navx, output -> {});
 		this.turnPID.setInputRange(-180, 180);
 		this.turnPID.setContinuous(true);
 		this.turnPID.setOutputRange(-MAX_TURN_OUTPUT, MAX_TURN_OUTPUT);
@@ -93,11 +92,11 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getLeftPosition() {
-		return this.frontLeft.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE;
+		return this.frontLeft.getSelectedSensorPosition(0) / 50;
 	}
 
 	public double getRightPosition() {
-		return this.frontRight.getSelectedSensorPosition(0) / CPR * WHEEL_CIRCUMFERENCE;
+		return this.frontRight.getSelectedSensorPosition(0) / 50;
 	}
 
 	public double getLeftVoltage() {
@@ -125,17 +124,32 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getHeading() {
-		return this.pigeon.getFusedHeading();
+		if (this.navx.isConnected()) {
+			return this.navx.pidGet();
+		} else {
+			return 0;
+		}
+	}
+
+	public double getTurnSpeed() {
+		if (this.navx.isConnected()) {
+			return this.navx.getRate();
+		} else {
+			return 0;
+		}
 	}
 
 	public double getRevolutions() {
 		return this.frontLeft.getSelectedSensorPosition(0) / CPR;
 	}
 
-	public double getRawUnits() {
-		return this.frontRight.getSelectedSensorPosition(0);
+	public double getLeftRawUnits() {
+		return this.frontLeft.getSelectedSensorPosition(0);
 	}
 
+	public double getRightRawUnits() {
+		return this.frontRight.getSelectedSensorPosition(0);
+	}
 	// Set Methods
 
 	public void setPercentOutput(double leftPercent, double rightPercent) {
@@ -148,9 +162,10 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.set(ControlMode.Velocity, rightSpeed);
 	}
 
-	public void setPosition(double leftPosition, double rightPosition) {
-		this.frontLeft.set(ControlMode.Position, leftPosition);
-		this.frontRight.set(ControlMode.Position, rightPosition);
+	public void setPosition(double position) {
+		double newPosition = position * CPR / WHEEL_CIRCUMFERENCE;
+		this.frontLeft.set(ControlMode.Position, newPosition);
+		this.frontRight.set(ControlMode.Position, newPosition);
 	}
 
 	public void stop() {
@@ -163,7 +178,9 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void resetGyro() {
-		this.pigeon.setFusedHeading(0, TIMEOUT_MS);
+		if (this.navx != null) {
+			this.navx.reset();
+		}
 	}
 
 	public void drive(double moveValue, double rotateValue) {
@@ -194,7 +211,8 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void driveDistance(double distance) {
-		double newDistance = distance * CPR / WHEEL_CIRCUMFERENCE;
+		double newDistance = -distance * 50;
+		// double leftDistance = newDistance * 0.9;
 		this.frontLeft.set(ControlMode.MotionMagic, newDistance);
 		this.frontRight.set(ControlMode.MotionMagic, newDistance);
 	}
@@ -252,18 +270,13 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.configOpenloopRamp(.25, TIMEOUT_MS);
 		this.frontLeft.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
 		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
-		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
-		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED_LOW * 0.7), TIMEOUT_MS);
-		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
-		this.frontRight.configMotionAcceleration((int) (MAX_SPEED_LOW * .25), TIMEOUT_MS);
+		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
+		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
+		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED * .1), TIMEOUT_MS);
+		this.frontRight.configMotionAcceleration((int) (MAX_SPEED * .1), TIMEOUT_MS);
 		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
 		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
 		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
-	}
-
-	private void setupPigeon() {
-		GeneralStatus generalStatus = new GeneralStatus();
-		this.pigeon.getGeneralStatus(generalStatus);
 	}
 }

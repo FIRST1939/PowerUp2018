@@ -15,9 +15,8 @@ public class Elevator extends Subsystem {
 
 	private static final int TIMEOUT_MS = 0;
 
-	private static final int CPR = 4096;
-	private static final double DISTANCE_PER_REV = 10;
-	private static final double MAX_SPEED = 0;
+	private static final double UNITS_PER_INCH = 22000;
+	private static final double MAX_SPEED = 50000;
 
 	private static final int elevatorIndex = 1;
 	private static final double P = 0.25;
@@ -46,7 +45,7 @@ public class Elevator extends Subsystem {
 		this.talon.configPeakOutputReverse(-1, TIMEOUT_MS);
 		this.talon.configAllowableClosedloopError(elevatorIndex, 1000, TIMEOUT_MS);
 		this.talon.configMotionCruiseVelocity((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
-		this.talon.configMotionAcceleration((int) (MAX_SPEED * .25), TIMEOUT_MS);
+		this.talon.configMotionAcceleration((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
 		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
 		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 	}
@@ -57,7 +56,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setHeight(double height) {
-		double newHeight = (height - this.getHeight()) * CPR / DISTANCE_PER_REV;
+		double newHeight = (height - this.getHeight()) * UNITS_PER_INCH;
 		if (newHeight > 0) {
 			this.isRaising = true;
 			this.isLowering = false;
@@ -92,12 +91,8 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setEncoder(double value) {
-		int newValue = (int) (value * CPR / DISTANCE_PER_REV);
+		int newValue = (int) (value * UNITS_PER_INCH);
 		this.talon.setSelectedSensorPosition(newValue, 0, TIMEOUT_MS);
-	}
-
-	public double getRevolutions() {
-		return this.talon.getSelectedSensorPosition(0) / CPR;
 	}
 
 	public double getRawUnits() {
@@ -105,7 +100,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public double getHeight() {
-		return this.talon.getSelectedSensorPosition(0) / CPR * DISTANCE_PER_REV;
+		return this.talon.getSelectedSensorPosition(0) / UNITS_PER_INCH;
 	}
 
 	public double getSpeed() {

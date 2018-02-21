@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveDistance extends Command {
 
 	private double distance;
+	private boolean initialized = false;
 
 	public DriveDistance(double distance) {
 		this.requires(Robot.drivetrain);
@@ -14,25 +15,32 @@ public class DriveDistance extends Command {
 	}
 
 	@Override
-	protected void initialize() {}
+	protected void initialize() {
+		Robot.drivetrain.zeroEncoders();
+		Robot.drivetrain.resetGyro();
+		this.initialized = true;
+	}
 
 	@Override
 	protected void execute() {
 		Robot.drivetrain.driveDistance(this.distance);
+		Robot.drivetrain.turnPID.setSetpoint(0);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return true;
+		return this.initialized && this.distance - (Robot.drivetrain.getLeftPosition() + Robot.drivetrain.getRightPosition()) / 2 < 7;
 	}
 
 	@Override
 	protected void end() {
 		Robot.drivetrain.stop();
+		this.initialized = false;
 	}
 
 	@Override
 	protected void interrupted() {
 		Robot.drivetrain.stop();
+		this.initialized = false;
 	}
 }

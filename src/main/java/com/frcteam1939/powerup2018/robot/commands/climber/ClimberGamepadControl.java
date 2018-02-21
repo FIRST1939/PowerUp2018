@@ -17,19 +17,19 @@ public class ClimberGamepadControl extends Command {
 
 	@Override
 	protected void execute() {
-		double move = Robot.oi.gamepad.getLeftY();
-		if (Math.abs(move) < DEAD_BAND) {
-			move = 0;
-		}
+		// double move = Robot.oi.gamepad.getLeftY();
+		// if (Math.abs(move) < DEAD_BAND) {
+		//	move = 0;
+		//}
 
-		else {
-			Robot.cubeManipulator.cubeManipulatorRaise();
-		}
+		//else {
+		//	Robot.cubeManipulator.cubeManipulatorRaise();
+		//}
 
 		// if (Robot.climber.getPosition() >= Robot.climber.MAX_REV && move > 0) {
 		//	move = 0;
 		// }
-		Robot.climber.set(move);
+		//Robot.climber.set(move);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class Climber extends Subsystem {
 	public Climber() {
 		this.talon.setNeutralMode(NeutralMode.Brake);
 		this.talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TIMEOUT_MS);
+		this.talon.setSensorPhase(true);
 		this.talon.configOpenloopRamp(2, TIMEOUT_MS);
 		this.talon.configNominalOutputForward(+0, TIMEOUT_MS);
 		this.talon.configNominalOutputReverse(-0, TIMEOUT_MS);

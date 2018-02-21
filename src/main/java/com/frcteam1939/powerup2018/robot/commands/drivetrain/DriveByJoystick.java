@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveByJoystick extends Command {
 
 	private static double DEAD_BAND = 0.1;
+	private static double CLIMBER_DEAD_BAND = 0.5;
 
 	public DriveByJoystick() {
 		this.requires(Robot.drivetrain);
@@ -19,8 +20,10 @@ public class DriveByJoystick extends Command {
 	protected void execute() {
 		double move = Robot.oi.left.getY();
 		double rotate = Robot.oi.right.getX();
+		double climber = Robot.oi.left.getX();
 
-		boolean turbo = Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1);
+		boolean turbo = (Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1)) && Robot.elevator.getHeight() < 30;
+		boolean slowDown = Robot.oi.right.getRawButton(3);
 
 		if (Math.abs(move) < DEAD_BAND) {
 			move = 0;
@@ -36,11 +39,18 @@ public class DriveByJoystick extends Command {
 		} else {
 			if (turbo) {
 				rotate = map(rotate, 0, 0.6);
+			} else if (slowDown) {
+				rotate = map(rotate, 0, 0.15);
 			} else {
 				rotate = map(rotate, 0, 0.3);
 			}
 		}
+
+		if (Math.abs(climber) < CLIMBER_DEAD_BAND) {
+			climber = 0;
+		}
 		Robot.drivetrain.drive(move, rotate);
+		Robot.climber.set(climber);
 	}
 
 	@Override

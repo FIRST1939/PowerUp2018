@@ -18,6 +18,7 @@ import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightScale;
 import com.frcteam1939.powerup2018.robot.commands.auton.RightWallToRightSwitch;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveDistance;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.TurnToAngle;
+import com.frcteam1939.powerup2018.robot.commands.elevator.SetElevatorHeight;
 import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
@@ -101,8 +102,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putData(new DriveDistance(10));
+		SmartDashboard.putData(new DriveDistance(20));
 		SmartDashboard.putData(new TurnToAngle(90));
+		SmartDashboard.putData(new SetElevatorHeight(50));
 
 		Robot.drivetrain.zeroEncoders();
 		Robot.drivetrain.resetGyro();
@@ -121,6 +123,7 @@ public class Robot extends TimedRobot {
 		Robot.climber.disableBrakeMode();
 		Robot.elevator.disableBrakeMode();
 		Robot.cubeManipulator.cubeManipulatorWheelsOut();
+		Robot.cubeManipulator.cubeManipulatorRaise();
 		Robot.drivetrain.zeroEncoders();
 		Robot.drivetrain.resetGyro();
 		Robot.elevator.setEncoder(7);
@@ -163,6 +166,7 @@ public class Robot extends TimedRobot {
 		Robot.cubeManipulator.cubeManipulatorMiddle();
 		if (Robot.cubeManipulator.haveCube()) {
 			Robot.cubeManipulator.set(0);
+			Robot.cubeManipulator.cubeManipulatorWheelsIn();
 		}
 	}
 
