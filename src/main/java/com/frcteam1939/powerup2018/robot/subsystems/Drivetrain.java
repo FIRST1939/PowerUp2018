@@ -35,7 +35,7 @@ public class Drivetrain extends Subsystem {
 	private static final double MAX_TURN_OUTPUT = 0.25;
 
 	private static final int posIndex = 0;
-	private static final double posP = 0.25;
+	private static final double posP = 0.2;
 	private static final double posI = 0;
 	private static final double posD = 0;
 
@@ -212,7 +212,6 @@ public class Drivetrain extends Subsystem {
 
 	public void driveDistance(double distance) {
 		double newDistance = -distance * 50;
-		// double leftDistance = newDistance * 0.9;
 		this.frontLeft.set(ControlMode.MotionMagic, newDistance);
 		this.frontRight.set(ControlMode.MotionMagic, newDistance);
 	}
@@ -272,8 +271,8 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
 		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
 		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
-		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED * .1), TIMEOUT_MS);
-		this.frontRight.configMotionAcceleration((int) (MAX_SPEED * .1), TIMEOUT_MS);
+		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED * .075), TIMEOUT_MS);
+		this.frontRight.configMotionAcceleration((int) (MAX_SPEED * .075), TIMEOUT_MS);
 		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
 		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 		this.frontRight.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);

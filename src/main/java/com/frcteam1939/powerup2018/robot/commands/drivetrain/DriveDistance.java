@@ -29,7 +29,7 @@ public class DriveDistance extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return this.initialized && this.distance - (Robot.drivetrain.getLeftPosition() + Robot.drivetrain.getRightPosition()) / 2 < 7;
+		return this.initialized && this.distance - (Robot.drivetrain.getLeftPosition() + Robot.drivetrain.getRightPosition()) / 2 < 5;
 	}
 
 	@Override

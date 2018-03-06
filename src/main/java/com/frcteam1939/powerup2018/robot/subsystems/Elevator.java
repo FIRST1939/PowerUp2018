@@ -44,8 +44,8 @@ public class Elevator extends Subsystem {
 		this.talon.configPeakOutputForward(+1, TIMEOUT_MS);
 		this.talon.configPeakOutputReverse(-1, TIMEOUT_MS);
 		this.talon.configAllowableClosedloopError(elevatorIndex, 1000, TIMEOUT_MS);
-		this.talon.configMotionCruiseVelocity((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
-		this.talon.configMotionAcceleration((int) (MAX_SPEED * 0.7), TIMEOUT_MS);
+		this.talon.configMotionCruiseVelocity((int) (MAX_SPEED * 0.5), TIMEOUT_MS);
+		this.talon.configMotionAcceleration((int) (MAX_SPEED * 0.5), TIMEOUT_MS);
 		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
 		this.talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, TIMEOUT_MS);
 	}

@@ -23,7 +23,7 @@ public class SetElevatorHeight extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(this.height - Robot.elevator.getHeight()) < 20;
+		return Math.abs(this.height - Robot.elevator.getHeight()) < 10;
 	}
 
 	@Override

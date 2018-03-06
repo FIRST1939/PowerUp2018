@@ -28,7 +28,7 @@ public class CubeManipulatorGamepadControl extends Command {
 		Robot.oi.gamepad.a.whenPressed(new CubeManipulatorLower());
 		Robot.oi.gamepad.x.whenPressed(new CubeManipulatorMiddle());
 		// Robot.oi.gamepad.y.whenPressed(new CubeManipulatorRaise());
-		Robot.oi.gamepad.y.whenPressed(new CenterVision());
+		Robot.oi.gamepad.b.whenPressed(new CenterVision());
 
 		double move = -Robot.oi.gamepad.getRightY() / 2;
 		Robot.cubeManipulator.set(move);

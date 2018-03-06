@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
 
-	{
+	static {
 		try {
 			cubeManipulator = new CubeManipulator();
 			drivetrain = new Drivetrain();
@@ -124,10 +124,6 @@ public class Robot extends TimedRobot {
 		Robot.elevator.disableBrakeMode();
 		Robot.cubeManipulator.cubeManipulatorWheelsOut();
 		Robot.cubeManipulator.cubeManipulatorRaise();
-		Robot.drivetrain.zeroEncoders();
-		Robot.drivetrain.resetGyro();
-		Robot.elevator.setEncoder(7);
-		Robot.climber.zeroEncoder();
 	}
 
 	@Override
@@ -141,7 +137,11 @@ public class Robot extends TimedRobot {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		while (gameData.length() < 2 && retries > 0) {
 			retries--;
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException ie) {}
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
+
 		}
 
 		if (gameData.length() > 0) {
@@ -162,12 +162,12 @@ public class Robot extends TimedRobot {
 		Robot.elevator.setEncoder(7);
 		Robot.climber.zeroEncoder();
 
-		Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
-		Robot.cubeManipulator.cubeManipulatorMiddle();
-		if (Robot.cubeManipulator.haveCube()) {
-			Robot.cubeManipulator.set(0);
-			Robot.cubeManipulator.cubeManipulatorWheelsIn();
-		}
+		// Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
+		// Robot.cubeManipulator.cubeManipulatorMiddle();
+		// if (Robot.cubeManipulator.haveCube()) {
+		//	Robot.cubeManipulator.set(0);
+		// 	Robot.cubeManipulator.cubeManipulatorWheelsIn();
+		//}
 	}
 
 	@Override
