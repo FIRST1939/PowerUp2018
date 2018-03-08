@@ -29,5 +29,9 @@ public class RobotMap {
 	public static final int elevatorAtBottom = 1;
 	public static final int elevatorCloseToTop = 3;
 	public static final int elevatorCloseToBottom = 2;
+	public static final int pinOne = 5;
+	public static final int pinTwo = 6;
+	public static final int pinThree = 7;
+	public static final int pinFour = 8;
 
 }

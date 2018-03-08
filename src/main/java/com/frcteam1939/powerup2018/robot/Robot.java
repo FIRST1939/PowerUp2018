@@ -45,6 +45,8 @@ public class Robot extends TimedRobot {
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
 	public static Vision vision;
+	// CONSTRUCTOR FOR LIGHTS
+	// public static Lights lights;
 
 	static {
 		try {
@@ -54,6 +56,7 @@ public class Robot extends TimedRobot {
 			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
 			vision = new Vision();
+			// lights = new Lights();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
