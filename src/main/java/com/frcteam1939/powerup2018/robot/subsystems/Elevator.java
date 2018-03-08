@@ -19,7 +19,7 @@ public class Elevator extends Subsystem {
 	private static final double MAX_SPEED = 50000;
 
 	private static final int elevatorIndex = 1;
-	private static final double P = 0.25;
+	private static final double P = 0.35;
 	private static final double I = 0;
 	private static final double D = 0;
 
