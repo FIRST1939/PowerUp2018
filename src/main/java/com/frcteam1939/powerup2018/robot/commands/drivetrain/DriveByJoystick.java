@@ -24,10 +24,12 @@ public class DriveByJoystick extends Command {
 
 		boolean turbo = (Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1)) && Robot.elevator.getHeight() < 30;
 		boolean slowDown = Robot.oi.right.getRawButton(3);
+		boolean isCenter = Robot.oi.left.getRawButton(4);
 
 		if (Math.abs(move) < DEAD_BAND) {
 			move = 0;
 		} else {
+			
 			if (turbo) {
 				move = map(move, 0, 1.0);
 			} else {
@@ -49,8 +51,13 @@ public class DriveByJoystick extends Command {
 		if (Math.abs(climber) < CLIMBER_DEAD_BAND) {
 			climber = 0;
 		}
-		Robot.drivetrain.drive(move, rotate);
-		Robot.climber.set(climber);
+		if (isCenter) {
+			Robot.vision.center();
+		}else {
+			Robot.drivetrain.drive(move, rotate);
+			Robot.climber.set(climber);
+		}
+		
 	}
 
 	@Override
