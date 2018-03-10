@@ -83,6 +83,10 @@ public class Drivetrain extends Subsystem {
 
 	// Get Methods
 
+	public boolean isMoving() {
+		return Math.abs(this.getLeftSpeed()) > 1 || Math.abs(this.getRightSpeed()) > 1;
+	}
+
 	public double getLeftSpeed() {
 		return this.frontLeft.getSelectedSensorVelocity(0);
 	}
@@ -163,7 +167,7 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void setPosition(double position) {
-		double newPosition = position * CPR / WHEEL_CIRCUMFERENCE;
+		double newPosition = -position * 50;
 		this.frontLeft.set(ControlMode.Position, newPosition);
 		this.frontRight.set(ControlMode.Position, newPosition);
 	}

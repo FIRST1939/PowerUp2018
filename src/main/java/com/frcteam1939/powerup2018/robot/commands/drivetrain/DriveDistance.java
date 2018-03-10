@@ -23,13 +23,13 @@ public class DriveDistance extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.drivetrain.driveDistance(this.distance);
+		Robot.drivetrain.setPosition(this.distance);
 		Robot.drivetrain.turnPID.setSetpoint(0);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return this.initialized && this.distance - (Robot.drivetrain.getLeftPosition() + Robot.drivetrain.getRightPosition()) / 2 < 5;
+		return this.initialized && this.distance - (Robot.drivetrain.getLeftPosition() + Robot.drivetrain.getRightPosition()) / 2 < 3;
 	}
 
 	@Override

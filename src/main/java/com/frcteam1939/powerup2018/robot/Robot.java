@@ -29,7 +29,6 @@ import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -105,8 +104,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Third Choice Chooser", this.chooserThirdChoice);
 
 		SmartDashboard.putData(Scheduler.getInstance());
-		SmartDashboard.putData(new DriveDistance(20));
-		SmartDashboard.putData(new TurnToAngle(90));
+		SmartDashboard.putData(new DriveDistance(10));
+		SmartDashboard.putData(new TurnToAngle(45));
 		SmartDashboard.putData(new SetElevatorHeight(50));
 
 		Robot.drivetrain.zeroEncoders();
@@ -136,20 +135,21 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		int retries = 100;
-		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		while (gameData.length() < 2 && retries > 0) {
-			retries--;
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException ie) {}
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		// int retries = 100;
+		// String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		// while (gameData.length() < 2 && retries > 0) {
+		// 	retries--;
+		// 	try {
+		// 		Thread.sleep(5);
+		// 	} catch (InterruptedException ie) {}
+		// 	gameData = DriverStation.getInstance().getGameSpecificMessage();
+		//
+		// }
 
-		}
-
-		if (gameData.length() > 0) {
-			this.autonomousCommand = this.getAutonomousCommand(gameData);
-		}
+		// if (gameData.length() > 0) {
+		// 	this.autonomousCommand = this.getAutonomousCommand(gameData);
+		// }
+		this.autonomousCommand = new CenterWallToLeftSwitch();
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
 		if (this.autonomousCommand != null) {
@@ -197,6 +197,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+		this.vision.testPixy1();
 	}
 
 	public static double getPressure() {

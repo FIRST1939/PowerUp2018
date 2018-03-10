@@ -55,6 +55,10 @@ public class Elevator extends Subsystem {
 		this.setDefaultCommand(new ElevatorGamepadControl());
 	}
 
+	public boolean isMoving() {
+		return Math.abs(this.getSpeed()) > 1;
+	}
+
 	public void setHeight(double height) {
 		double newHeight = (height - this.getHeight()) * UNITS_PER_INCH;
 		if (newHeight > 0) {

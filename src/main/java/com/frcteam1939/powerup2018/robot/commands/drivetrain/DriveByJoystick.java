@@ -20,37 +20,43 @@ public class DriveByJoystick extends Command {
 	protected void execute() {
 		double move = Robot.oi.left.getY();
 		double rotate = Robot.oi.right.getX();
-		double climber = Robot.oi.left.getX();
+		double climberValue = 0;
 
-		boolean turbo = (Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1)) && Robot.elevator.getHeight() < 30;
-		boolean slowDown = Robot.oi.right.getRawButton(3);
+		boolean slowDown = Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1);
 
 		if (Math.abs(move) < DEAD_BAND) {
 			move = 0;
 		} else {
-			if (turbo) {
-				move = map(move, 0, 1.0);
-			} else {
+			if (slowDown) {
 				move = map(move, 0, 0.5);
+			} else {
+				move = map(move, 0, 1.0);
 			}
 		}
 		if (Math.abs(rotate) < DEAD_BAND) {
 			rotate = 0;
 		} else {
-			if (turbo) {
-				rotate = map(rotate, 0, 0.6);
-			} else if (slowDown) {
-				rotate = map(rotate, 0, 0.15);
-			} else {
+			if (slowDown) {
 				rotate = map(rotate, 0, 0.3);
+			} else {
+				rotate = map(rotate, 0, 0.6);
 			}
 		}
 
-		if (Math.abs(climber) < CLIMBER_DEAD_BAND) {
-			climber = 0;
+		if (Robot.oi.left.getRawButton(11)) {
+			climberValue = 0.5;
 		}
+
+		if (Robot.oi.left.getRawButton(10)) {
+			climberValue = -0.5;
+		}
+
+		if (Robot.oi.left.getRawButton(6) || Robot.oi.left.getRawButton(7)) {
+			climberValue = 0;
+		}
+
 		Robot.drivetrain.drive(move, rotate);
-		Robot.climber.set(climber);
+		Robot.climber.set(climberValue);
 	}
 
 	@Override

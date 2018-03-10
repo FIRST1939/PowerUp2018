@@ -1,7 +1,6 @@
 package com.frcteam1939.powerup2018.robot.commands.cubemanipulator;
 
 import com.frcteam1939.powerup2018.robot.Robot;
-import com.frcteam1939.powerup2018.robot.commands.drivetrain.CenterVision;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -27,14 +26,11 @@ public class CubeManipulatorGamepadControl extends Command {
 
 		Robot.oi.gamepad.a.whenPressed(new CubeManipulatorLower());
 		Robot.oi.gamepad.x.whenPressed(new CubeManipulatorMiddle());
-		// Robot.oi.gamepad.y.whenPressed(new CubeManipulatorRaise());
-		Robot.oi.gamepad.b.whenPressed(new CenterVision());
+		Robot.oi.gamepad.y.whenPressed(new CubeManipulatorRaise());
+		// Robot.oi.gamepad.b.whenPressed(new CenterVision());
 
 		double move = -Robot.oi.gamepad.getRightY() / 2;
 		Robot.cubeManipulator.set(move);
-
-		// Robot.oi.gamepad.back.whenPressed(new CubeManipulatorLower());
-		// Robot.oi.gamepad.start.whenPressed(new CubeManipulatorRaise());
 
 		if (Robot.oi.gamepad.rightButton.get() && !this.wasPressed) {
 			this.wasPressed = true;
