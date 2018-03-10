@@ -22,12 +22,25 @@ public class DriveByJoystick extends Command {
 		double rotate = Robot.oi.right.getX();
 		double climberValue = 0;
 
+<<<<<<< HEAD
 		boolean slowDown = Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1);
+=======
+		boolean turbo = (Robot.oi.left.getRawButton(1) || Robot.oi.right.getRawButton(1)) && Robot.elevator.getHeight() < 30;
+		boolean slowDown = Robot.oi.right.getRawButton(3);
+		boolean isCenter = Robot.oi.left.getRawButton(4);
+>>>>>>> origin/master
 
 		if (Math.abs(move) < DEAD_BAND) {
 			move = 0;
 		} else {
+<<<<<<< HEAD
 			if (slowDown) {
+=======
+			
+			if (turbo) {
+				move = map(move, 0, 1.0);
+			} else {
+>>>>>>> origin/master
 				move = map(move, 0, 0.5);
 			} else {
 				move = map(move, 0, 1.0);
@@ -50,6 +63,7 @@ public class DriveByJoystick extends Command {
 		if (Robot.oi.left.getRawButton(10)) {
 			climberValue = -0.5;
 		}
+<<<<<<< HEAD
 
 		if (Robot.oi.left.getRawButton(6) || Robot.oi.left.getRawButton(7)) {
 			climberValue = 0;
@@ -57,6 +71,15 @@ public class DriveByJoystick extends Command {
 
 		Robot.drivetrain.drive(move, rotate);
 		Robot.climber.set(climberValue);
+=======
+		if (isCenter) {
+			Robot.vision.center();
+		}else {
+			Robot.drivetrain.drive(move, rotate);
+			Robot.climber.set(climber);
+		}
+		
+>>>>>>> origin/master
 	}
 
 	@Override

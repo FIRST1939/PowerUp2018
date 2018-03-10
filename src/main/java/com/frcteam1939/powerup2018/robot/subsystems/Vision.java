@@ -50,7 +50,7 @@ public class Vision extends Subsystem {
 
 	public void center() {
 		double error = this.center - this.getX();
-		while (error != 0) {
+		while (error <-2 && error >2) {
 			double move = Robot.oi.left.getY();
 			if (move <= 0.1) {
 				move = 0;
