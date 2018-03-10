@@ -4,7 +4,6 @@ package com.frcteam1939.powerup2018.robot.subsystems;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.frcteam1939.powerup2018.robot.Robot;
 import com.frcteam1939.powerup2018.util.PixyException;
 import com.frcteam1939.powerup2018.util.PixyPacket;
 import com.frcteam1939.powerup2018.util.PixySPI;
@@ -38,27 +37,27 @@ public class Vision extends Subsystem {
 	@Override
 	public void initDefaultCommand() {}
 
-	public int getX() {
-		int pack = -1;
-		try {
-			pack = this.pixy1.readPackets();
-		} catch (PixyException e) {
-			e.printStackTrace();
-		}
-		return this.packets.get(0).get(0).X;
-	}
+	// public int getX() {
+	// 	int pack = -1;
+	// 	try {
+	// 		pack = this.pixy1.readPackets();
+	// 	} catch (PixyException e) {
+	// 		e.printStackTrace();
+	// 	}
+	// 	return this.packets.get(0).get(0).X;
+	// }
 
-	public void center() {
-		double error = this.center - this.getX();
-		while (error <-2 && error >2) {
-			double move = Robot.oi.left.getY();
-			if (move <= 0.1) {
-				move = 0;
-			}
+	// public void center() {
+	//	double error = this.center - this.getX();
+	// 	while (error < -2 && error > 2) {
+	// 		double move = Robot.oi.left.getY();
+	// 		if (move <= 0.1) {
+	// 			move = 0;
+	//		}
 
-			Robot.drivetrain.drive(move, this.kP * error);
-		}
-	}
+	//		Robot.drivetrain.drive(move, this.kP * error);
+	//	}
+	// }
 
 	public void testPixy1() {
 		int ret = -1;

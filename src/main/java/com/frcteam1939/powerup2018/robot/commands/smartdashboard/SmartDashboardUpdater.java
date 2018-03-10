@@ -43,8 +43,8 @@ public class SmartDashboardUpdater extends Command {
 		// SmartDashboard.putNumber("Vision X", Robot.vision.getX());
 
 		SmartDashboard.putBoolean("Have Cube", Robot.cubeManipulator.haveCube());
-		
-		SmartDashboard.putNumber("Vision X", Robot.vision.getX());
+
+		// SmartDashboard.putNumber("Vision X", Robot.vision.getX());
 
 		SmartDashboard.putBoolean("Is Raising", Robot.elevator.isRaising());
 		SmartDashboard.putBoolean("Is Lowering", Robot.elevator.isLowering());

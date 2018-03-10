@@ -4,13 +4,14 @@ import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class CenterVision extends Command{
+public class CenterVision extends Command {
+
 	private double distance;
 
 	public CenterVision() {
 		this.requires(Robot.drivetrain);
-		this.requires(Robot.vision);
-		this.distance = distance;
+		// this.requires(Robot.vision);
+		this.distance = this.distance;
 	}
 
 	@Override
@@ -18,7 +19,7 @@ public class CenterVision extends Command{
 
 	@Override
 	protected void execute() {
-		Robot.vision.center();
+		// Robot.vision.center();
 	}
 
 	@Override
@@ -28,12 +29,10 @@ public class CenterVision extends Command{
 
 	@Override
 	protected void end() {
-		
+
 	}
 
 	@Override
-	protected void interrupted() {
-	}
-	
+	protected void interrupted() {}
 
 }

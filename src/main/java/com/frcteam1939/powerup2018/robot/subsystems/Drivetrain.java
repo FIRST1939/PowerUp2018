@@ -273,8 +273,8 @@ public class Drivetrain extends Subsystem {
 		this.frontRight.configOpenloopRamp(.25, TIMEOUT_MS);
 		this.frontLeft.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
 		this.frontRight.configAllowableClosedloopError(posIndex, 1000, TIMEOUT_MS);
-		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
-		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED * 0.3), TIMEOUT_MS);
+		this.frontLeft.configMotionCruiseVelocity((int) (MAX_SPEED * 0.15), TIMEOUT_MS);
+		this.frontRight.configMotionCruiseVelocity((int) (MAX_SPEED * 0.15), TIMEOUT_MS);
 		this.frontLeft.configMotionAcceleration((int) (MAX_SPEED * .075), TIMEOUT_MS);
 		this.frontRight.configMotionAcceleration((int) (MAX_SPEED * .075), TIMEOUT_MS);
 		this.frontLeft.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, TIMEOUT_MS);
