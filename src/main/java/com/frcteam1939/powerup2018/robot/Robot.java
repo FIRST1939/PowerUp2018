@@ -28,6 +28,7 @@ import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -134,21 +135,20 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		// int retries = 100;
-		// String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		// while (gameData.length() < 2 && retries > 0) {
-		// 	retries--;
-		// 	try {
-		// 		Thread.sleep(5);
-		// 	} catch (InterruptedException ie) {}
-		// 	gameData = DriverStation.getInstance().getGameSpecificMessage();
-		//
-		// }
+		int retries = 100;
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		while (gameData.length() < 2 && retries > 0) {
+			retries--;
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException ie) {}
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
 
-		// if (gameData.length() > 0) {
-		// 	this.autonomousCommand = this.getAutonomousCommand(gameData);
-		// }
-		this.autonomousCommand = new CrossAutoLine();
+		}
+
+		if (gameData.length() > 0) {
+			this.autonomousCommand = this.getAutonomousCommand(gameData);
+		}
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
 		if (this.autonomousCommand != null) {
@@ -203,58 +203,68 @@ public class Robot extends TimedRobot {
 		return 250.0 * (pressureSensor.getVoltage() / 5.0) - 25.0;
 	}
 
-	private String getPath(AutonomousOptions ourSide, Char targetSide) {
-		if (ourSide == AutonomousOptions.LEFT   && targetSide == 'L') {
+	private String getPath(AutonomousOptions ourSide, char targetSide) {
+		if (ourSide == AutonomousOptions.LEFT && targetSide == 'L') {
 			return "LL";
 		}
 		if (ourSide == AutonomousOptions.CENTER && targetSide == 'L') {
 			return "CL";
 		}
-		if (ourSide == AutonomousOptions.RIGHT  && targetSide == 'L') {
+		if (ourSide == AutonomousOptions.RIGHT && targetSide == 'L') {
 			return "RL";
 		}
-		if (ourSide == AutonomousOptions.LEFT   && targetSide == 'R') {
+		if (ourSide == AutonomousOptions.LEFT && targetSide == 'R') {
 			return "LR";
 		}
 		if (ourSide == AutonomousOptions.CENTER && targetSide == 'R') {
 			return "CR";
 		}
-		if (ourSide == AutonomousOptions.RIGHT  && targetSide == 'R') {
-			return "RR";
-		}
+		return "RR";
 	}
 
 	private Command getAutoSwitchCommand(String path) {
 		switch (path) {
-			"LL": return new LeftWallToLeftSwitch();
-			"CL": return new CenterWallToLeftSwitch();
-			"RL": return new RightWallToLeftSwitch();
-			"LR": return new LeftWallToRightSwitch();
-			"CR": return new CenterWallToRightSwitch();
-			"RR": return new RightWallToRightSwitch();
+			case "LL":
+				return new LeftWallToLeftSwitch();
+			case "CL":
+				return new CenterWallToLeftSwitch();
+			case "RL":
+				return new RightWallToLeftSwitch();
+			case "LR":
+				return new LeftWallToRightSwitch();
+			case "CR":
+				return new CenterWallToRightSwitch();
+			case "RR":
+				return new RightWallToRightSwitch();
 		}
 		return new DoNothing();
 	}
 
 	private Command getAutoScaleCommand(String path) {
 		switch (path) {
-			"LL": return new LeftWallToLeftScale();
-			"CL": return new CenterWallToLeftScale();
-			"RL": return new RightWallToLeftScale();
-			"LR": return new LeftWallToRightScale();
-			"CR": return new CenterWallToRightScale();
-			"RR": return new RightWallToRightScale();
+			case "LL":
+				return new LeftWallToLeftScale();
+			case "CL":
+				return new CenterWallToLeftScale();
+			case "RL":
+				return new RightWallToLeftScale();
+			case "LR":
+				return new LeftWallToRightScale();
+			case "CR":
+				return new CenterWallToRightScale();
+			case "RR":
+				return new RightWallToRightScale();
 		}
 		return new DoNothing();
 	}
 
 	private Command getAutonomousCommand(String gameData) {
 
-		AutonomousOptions ourSide      = this.chooserPosition.getSelected();
-		Char              switchSide   = gameData.charAt(0);
-		Char              scaleSide    = gameData.charAt(1);
-		String            pathToSwitch = getPath(ourSide, switchSide);
-		String            pathToScale  = getPath(ourSide, scaleSide);
+		AutonomousOptions ourSide = this.chooserPosition.getSelected();
+		char switchSide = gameData.charAt(0);
+		char scaleSide = gameData.charAt(1);
+		String pathToSwitch = this.getPath(ourSide, switchSide);
+		String pathToScale = this.getPath(ourSide, scaleSide);
 
 		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE && ourSide == AutonomousOptions.CENTER) {
 			return new CenterCrossAutoLine();
@@ -265,13 +275,13 @@ public class Robot extends TimedRobot {
 		}
 
 		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-			return getAutoScaleCommand(pathToScale);
+			return this.getAutoScaleCommand(pathToScale);
 		}
 
 		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
-			return getAutoSwitchCommand(pathToSwitch);
+			return this.getAutoSwitchCommand(pathToSwitch);
 		}
 
-		return new DoNothing():
+		return new DoNothing();
 	}
 }
