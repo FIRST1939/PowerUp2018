@@ -36,6 +36,10 @@ Thumbs.db
 # backup files
 *~
 
+#sublime
+*.sublime-project
+*.sublime-workspace
+
 # directory for XML generated after running junit tests through ant
 junit/
 *.bat
