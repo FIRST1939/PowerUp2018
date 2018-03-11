@@ -1,13 +1,9 @@
 package com.frcteam1939.powerup2018.robot.commands.auton;
 
-import com.frcteam1939.powerup2018.robot.DistanceConstants;
-import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.CubeManipulatorMiddle;
 import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.OutputCubeMiddle;
-import com.frcteam1939.powerup2018.robot.commands.cubemanipulator.SetCubeManipulatorSpeed;
-import com.frcteam1939.powerup2018.robot.commands.drivetrain.DriveDistance;
+import com.frcteam1939.powerup2018.robot.commands.drivetrain.SetDrivetrainMotorsSpeed;
 import com.frcteam1939.powerup2018.robot.commands.drivetrain.TurnToAngle;
-import com.frcteam1939.powerup2018.robot.commands.elevator.SetElevatorHeight;
-import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
+import com.frcteam1939.powerup2018.robot.commands.elevator.SetElevatorMotorSpeed;
 import com.frcteam1939.powerup2018.util.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -15,16 +11,16 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CenterWallToRightSwitch extends CommandGroup {
 
 	public CenterWallToRightSwitch() {
-		this.addSequential(new CubeManipulatorMiddle());
-		this.addSequential(new SetCubeManipulatorSpeed(CubeManipulator.IN_SPEED));
-		this.addSequential(new Wait(1));
-		this.addSequential(new SetCubeManipulatorSpeed(0));
-		this.addSequential(new DriveDistance(10));
-		this.addSequential(new TurnToAngle(24));
-		this.addSequential(new DriveDistance(132));
-		this.addSequential(new TurnToAngle(-24));
-		this.addSequential(new DriveDistance(10));
-		this.addSequential(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
+		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
+		this.addSequential(new Wait(0.5));
+		this.addSequential(new SetDrivetrainMotorsSpeed(0));
+		this.addSequential(new TurnToAngle(26.25));
+		this.addSequential(new SetElevatorMotorSpeed(1.0));
+		this.addSequential(new Wait(1.75));
+		this.addSequential(new SetElevatorMotorSpeed(0));
+		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
+		this.addSequential(new Wait(3.2));
+		this.addSequential(new SetDrivetrainMotorsSpeed(0));
 		this.addSequential(new OutputCubeMiddle());
 	}
 }

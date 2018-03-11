@@ -107,6 +107,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new DriveDistance(10));
 		SmartDashboard.putData(new TurnToAngle(45));
 		SmartDashboard.putData(new SetElevatorHeight(50));
+		SmartDashboard.putData(new LeftWallToLeftSwitch());
+		SmartDashboard.putData(new RightWallToRightSwitch());
+		SmartDashboard.putData(new CenterWallToRightSwitch());
+		SmartDashboard.putData(new CenterWallToLeftSwitch());
 
 		Robot.drivetrain.zeroEncoders();
 		Robot.drivetrain.resetGyro();
@@ -146,8 +150,14 @@ public class Robot extends TimedRobot {
 
 		}
 
-		if (gameData.length() > 0) {
-			this.autonomousCommand = this.getAutonomousCommand(gameData);
+		// if (gameData.length() > 0) {
+		// 	this.autonomousCommand = this.getAutonomousCommand(gameData);
+		// }
+
+		if (gameData.charAt(0) == 'L') {
+			this.autonomousCommand = new LeftWallToLeftSwitch();
+		} else {
+			this.autonomousCommand = new CrossAutoLine();
 		}
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
