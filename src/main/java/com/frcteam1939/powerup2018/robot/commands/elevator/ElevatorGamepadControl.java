@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ElevatorGamepadControl extends Command {
 
-	private int count = 3;
-
 	public ElevatorGamepadControl() {
 		this.requires(Robot.elevator);
 	}
@@ -64,23 +62,8 @@ public class ElevatorGamepadControl extends Command {
 			Robot.elevator.setEncoder(11);
 		}
 
-		// Robot.oi.gamepad.y.whenPressed(new SetElevatorHeight(DistanceConstants.ELEVATOR_SWITCH));
-		// if (Robot.oi.gamepad.rightButton.get()) {
-		//	if (this.count % 3 == 0) {
-		//		Robot.elevator.setHeight(DistanceConstants.ELEVATOR_SWITCH);
-		//		this.count = 2;
-		//	}
-
-		//	else if (this.count % 3 == 2) {
-		//		Robot.elevator.setHeight(DistanceConstants.ELEVATOR_SCALE);
-		//		this.count = 1;
-		//	}
-		//
-		//	else if (this.count % 3 == 1) {
-		//	Robot.elevator.setHeight(12);
-		//		this.count = 3;
-		//	}
-		//}
+		Robot.oi.gamepad.leftButton.whenPressed(new ElevatorToSwitch());
+		Robot.oi.gamepad.leftTrigger.whenPressed(new ElevatorToScale());
 	}
 
 	@Override

@@ -20,14 +20,9 @@ public class CubeManipulatorGamepadControl extends Command {
 	@Override
 	protected void execute() {
 
-		// Robot.oi.gamepad.a.whenPressed(new IntakeCube());
-		// Robot.oi.gamepad.x.whenPressed(new OutputCubeMiddle());
-		// Robot.oi.gamepad.y.whenPressed(new OutputCube());
-
 		Robot.oi.gamepad.a.whenPressed(new CubeManipulatorLower());
 		Robot.oi.gamepad.x.whenPressed(new CubeManipulatorMiddle());
 		Robot.oi.gamepad.y.whenPressed(new CubeManipulatorRaise());
-		// Robot.oi.gamepad.b.whenPressed(new CenterVision());
 
 		double move = -Robot.oi.gamepad.getRightY() * 0.75;
 		Robot.cubeManipulator.set(move);
