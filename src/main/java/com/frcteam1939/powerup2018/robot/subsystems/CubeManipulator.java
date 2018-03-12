@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class CubeManipulator extends Subsystem {
 
-	public static final double OUT_SPEED = .5;
-	public static final double IN_SPEED = -.5;
+	public static final double OUT_SPEED = 1.0;
+	public static final double IN_SPEED = -1.0;
 
 	private TalonSRX masterTalon = new TalonSRX(RobotMap.masterCubeManipulatorTalon);
 	private TalonSRX slaveTalon = new TalonSRX(RobotMap.slaveCubeManipulatorTalon);

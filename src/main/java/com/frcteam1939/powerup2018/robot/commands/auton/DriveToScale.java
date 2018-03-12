@@ -5,11 +5,11 @@ import com.frcteam1939.powerup2018.util.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class CrossAutoLine extends CommandGroup {
+public class DriveToScale extends CommandGroup {
 
-	public CrossAutoLine() {
+	public DriveToScale() {
 		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(7.0));
+		this.addSequential(new Wait(8.5));
 		this.addSequential(new SetDrivetrainMotorsSpeed(0));
 	}
 }

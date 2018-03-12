@@ -28,6 +28,7 @@ import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -106,6 +107,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(new DriveDistance(10));
 		SmartDashboard.putData(new TurnToAngle(45));
 		SmartDashboard.putData(new SetElevatorHeight(50));
+		SmartDashboard.putData(new LeftWallToLeftSwitch());
+		SmartDashboard.putData(new RightWallToRightSwitch());
+		SmartDashboard.putData(new CenterWallToRightSwitch());
+		SmartDashboard.putData(new CenterWallToLeftSwitch());
+		SmartDashboard.putData(new LeftWallToLeftScale());
+		SmartDashboard.putData(new RightWallToRightScale());
 
 		Robot.drivetrain.zeroEncoders();
 		Robot.drivetrain.resetGyro();
@@ -134,21 +141,29 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		// int retries = 100;
-		// String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		// while (gameData.length() < 2 && retries > 0) {
-		// 	retries--;
-		// 	try {
-		// 		Thread.sleep(5);
-		// 	} catch (InterruptedException ie) {}
-		// 	gameData = DriverStation.getInstance().getGameSpecificMessage();
-		//
-		// }
+		int retries = 100;
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		while (gameData.length() < 2 && retries > 0) {
+			retries--;
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException ie) {}
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+		}
 
 		// if (gameData.length() > 0) {
 		// 	this.autonomousCommand = this.getAutonomousCommand(gameData);
 		// }
-		this.autonomousCommand = new CrossAutoLine();
+
+		if (gameData.charAt(1) == 'L') {
+			this.autonomousCommand = new LeftWallToLeftScale();
+		} else if (gameData.charAt(0) == 'L') {
+			this.autonomousCommand = new LeftWallToLeftSwitch();
+		} else {
+			this.autonomousCommand = new CrossAutoLine();
+		}
+
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
 		if (this.autonomousCommand != null) {
@@ -203,234 +218,85 @@ public class Robot extends TimedRobot {
 		return 250.0 * (pressureSensor.getVoltage() / 5.0) - 25.0;
 	}
 
+	private String getPath(AutonomousOptions ourSide, char targetSide) {
+		if (ourSide == AutonomousOptions.LEFT && targetSide == 'L') {
+			return "LL";
+		}
+		if (ourSide == AutonomousOptions.CENTER && targetSide == 'L') {
+			return "CL";
+		}
+		if (ourSide == AutonomousOptions.RIGHT && targetSide == 'L') {
+			return "RL";
+		}
+		if (ourSide == AutonomousOptions.LEFT && targetSide == 'R') {
+			return "LR";
+		}
+		if (ourSide == AutonomousOptions.CENTER && targetSide == 'R') {
+			return "CR";
+		}
+		return "RR";
+	}
+
+	private Command getAutoSwitchCommand(String path) {
+		switch (path) {
+			case "LL":
+				return new LeftWallToLeftSwitch();
+			case "CL":
+				return new CenterWallToLeftSwitch();
+			case "RL":
+				return new RightWallToLeftSwitch();
+			case "LR":
+				return new LeftWallToRightSwitch();
+			case "CR":
+				return new CenterWallToRightSwitch();
+			case "RR":
+				return new RightWallToRightSwitch();
+		}
+		return new DoNothing();
+	}
+
+	private Command getAutoScaleCommand(String path) {
+		switch (path) {
+			case "LL":
+				return new LeftWallToLeftScale();
+			case "CL":
+				return new CenterWallToLeftScale();
+			case "RL":
+				return new RightWallToLeftScale();
+			case "LR":
+				return new LeftWallToRightScale();
+			case "CR":
+				return new CenterWallToRightScale();
+			case "RR":
+				return new RightWallToRightScale();
+		}
+		return new DoNothing();
+	}
+
 	private Command getAutonomousCommand(String gameData) {
-		Command chosenCommand = new DoNothing();
 
-		if (this.chooserPosition.getSelected() == AutonomousOptions.CENTER) {
-			if (this.chooserPosition.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'L') {
-					chosenCommand = new CenterWallToLeftSwitch();
-				}
+		AutonomousOptions ourSide = this.chooserPosition.getSelected();
+		char switchSide = gameData.charAt(0);
+		char scaleSide = gameData.charAt(1);
+		String pathToSwitch = this.getPath(ourSide, switchSide);
+		String pathToScale = this.getPath(ourSide, scaleSide);
 
-				else if (gameData.charAt(0) == 'R') {
-					chosenCommand = new CenterWallToRightSwitch();
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'L') {
-					chosenCommand = new CenterWallToLeftScale();
-				}
-
-				else if (gameData.charAt(1) == 'R') {
-					chosenCommand = new CenterWallToRightScale();
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CenterCrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
+		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE && ourSide == AutonomousOptions.CENTER) {
+			return new CenterCrossAutoLine();
 		}
 
-		if (this.chooserPosition.getSelected() == AutonomousOptions.LEFT) {
-			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'L') {
-					chosenCommand = new LeftWallToLeftSwitch();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						chosenCommand = new LeftWallToRightSwitch();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
-						if (gameData.charAt(1) == 'L') {
-							chosenCommand = new LeftWallToLeftScale();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new LeftWallToRightScale();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new LeftWallToRightSwitch();
-							}
-						}
-					}
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'L') {
-					chosenCommand = new LeftWallToLeftScale();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						chosenCommand = new LeftWallToRightScale();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
-						if (gameData.charAt(0) == 'L') {
-							chosenCommand = new LeftWallToLeftSwitch();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new LeftWallToRightSwitch();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new LeftWallToRightScale();
-							}
-						}
-					}
-				}
-			}
+		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
+			return new CrossAutoLine();
 		}
 
-		if (this.chooserPosition.getSelected() == AutonomousOptions.RIGHT) {
-			if (this.chooserFirstChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-				chosenCommand = new CrossAutoLine();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-				chosenCommand = new DoNothing();
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
-				if (gameData.charAt(0) == 'R') {
-					chosenCommand = new RightWallToRightSwitch();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-						chosenCommand = new RightWallToLeftSwitch();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SCALE) {
-						if (gameData.charAt(1) == 'R') {
-							chosenCommand = new RightWallToRightScale();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new RightWallToLeftScale();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new RightWallToLeftSwitch();
-							}
-						}
-					}
-				}
-			}
-
-			else if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
-				if (gameData.charAt(1) == 'R') {
-					chosenCommand = new RightWallToRightScale();
-				}
-
-				else {
-					if (this.chooserSecondChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-						chosenCommand = new DoNothing();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-						chosenCommand = new CrossAutoLine();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-						chosenCommand = new RightWallToLeftScale();
-					}
-
-					else if (this.chooserSecondChoice.getSelected() == AutonomousOptions.SWITCH) {
-						if (gameData.charAt(0) == 'R') {
-							chosenCommand = new RightWallToRightSwitch();
-						}
-
-						else {
-							if (this.chooserThirdChoice.getSelected() == AutonomousOptions.DO_NOTHING) {
-								chosenCommand = new DoNothing();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.CROSS_AUTO_LINE) {
-								chosenCommand = new CrossAutoLine();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SWITCH) {
-								chosenCommand = new RightWallToLeftSwitch();
-							}
-
-							else if (this.chooserThirdChoice.getSelected() == AutonomousOptions.STILL_DO_SCALE) {
-								chosenCommand = new RightWallToLeftScale();
-							}
-						}
-					}
-				}
-			}
+		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SCALE) {
+			return this.getAutoScaleCommand(pathToScale);
 		}
-		return chosenCommand;
+
+		if (this.chooserFirstChoice.getSelected() == AutonomousOptions.SWITCH) {
+			return this.getAutoSwitchCommand(pathToSwitch);
+		}
+
+		return new DoNothing();
 	}
 }
