@@ -19,7 +19,7 @@ public class CenterWallToLeftSwitch extends CommandGroup {
 		this.addSequential(new Wait(1.75));
 		this.addSequential(new SetElevatorMotorSpeed(0));
 		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(3.2));
+		this.addSequential(new Wait(3.3));
 		this.addSequential(new SetDrivetrainMotorsSpeed(0));
 		this.addSequential(new OutputCubeMiddle());
 	}

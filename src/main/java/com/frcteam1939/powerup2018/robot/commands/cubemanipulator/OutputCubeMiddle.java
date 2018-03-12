@@ -13,6 +13,6 @@ public class OutputCubeMiddle extends CommandGroup {
 		this.addSequential(new Wait(1));
 		this.addSequential(new CubeManipulatorWheelsOut());
 		this.addSequential(new SetCubeManipulatorSpeed(0));
-		this.addSequential(new CubeManipulatorMiddle());
+		this.addSequential(new CubeManipulatorRaise());
 	}
 }

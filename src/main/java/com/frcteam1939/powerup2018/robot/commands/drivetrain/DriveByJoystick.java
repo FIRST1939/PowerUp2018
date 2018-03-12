@@ -44,15 +44,11 @@ public class DriveByJoystick extends Command {
 		}
 
 		if (Robot.oi.left.getRawButton(11)) {
-			climberValue = 0.5;
+			climberValue = 1.0;
 		}
 
-		if (Robot.oi.left.getRawButton(10)) {
-			climberValue = -0.5;
-		}
-
-		if (Robot.oi.left.getRawButton(6) || Robot.oi.left.getRawButton(7)) {
-			climberValue = 0;
+		if (Robot.oi.left.getRawButton(6)) {
+			climberValue = -1.0;
 		}
 
 		Robot.drivetrain.drive(move, rotate);

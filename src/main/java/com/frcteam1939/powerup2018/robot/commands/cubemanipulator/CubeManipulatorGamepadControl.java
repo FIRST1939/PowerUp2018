@@ -29,39 +29,31 @@ public class CubeManipulatorGamepadControl extends Command {
 		Robot.oi.gamepad.y.whenPressed(new CubeManipulatorRaise());
 		// Robot.oi.gamepad.b.whenPressed(new CenterVision());
 
-		double move = -Robot.oi.gamepad.getRightY() / 2;
+		double move = -Robot.oi.gamepad.getRightY() * 0.75;
 		Robot.cubeManipulator.set(move);
 
-		if (Robot.oi.gamepad.rightButton.get()) {
-			Robot.cubeManipulator.cubeManipulatorWheelsOut();
+		if (Robot.oi.gamepad.rightButton.get() && !this.wasPressed) {
+			this.wasPressed = true;
+			if (this.isClosed) {
+				Robot.cubeManipulator.cubeManipulatorWheelsOut();
+				this.isClosed = false;
+				this.isOpen = true;
+			}
+
+			else if (this.isOpen) {
+				Robot.cubeManipulator.cubeManipulatorWheelsIn();
+				this.isClosed = true;
+				this.isOpen = false;
+			}
 		}
 
-		if (Robot.oi.gamepad.rightTrigger.get()) {
-			Robot.cubeManipulator.cubeManipulatorWheelsIn();
+		if (!Robot.oi.gamepad.rightButton.get()) {
+			this.wasPressed = false;
 		}
 
-		// if (Robot.oi.gamepad.rightButton.get() && !this.wasPressed) {
-		// 	this.wasPressed = true;
-		// 	if (this.isClosed) {
-		// 		Robot.cubeManipulator.cubeManipulatorWheelsOut();
-		// 		this.isClosed = false;
-		// 		this.isOpen = true;
-		// 	}
-
-		// 	else if (this.isOpen) {
-		// 		Robot.cubeManipulator.cubeManipulatorWheelsIn();
-		// 		this.isClosed = true;
-		// 		this.isOpen = false;
-		// 	}
-		// }
-
-		// if (!Robot.oi.gamepad.rightButton.get()) {
-		// 	this.wasPressed = false;
-		// }
-
-		// else {
-		// 	this.wasPressed = true;
-		// }
+		else {
+			this.wasPressed = true;
+		}
 	}
 
 	@Override

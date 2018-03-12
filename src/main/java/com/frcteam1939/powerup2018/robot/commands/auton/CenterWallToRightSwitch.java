@@ -14,7 +14,7 @@ public class CenterWallToRightSwitch extends CommandGroup {
 		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
 		this.addSequential(new Wait(0.5));
 		this.addSequential(new SetDrivetrainMotorsSpeed(0));
-		this.addSequential(new TurnToAngle(26.25));
+		this.addSequential(new TurnToAngle(25));
 		this.addSequential(new SetElevatorMotorSpeed(1.0));
 		this.addSequential(new Wait(1.75));
 		this.addSequential(new SetElevatorMotorSpeed(0));
