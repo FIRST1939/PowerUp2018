@@ -23,7 +23,7 @@ public class Lights extends Subsystem {
     // integar.  Conversion is done using bitwise comparisions.
 
 	private boolean[] intToBits(int value) {
-		const NUM_BITS = 4;
+		final int NUM_BITS = 4;
 		boolean[] bits = new boolean[NUM_BITS];
 		for (int i = (NUM_BITS - 1); i >= 0; i--) {
 			bits[i] = (value & (1 << i)) != 0;
@@ -75,7 +75,7 @@ public class Lights extends Subsystem {
 		}
 
 		// Elevator going up
-		if (Robot.elevator.isRising()) {
+		if (Robot.elevator.isRaising()) {
 			return (isAllianceBlue) ? 3 : 11;
 		}
 
@@ -90,9 +90,8 @@ public class Lights extends Subsystem {
 		}
 
 		// Climbing
-		// TODO: Replace me with conditional needed to sense robot is climbing
-		if (false) {
-			return 6
+		if (Robot.climber.hasClimbed()) {
+			return (isAllianceBlue) ? 6 : 14;
 		}
 
 		return (isAllianceBlue) ? 7 : 15; // default light program
@@ -105,7 +104,7 @@ public class Lights extends Subsystem {
 	public Lights() {
 		new Thread(() -> {
 
-			var testCounter = 0;
+			int testCount = 0;	
 
 			while (!Thread.interrupted()) {
 
@@ -114,7 +113,7 @@ public class Lights extends Subsystem {
 				// Handle test mode (driver station not attached)
 				if (lightProgram == 0) {
 					lightProgram = testCount / 100;  // integer division
-					testCounter = (testCount == 1590) ? 0 : (testCount + 1);
+					testCount = (testCount == 1590) ? 0 : (testCount + 1);
 				}
 
 				// Show the selected program on the dashboard
