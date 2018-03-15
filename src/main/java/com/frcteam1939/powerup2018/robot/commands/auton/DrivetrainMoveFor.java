@@ -8,14 +8,10 @@ import com.frcteam1939.powerup2018.util.Wait;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class LeftWallToLeftScale extends CommandGroup {
-
-	public LeftWallToLeftScale() {
-		this.addSequential(new DrivetrainMoveFor(-0.5,5.5));
-		this.addSequential(new TurnToAngle(90));
-		this.addSequential(new DrivetrainMoveFor(0.3,0.3));
-		this.addSequential(new ElevatorMoveFor(1,2.2));
-		this.addSequential(new DrivetrainMoveFor(-0.3,.25));
-		this.addSequential(new OutputCubeMiddle());
+public class DrivetrainMoveFor extends CommandGroup {
+	public DrivetrainMoveFor(double speed, double wait){
+		this.addSequential(new SetDrivetrainMotorsSpeed(speed));
+		this.addSequential(new Wait(wait));
+		this.addSequential(new SetDrivetrainMotorsSpeed(0));	
 	}
 }

@@ -11,16 +11,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CenterWallToRightSwitch extends CommandGroup {
 
 	public CenterWallToRightSwitch() {
-		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(0.5));
-		this.addSequential(new SetDrivetrainMotorsSpeed(0));
+		
+		this.addSequential(new DrivetrainMoveFor(-0.3,0.5));
 		this.addSequential(new TurnToAngle(25));
-		this.addSequential(new SetElevatorMotorSpeed(1.0));
-		this.addSequential(new Wait(1.75));
-		this.addSequential(new SetElevatorMotorSpeed(0));
-		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(3.2));
-		this.addSequential(new SetDrivetrainMotorsSpeed(0));
+		this.addSequential(new ElevatorMoveFor(1.0,1.75));
+		this.addSequential(new DrivetrainMoveFor(-0.3,3.2));
 		this.addSequential(new OutputCubeMiddle());
+
 	}
 }

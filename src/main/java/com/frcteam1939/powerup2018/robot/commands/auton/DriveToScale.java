@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class DriveToScale extends CommandGroup {
 
 	public DriveToScale() {
-		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(8.5));
-		this.addSequential(new SetDrivetrainMotorsSpeed(0));
+		this.addSequential(new DrivetrainMoveFor(-0.3,8.5));
 	}
 }

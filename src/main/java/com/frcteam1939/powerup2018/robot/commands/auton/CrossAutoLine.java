@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class CrossAutoLine extends CommandGroup {
 
-	public CrossAutoLine() {
-		this.addSequential(new SetDrivetrainMotorsSpeed(-0.3));
-		this.addSequential(new Wait(7.0));
-		this.addSequential(new SetDrivetrainMotorsSpeed(0));
+	public CrossAutoLine() {	
+		this.addSequential(new DrivetrainMoveFor(-0.3,7.0));
 	}
 }
