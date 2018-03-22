@@ -149,20 +149,55 @@ public class Robot extends TimedRobot {
 				Thread.sleep(5);
 			} catch (InterruptedException ie) {}
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
-
 		}
 
+		// DEFAULT
 		// if (gameData.length() > 0) {
 		// 	this.autonomousCommand = this.getAutonomousCommand(gameData);
 		// }
 
-		if (gameData.charAt(1) == 'L') {
-			this.autonomousCommand = new LeftWallToLeftScale();
-		} else if (gameData.charAt(0) == 'L') {
-			this.autonomousCommand = new LeftWallToLeftSwitch();
-		} else {
-			this.autonomousCommand = new CrossAutoLine();
-		}
+		// CENTER
+		// if (gameData.charAt(0) == 'L') {
+		// 	this.autonomousCommand = new CenterWallToLeftSwitch();
+		// } else if (gameData.charAt(0) == 'R') {
+		// 	this.autonomousCommand = new CenterWallToRightSwitch();
+		// }
+
+		// CHOOSE BETWEEN LEFT SIDE - PRIORITIZE SWITCH
+		// if (gameData.charAt(0) == 'L') {
+		// 	this.autonomousCommand = new LeftWallToLeftSwitch();
+		// } else if (gameData.charAt(1) == 'L') {
+		// 	this.autonomousCommand = new LeftWallToLeftScale();
+		// } else {
+		// 	this.autonomousCommand = new CrossAutoLine();
+		// }
+
+		// CHOOSE BETWEEN RIGHT SIDE - PRIORITIZE SWITCH
+		// if (gameData.charAt(0) == 'R') {
+		// 	this.autonomousCommand = new RightWallToRightSwitch();
+		// } else if (gameData.charAt(1) == 'R') {
+		// 	this.autonomousCommand = new RightWallToRightScale();
+		// } else {
+		// 	this.autonomousCommand = new CrossAutoLine();
+		// }
+
+		// CHOOSE BETWEEN LEFT SIDE - PRIORITIZE SCALE
+		// if (gameData.charAt(1) == 'L') {
+		// 	this.autonomousCommand = new LeftWallToLeftScale();
+		// } else if (gameData.charAt(0) == 'L') {
+		// 	this.autonomousCommand = new LeftWallToLeftSwitch();
+		// } else {
+		// 	this.autonomousCommand = new CrossAutoLine();
+		// }
+
+		// CHOOSE BETWEEN RIGHT SIDE - PRIORITIZE SCALE
+		// if (gameData.charAt(1) == 'R') {
+		// 	this.autonomousCommand = new RightWallToRightScale();
+		// } else if (gameData.charAt(0) == 'R') {
+		// 	this.autonomousCommand = new RightWallToRightSwitch();
+		// } else {
+		// 	this.autonomousCommand = new CrossAutoLine();
+		// }
 
 		SmartDashboard.putString("Autonomous Command", this.autonomousCommand.getName());
 
@@ -211,7 +246,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
-		// this.vision.testPixy1();
 	}
 
 	public static double getPressure() {

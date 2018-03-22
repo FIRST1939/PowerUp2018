@@ -14,8 +14,8 @@ public class PigeonWrapper extends PigeonIMU implements PIDSource {
 		super(deviceNumber);
 	}
 
-	public PigeonWrapper(TalonSRX talonSrx) {
-		super(talonSrx);
+	public PigeonWrapper(TalonSRX talonSRX) {
+		super(talonSRX);
 	}
 
 	@Override
