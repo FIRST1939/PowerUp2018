@@ -23,6 +23,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.Climber;
 import com.frcteam1939.powerup2018.robot.subsystems.CubeManipulator;
 import com.frcteam1939.powerup2018.robot.subsystems.Drivetrain;
 import com.frcteam1939.powerup2018.robot.subsystems.Elevator;
+import com.frcteam1939.powerup2018.robot.subsystems.Lights;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
@@ -43,7 +44,8 @@ public class Robot extends TimedRobot {
 	public static Climber climber;
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
-	// public static Vision vision;
+	//public static Vision vision;
+	public static Lights lights;
 	// CONSTRUCTOR FOR LIGHTS
 	// public static Lights lights;
 
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
 			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
 			// vision = new Vision();
-			// lights = new Lights();
+			 lights = new Lights();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

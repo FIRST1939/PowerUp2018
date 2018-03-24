@@ -30,8 +30,12 @@ public class ClimberGamepadControl extends Command {
 		//	move = 0;
 		// }
 		//Robot.climber.set(move);
+		
+	
 	}
 
+
+	
 	@Override
 	protected boolean isFinished() {
 		return false;
