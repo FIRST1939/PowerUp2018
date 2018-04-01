@@ -33,5 +33,4 @@ public class RobotMap {
 	public static final int pinTwo = 6;
 	public static final int pinThree = 7;
 	public static final int pinFour = 8;
-
 }

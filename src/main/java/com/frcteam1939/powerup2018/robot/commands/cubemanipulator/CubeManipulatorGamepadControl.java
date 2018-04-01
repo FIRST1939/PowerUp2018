@@ -3,6 +3,7 @@ package com.frcteam1939.powerup2018.robot.commands.cubemanipulator;
 import com.frcteam1939.powerup2018.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CubeManipulatorGamepadControl extends Command {
 
@@ -49,6 +50,9 @@ public class CubeManipulatorGamepadControl extends Command {
 		else {
 			this.wasPressed = true;
 		}
+
+		SmartDashboard.putBoolean("Is Open", this.isOpen);
+		SmartDashboard.putBoolean("Is Closed", this.isClosed);
 	}
 
 	@Override

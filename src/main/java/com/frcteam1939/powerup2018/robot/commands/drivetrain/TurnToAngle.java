@@ -30,7 +30,7 @@ public class TurnToAngle extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return this.intialized && Math.abs(this.angle - Robot.drivetrain.getHeading()) < 10;
+		return this.intialized && Math.abs(this.angle - Robot.drivetrain.getHeading()) < 5;
 	}
 
 	@Override

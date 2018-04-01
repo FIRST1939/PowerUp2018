@@ -52,11 +52,13 @@ public class Climber extends Subsystem {
 	public double getPosition() {
 		return this.talon.getSelectedSensorPosition(0) / CPR;
 	}
+
 	public double getSpeed() {
 		return this.talon.getSelectedSensorVelocity(0);
 	}
+
 	public boolean hasClimbed() {
-		return (Math.abs(getPosition())>100);
+		return this.getPosition() < 10;
 	}
 
 	public void zeroEncoder() {

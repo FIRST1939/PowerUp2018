@@ -64,6 +64,7 @@ public class ElevatorGamepadControl extends Command {
 
 		Robot.oi.gamepad.leftButton.whenPressed(new ElevatorToSwitch());
 		Robot.oi.gamepad.leftTrigger.whenPressed(new ElevatorToScale());
+		Robot.oi.gamepad.b.whenPressed(new ElevatorToZero());
 	}
 
 	@Override

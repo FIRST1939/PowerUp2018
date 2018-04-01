@@ -44,10 +44,8 @@ public class Robot extends TimedRobot {
 	public static Climber climber;
 	public static CubeManipulator cubeManipulator;
 	public static SmartDashboardSubsystem smartDashboard;
-	//public static Vision vision;
+	// public static Vision vision;
 	public static Lights lights;
-	// CONSTRUCTOR FOR LIGHTS
-	// public static Lights lights;
 
 	static {
 		try {
@@ -57,7 +55,7 @@ public class Robot extends TimedRobot {
 			climber = new Climber();
 			smartDashboard = new SmartDashboardSubsystem();
 			// vision = new Vision();
-			 lights = new Lights();
+			lights = new Lights();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -159,11 +157,11 @@ public class Robot extends TimedRobot {
 		// }
 
 		// CENTER
-		// if (gameData.charAt(0) == 'L') {
-		// 	this.autonomousCommand = new CenterWallToLeftSwitch();
-		// } else if (gameData.charAt(0) == 'R') {
-		// 	this.autonomousCommand = new CenterWallToRightSwitch();
-		// }
+		if (gameData.charAt(0) == 'L') {
+			this.autonomousCommand = new CenterWallToLeftSwitch();
+		} else if (gameData.charAt(0) == 'R') {
+			this.autonomousCommand = new CenterWallToRightSwitch();
+		}
 
 		// CHOOSE BETWEEN LEFT SIDE - PRIORITIZE SWITCH
 		// if (gameData.charAt(0) == 'L') {
@@ -215,13 +213,6 @@ public class Robot extends TimedRobot {
 		Robot.drivetrain.resetGyro();
 		Robot.elevator.setEncoder(7);
 		Robot.climber.zeroEncoder();
-
-		// Robot.cubeManipulator.set(CubeManipulator.IN_SPEED);
-		// Robot.cubeManipulator.cubeManipulatorMiddle();
-		// if (Robot.cubeManipulator.haveCube()) {
-		//	Robot.cubeManipulator.set(0);
-		// 	Robot.cubeManipulator.cubeManipulatorWheelsIn();
-		//}
 	}
 
 	@Override
