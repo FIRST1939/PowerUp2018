@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class LeftWallToLeftScale extends CommandGroup {
 
 	public LeftWallToLeftScale() {
-		this.addSequential(new DriveFor(-0.5, 4.7));
-		this.addSequential(new TurnToAngle(90));
+		this.addSequential(new DriveFor(-0.5, 4.3));
+		this.addSequential(new TurnToAngle(40));
 		this.addSequential(new ElevatorToScale());
-		this.addSequential(new DriveFor(-0.3, 0.25));
+		this.addSequential(new DriveFor(-0.3, 0.4));
 		this.addSequential(new OutputCubeMiddle());
 		// this.addSequential(new DriveFor(0.3, 0.25));
 		// this.addSequential(new TurnToAngle(90));

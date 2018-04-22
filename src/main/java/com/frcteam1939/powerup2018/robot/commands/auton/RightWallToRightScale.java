@@ -11,7 +11,7 @@ public class RightWallToRightScale extends CommandGroup {
 
 	public RightWallToRightScale() {
 		this.addSequential(new DriveFor(-0.5, 5.35));
-		this.addSequential(new TurnToAngle(-90));
+		this.addSequential(new TurnToAngle(-100));
 		this.addSequential(new ElevatorToScale());
 		this.addSequential(new DriveFor(-0.3, 0.25));
 		this.addSequential(new OutputCubeMiddle());
