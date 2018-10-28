@@ -18,6 +18,7 @@ import com.frcteam1939.powerup2018.robot.subsystems.Lights;
 import com.frcteam1939.powerup2018.robot.subsystems.SmartDashboardSubsystem;
 import com.frcteam1939.powerup2018.util.AutonomousOptions;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -87,7 +88,9 @@ public class Robot extends TimedRobot {
 		Robot.elevator.setEncoder(7);
 		Robot.climber.zeroEncoder();
 
-		CameraServer.getInstance().startAutomaticCapture();
+		UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
+		cam.setResolution(240, 180);
+		cam.setBrightness(10);
 
 		System.out.println("           Finished Intializing");
 		System.out.println("==========================================/n");
@@ -133,9 +136,7 @@ public class Robot extends TimedRobot {
 
 		// CHOOSE BETWEEN LEFT SIDE - PRIORITIZE SWITCH
 		// if (gameData.charAt(0) == 'L') {
-		// 	this.autonomousCommand = new LeftWallToLeftSwitch();
-		// } else if (gameData.charAt(1) == 'L') {
-		// 	this.autonomousCommand = new LeftWallToLeftScale();
+		//	this.autonomousCommand = new LeftWallToLeftSwitch();
 		// } else {
 		// 	this.autonomousCommand = new CrossAutoLine();
 		// }
@@ -143,8 +144,6 @@ public class Robot extends TimedRobot {
 		// CHOOSE BETWEEN RIGHT SIDE - PRIORITIZE SWITCH
 		// if (gameData.charAt(0) == 'R') {
 		// 	this.autonomousCommand = new RightWallToRightSwitch();
-		// } else if (gameData.charAt(1) == 'R') {
-		// 	this.autonomousCommand = new RightWallToRightScale();
 		// } else {
 		// 	this.autonomousCommand = new CrossAutoLine();
 		// }
