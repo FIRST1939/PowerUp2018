@@ -1,4 +1,4 @@
-#FRC Team 1939 KUHNIGITS PowerUp2018 robot code
+# FRC Team 1939 KUHNIGITS PowerUp2018 robot code
 
 ## How to Build
 [GradleRIO](https://github.com/Open-RIO/GradleRIO)
